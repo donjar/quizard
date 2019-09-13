@@ -1,7 +1,7 @@
 import styled from 'styled-components';
-import Button from './Button';
+import RoundedButton from './RoundedButton';
 
-const AnswerButton = styled(Button)`
+const AnswerButton = styled(RoundedButton)`
   width: 461px;
   height: 391.92px;
 `;

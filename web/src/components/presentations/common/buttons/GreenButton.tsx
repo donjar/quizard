@@ -1,7 +1,7 @@
 import styled from 'styled-components';
-import Button from './Button';
+import RoundedButton from './RoundedButton';
 
-const GreenButton = styled(Button)`
+const GreenButton = styled(RoundedButton)`
   background: var(--green);
 `;
 

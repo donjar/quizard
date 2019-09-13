@@ -1,0 +1,23 @@
+{
+  "short_name": "Quizard!",
+  "name": "Quizard! The Quizzing App",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "owl.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "owl.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone"
+}

@@ -5,18 +5,70 @@
 }
 
 @font-face {
-  font-family: 'GothamRounded Medium';
-  src: url('./fonts/GothamRounded-Medium.otf') format('opentype'),
-    url('./fonts/GothamRoundedMedium_21022.ttf') format('truetype');
+  font-family: 'GothamRounded';
+  src: url('./fonts/GothamRounded-Book.otf') format('opentype'),
+    url('./fonts/GothamRoundedBook_21018.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
+}
+
+@font-face {
+  font-family: 'GothamRounded';
+  src: url('./fonts/GothamRounded-BookItalic.otf') format('opentype');
+  font-weight: normal;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'GothamRounded';
+  src: url('./fonts/GothamRounded-Light.otf') format('opentype'),
+    url('./fonts/GothamRoundedLight_21020.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'GothamRounded';
+  src: url('./fonts/GothamRounded-LightItalic.otf') format('opentype');
+  font-weight: 300;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'GothamRounded';
+  src: url('./fonts/GothamRounded-Medium.otf') format('opentype'),
+    url('./fonts/GothamRoundedMedium_21022.ttf') format('truetype');
+  font-weight: medium;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'GothamRounded';
+  src: url('./fonts/GothamRounded-MediumItalic.otf') format('opentype');
+  font-weight: medium;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'GothamRounded';
+  src: url('./fonts/GothamRounded-Bold.otf') format('opentype'),
+    url('./fonts/GothamRoundedBold_21016.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'GothamRounded';
+  src: url('./fonts/GothamRounded-BoldItalic.otf') format('opentype');
+  font-weight: bold;
+  font-style: italic;
 }
 
 body,
 div,
 button {
   margin: 0;
-  font-family: 'GothamRounded Medium', sans-serif;
+  font-family: 'GothamRounded', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

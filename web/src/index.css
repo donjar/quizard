@@ -1,3 +1,9 @@
+:root {
+  --dark-blue: #383958;
+  --beige: #fffcf3;
+  --green: #7cd885;
+}
+
 @font-face {
   font-family: 'GothamRounded Medium';
   src: url('./fonts/GothamRounded-Medium.otf') format('opentype'),
@@ -6,11 +12,17 @@
   font-style: normal;
 }
 
-body {
+body,
+div,
+button {
   margin: 0;
   font-family: 'GothamRounded Medium', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-size: 24px;
 }
 
 code {

@@ -9,6 +9,10 @@ const StyledInputField = styled.div`
   align-items: center;
   overflow: hidden;
 
+  @media (max-width: 576px) {
+    width: 100%;
+  }
+
   background: #ffffff;
   box-shadow: 4px 4px 10px rgba(56, 57, 88, 0.4);
   border-radius: 15px;

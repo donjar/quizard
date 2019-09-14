@@ -17,6 +17,12 @@ const StyledLoginCard = styled.div`
   box-shadow: 6px 6px 0px #dcd9cf;
   border-radius: 25px;
 
+  @media (max-width: 576px) {
+    width: 100%;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
   & > * {
     margin: 15px 0;
   }
@@ -42,7 +48,7 @@ const LoginCard: React.FC = () => {
   return (
     <StyledLoginCard>
       <SeparatedDiv>
-        <img src={'./owl.png'} style={{ width: '195px', height: '170px' }} />
+        <img src={'./owl.png'} style={{ width: '195px', height: '170px' }} alt={'Quizard logo'} />
         <Quizard />
       </SeparatedDiv>
       <LoginForm>

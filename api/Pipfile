@@ -1,0 +1,24 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+pysnooper = "*"
+pytest-sanic = "*"
+faker = "*"
+
+[packages]
+gino = "*"
+sanic = "*"
+alembic = "*"
+psycopg2-binary = "*"
+cerberus = "*"
+# Wait until Sanic upgrades its Websocket's dependency (hopefully v19.6.3)
+# to use uvicorn
+# uvicorn = "==0.7.*"
+sanic-jwt-extended = "*"
+hypercorn = {extras = ["uvloop"],version = "*"}
+
+[requires]
+python_version = "3.7"

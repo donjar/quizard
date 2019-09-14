@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import { LoginButton } from '../common/buttons/LoginButton';
-import { ReactComponent as Owl } from '../../../svg/owl.svg';
 import { ReactComponent as Quizard } from '../../../svg/quizard.svg';
 
 const StyledLoginCard = styled.div`
@@ -20,7 +19,7 @@ const StyledLoginCard = styled.div`
 const LoginCard: React.FC = () => {
   return (
     <StyledLoginCard>
-      <Owl />
+      <img src={'./owl.png'} style={{ width: '195px', height: '170px' }} />
       <Quizard />
       <div>email shit here</div>
       <div>some password shit here</div>

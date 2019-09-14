@@ -1,12 +1,20 @@
 import React from 'react';
-import { LoginButton } from '../common/buttons/LoginButton';
+import styled from 'styled-components';
+import LoginCard from './LoginCard';
+
+const StyledLogin = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--dark-blue);
+  height: 100vh;
+`;
 
 const Login: React.FC = () => {
   return (
-    <>
-      <div className="Login">Login</div>
-      <LoginButton />
-    </>
+    <StyledLogin>
+      <LoginCard />
+    </StyledLogin>
   );
 };
 

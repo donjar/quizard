@@ -6,13 +6,13 @@ import BigDarkButton from '../common/buttons/BigDarkButton';
 const StyledHomeHeader = styled.div`
   display: flex;
 
-  * {
+  & > * {
     flex: 1 1 auto;
   }
 `;
 
 const StyledHomeWriteupBox = styled.div`
-  * {
+  & > * {
     margin: 20px 0;
   }
 `;

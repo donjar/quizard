@@ -48,6 +48,7 @@ def users():
 def quizzes():
     return _quizzes
 
+
 @pytest.fixture
 async def token_user(app):
     user = {**_users[0], "id": 1}

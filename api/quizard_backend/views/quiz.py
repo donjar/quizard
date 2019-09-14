@@ -5,6 +5,7 @@ from sanic_jwt_extended.decorators import get_jwt_data_in_request_header
 from quizard_backend.views.urls import quiz_blueprint as blueprint
 from quizard_backend.models import Quiz, QuizQuestion
 from quizard_backend.utils.validation import validate_request, validate_permission
+
 # from quizard_backend.views.quiz_attempt import (
 #     quiz_attempt_retrieve,
 #     quiz_attempt_create,
@@ -37,7 +38,9 @@ async def quiz_create(req, req_args, req_body, *args, **kwargs):
     # Update the questions' order in quiz
     # using the IDs of created questions
     if not questions_order:
-        return await Quiz.modify({"id": result["id"]}, {"questions_order": questions_order})
+        return await Quiz.modify(
+            {"id": result["id"]}, {"questions_order": questions_order}
+        )
 
     return result
 

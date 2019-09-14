@@ -1,4 +1,1 @@
-QUIZ_CATEGORIES = [
-    "Math",
-    "English",
-]
+QUIZ_CATEGORIES = ["Math", "English"]

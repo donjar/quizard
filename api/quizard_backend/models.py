@@ -72,6 +72,7 @@ class BaseModel(db.Model):
         model = await get_one(cls, id=model_id)
         await model.delete()
 
+
 class Quiz(BaseModel):
     __tablename__ = "quiz"
 
@@ -98,6 +99,7 @@ class Quiz(BaseModel):
         # TO-DO: Explicitly remove the quiz questions/answers (if we want to)
         return await super(Quiz, cls).remove(**kwargs)
 
+
 class QuizQuestion(BaseModel):
     __tablename__ = "quiz_question"
 
@@ -112,6 +114,7 @@ class QuizQuestion(BaseModel):
     # Index
     _idx_quiz_question_quiz_id = db.Index("idx_quiz_question_quiz_id", "quiz_id")
 
+
 class QuizAttempt(BaseModel):
     __tablename__ = "quiz_attempt"
 
@@ -123,21 +126,28 @@ class QuizAttempt(BaseModel):
     updated_at = db.Column(db.BigInteger, onupdate=unix_time)
 
     # Index
-    _idx_quiz_attempt_quiz_id_score = db.Index("idx_quiz_attempt_quiz_id_score", "quiz_id", "score")
+    _idx_quiz_attempt_quiz_id_score = db.Index(
+        "idx_quiz_attempt_quiz_id_score", "quiz_id", "score"
+    )
+
 
 class QuizAnswer(BaseModel):
     __tablename__ = "quiz_answer"
 
     id = db.Column(db.BigInteger, primary_key=True, autoincrement=True)
     quiz_id = db.Column(db.BigInteger, db.ForeignKey("quiz.id"), nullable=False)
-    attempt_id = db.Column(db.BigInteger, db.ForeignKey("quiz_attempt.id"), nullable=False)
+    attempt_id = db.Column(
+        db.BigInteger, db.ForeignKey("quiz_attempt.id"), nullable=False
+    )
     user_id = db.Column(db.BigInteger, db.ForeignKey("user.id"), nullable=False)
     selected_option = db.Column(db.SmallInteger)
     created_at = db.Column(db.BigInteger, nullable=False, default=unix_time)
     updated_at = db.Column(db.BigInteger, onupdate=unix_time)
 
     # Index
-    _idx_quiz_answer_quiz_attempt_user = db.Index("idx_quiz_answer_quiz_attempt_user", "quiz_id", "attempt_id", "user_id")
+    _idx_quiz_answer_quiz_attempt_user = db.Index(
+        "idx_quiz_answer_quiz_attempt_user", "quiz_id", "attempt_id", "user_id"
+    )
 
 
 class User(BaseModel):
@@ -195,9 +205,7 @@ class User(BaseModel):
 
         user = None
         try:
-            user = await cls.get(
-                email=email, password=password, **kwargs
-            )
+            user = await cls.get(email=email, password=password, **kwargs)
         except NotFound:
             pass
 

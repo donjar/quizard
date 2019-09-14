@@ -57,6 +57,7 @@ async def test_get_one_user(client, users):
     res = await client.get("/users?end_timestamp=")
     assert res.status == 400
 
+
 async def test_get_all_users(client, users):
     res = await client.get("/users?many=trUe")
     assert res.status == 200
@@ -158,9 +159,7 @@ async def test_get_users_with_last_id(client, users):
 async def test_create_user(client, users):
     new_user = get_fake_user()
 
-    res = await client.post(
-        "/users", json=new_user
-    )
+    res = await client.post("/users", json=new_user)
     assert res.status == 200
 
     body = await res.json()
@@ -178,9 +177,7 @@ async def test_create_user(client, users):
     # Ignore param args
     # POST request will have its query parameter (args) ignored.
     new_user = get_fake_user()
-    res = await client.post(
-        "/users", json=new_user
-    )
+    res = await client.post("/users", json=new_user)
     assert res.status == 200
 
     body = await res.json()
@@ -195,62 +192,41 @@ async def test_create_user(client, users):
         for origin, created in zip(users, all_users)
     )
 
+
 async def test_create_user_with_invalid_args(client, users):
     res = await client.post("/users", json={})
     assert res.status == 400
 
-    res = await client.post(
-        "/users", json={"id": 4}
-    )
+    res = await client.post("/users", json={"id": 4})
     assert res.status == 400
 
-    res = await client.post(
-        "/users", json={"full_name": ""}
-    )
+    res = await client.post("/users", json={"full_name": ""})
     assert res.status == 400
 
-    res = await client.post(
-        "/users",
-        json={"full_name": ""},
-    )
+    res = await client.post("/users", json={"full_name": ""})
     assert res.status == 400
 
-    res = await client.post(
-        "/users",
-        json={"full_name": "Josh", "password": ""},
-    )
+    res = await client.post("/users", json={"full_name": "Josh", "password": ""})
     assert res.status == 400
 
-    res = await client.post(
-        "/users", json={"email": ""}
-    )
+    res = await client.post("/users", json={"email": ""})
     assert res.status == 400
 
-    res = await client.post(
-        "/users", json={"location": 2}
-    )
+    res = await client.post("/users", json={"location": 2})
     assert res.status == 400
 
-    res = await client.post(
-        "/users", json={"created_at": 2}
-    )
+    res = await client.post("/users", json={"created_at": 2})
     assert res.status == 400
 
-    res = await client.post(
-        "/users", json={"updated_at": 2}
-    )
+    res = await client.post("/users", json={"updated_at": 2})
     assert res.status == 400
 
     # Invalid or weak password
-    res = await client.post(
-        "/users",
-        json={"full_name": "Josh", "password": "mmmw"}
-    )
+    res = await client.post("/users", json={"full_name": "Josh", "password": "mmmw"})
     assert res.status == 400
 
     res = await client.post(
-        "/users",
-        json={"full_name": "Josh", "password": "qweon@qweqweklasl"}
+        "/users", json={"full_name": "Josh", "password": "qweon@qweqweklasl"}
     )
     assert res.status == 400
 
@@ -260,6 +236,7 @@ async def test_create_user_with_invalid_args(client, users):
 
 
 ## UPDATE ##
+
 
 async def test_update_one_user(client, users, token_user):
     new_changes = {
@@ -307,9 +284,7 @@ async def test_update_one_user(client, users, token_user):
 
     # User doesnt exist
     res = await client.put(
-        "/users?id=9999",
-        json=new_changes,
-        headers={"Authorization": token_user},
+        "/users?id=9999", json=new_changes, headers={"Authorization": token_user}
     )
     assert res.status == 404
 

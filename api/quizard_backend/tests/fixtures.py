@@ -7,10 +7,10 @@ sys.path.append(root_dir)
 from quizard_backend.tests import (
     get_fake_user,
     get_fake_quiz,
-	get_fake_questions_for_quiz,
+    get_fake_questions_for_quiz,
     number_of_users,
     number_of_quizzes,
-    number_of_questions_per_quiz
+    number_of_questions_per_quiz,
 )
 
 

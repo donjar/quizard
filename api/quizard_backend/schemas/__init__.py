@@ -45,11 +45,7 @@ is_boolean = {
     "nullable": False,
     "empty": False,
 }
-is_string = {
-    "type": "string",
-    "empty": False,
-    "nullable": False,
-}
+is_string = {"type": "string", "empty": False, "nullable": False}
 is_required_string = {
     "type": "string",
     "empty": False,
@@ -57,15 +53,8 @@ is_required_string = {
     "required": True,
 }
 is_string_list = {"type": "list", "schema": is_string}
-is_required_string_list = {
-    "type": "list",
-    "required": True,
-    "schema": is_string,
-}
-is_unsigned_integer_list = {
-	"type": "list",
-	"schema": is_unsigned_integer,
-}
+is_required_string_list = {"type": "list", "required": True, "schema": is_string}
+is_unsigned_integer_list = {"type": "list", "schema": is_unsigned_integer}
 
 
 # Schemas
@@ -82,7 +71,7 @@ QUIZ_QUESTION_READ_SCHEMA = {
     "text": {"type": "string"},
     "animation_id": is_unsigned_integer,
     "options": {"readonly": True},
-	"correct_option": is_unsigned_integer,	# Check correct answer in backend ?
+    "correct_option": is_unsigned_integer,  # Check correct answer in backend ?
     "created_at": is_unsigned_integer,
     "updated_at": is_unsigned_integer,
     **QUERY_PARAM_READ_SCHEMA,
@@ -151,13 +140,10 @@ QUIZ_READ_SCHEMA = {
     "type_id": is_unsigned_integer,
     "animation_id": is_unsigned_integer,
     "questions_order": is_unsigned_integer_list,
-	"questions": {	# A list of dicts
-		"type": "list",
-		"schema": {
-			"type": "dict",
-			"schema": QUIZ_QUESTION_READ_SCHEMA,
-		},
-	},
+    "questions": {  # A list of dicts
+        "type": "list",
+        "schema": {"type": "dict", "schema": QUIZ_QUESTION_READ_SCHEMA},
+    },
     "created_at": is_unsigned_integer,
     "updated_at": is_unsigned_integer,
     **QUERY_PARAM_READ_SCHEMA,
@@ -171,18 +157,15 @@ QUIZ_WRITE_SCHEMA = {
     "type_id": is_unsigned_integer,
     "animation_id": is_unsigned_integer,
     "questions_order": is_unsigned_integer_list,
-	"questions": {	# A list of dicts
-		"type": "list",
+    "questions": {  # A list of dicts
+        "type": "list",
         "required": True,
-		"schema": {
-			"type": "dict",
+        "schema": {
+            "type": "dict",
             "required": True,
-			"schema": {
-                **QUIZ_QUESTION_WRITE_SCHEMA,
-                "quiz_id": is_unsigned_integer,
-            },
-		},
-	},
+            "schema": {**QUIZ_QUESTION_WRITE_SCHEMA, "quiz_id": is_unsigned_integer},
+        },
+    },
     "created_at": {"readonly": True},
     "updated_at": {"readonly": True},
 }

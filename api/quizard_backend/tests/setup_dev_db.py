@@ -6,7 +6,11 @@ sys.path.append(root_dir)
 
 from quizard_backend import db
 from quizard_backend.models import User, Quiz, QuizQuestion
-from quizard_backend.tests.fixtures import users as _users, quizzes as _quizzes, questions as _questions
+from quizard_backend.tests.fixtures import (
+    users as _users,
+    quizzes as _quizzes,
+    questions as _questions,
+)
 from quizard_backend.utils.crypto import hash_password
 
 

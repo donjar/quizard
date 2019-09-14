@@ -17,6 +17,7 @@ number_of_quizzes = 20
 number_of_questions_per_quiz = 10
 number_of_options_per_question = 5
 
+
 def get_fake_password():
     return "".join(choices(ascii_lowercase, k=10) + choices(digits, k=10))
 
@@ -29,29 +30,34 @@ def get_fake_user():
         "password": get_fake_password(),
     }
 
+
 def get_fake_question_data():
     return {
         "text": fake.sentence(nb_words=10),
-        "options": [fake.sentence(nb_words=10) for _ in range(number_of_options_per_question)],
-        "correct_option": fake.pyint(max_value=number_of_options_per_question - 1)
+        "options": [
+            fake.sentence(nb_words=10) for _ in range(number_of_options_per_question)
+        ],
+        "correct_option": fake.pyint(max_value=number_of_options_per_question - 1),
     }
+
 
 def get_fake_quiz_questions():
     return [get_fake_question_data() for _ in range(number_of_questions_per_quiz)]
 
+
 def get_fake_questions_for_quiz(quiz_id):
-    return [{
-        **get_fake_question_data(),
-        "quiz_id": quiz_id,
-    } for _ in range(number_of_questions_per_quiz)]
+    return [
+        {**get_fake_question_data(), "quiz_id": quiz_id}
+        for _ in range(number_of_questions_per_quiz)
+    ]
+
 
 def get_fake_quiz(creator_id=None):
     if not creator_id:
         creator_id = fake.pyint(min_value=1, max_value=number_of_users)
 
-    return {
-        "creator_id": creator_id,
-    }
+    return {"creator_id": creator_id}
+
 
 # Helper functions
 

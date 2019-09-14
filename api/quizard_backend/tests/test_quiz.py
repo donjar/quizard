@@ -1,5 +1,9 @@
 from quizard_backend.models import Quiz
-from quizard_backend.tests import profile_created_from_origin, get_fake_quiz, get_fake_quiz_questions
+from quizard_backend.tests import (
+    profile_created_from_origin,
+    get_fake_quiz,
+    get_fake_quiz_questions,
+)
 
 
 async def test_get_one_quiz(client, quizzes):
@@ -31,6 +35,7 @@ async def test_get_one_quiz(client, quizzes):
 
     res = await client.get("/quizzes?id=")
     assert res.status == 400
+
 
 async def test_get_all_quizzes(client, quizzes):
     res = await client.get("/quizzes?many=trUe")
@@ -132,7 +137,11 @@ async def test_get_quizzes_with_last_id(client, quizzes):
 
 async def test_create_quiz(client, quizzes, token_user):
     # Cannot create an quiz without token
-    new_quiz = {**get_fake_quiz(), "questions": get_fake_quiz_questions(), "creator_id": 1}
+    new_quiz = {
+        **get_fake_quiz(),
+        "questions": get_fake_quiz_questions(),
+        "creator_id": 1,
+    }
     res = await client.post("/quizzes", json=new_quiz)
     assert res.status == 401
 
@@ -148,15 +157,16 @@ async def test_create_quiz(client, quizzes, token_user):
 
     all_quizzes = await Quiz.query.gino.all()
     assert len(all_quizzes) == len(quizzes) + 1
-    assert profile_created_from_origin(new_quiz, all_quizzes[-1].to_dict(), ignore={"questions",})
+    assert profile_created_from_origin(
+        new_quiz, all_quizzes[-1].to_dict(), ignore={"questions"}
+    )
     assert all(
         profile_created_from_origin(origin, created.to_dict())
         for origin, created in zip(quizzes, all_quizzes)
     )
 
-async def test_create_quiz_with_invalid_args(
-    client, quizzes, token_user
-):
+
+async def test_create_quiz_with_invalid_args(client, quizzes, token_user):
     res = await client.post("/quizzes", json={}, headers={"Authorization": token_user})
     assert res.status == 400
 
@@ -193,7 +203,6 @@ async def test_create_quiz_with_invalid_args(
         "/quizzes", json={"updated_at": 2}, headers={"Authorization": token_user}
     )
     assert res.status == 400
-
 
     # Assert no new quizzes are created
     all_quizzes = await Quiz.query.gino.all()

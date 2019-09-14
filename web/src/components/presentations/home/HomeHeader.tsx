@@ -1,18 +1,17 @@
 import React from 'react';
 import styled from 'styled-components';
-import { ReactComponent as Owl } from '../../../svg/owl.svg';
 import BigDarkButton from '../common/buttons/BigDarkButton';
 
 const StyledHomeHeader = styled.div`
   display: flex;
 
-  * {
+  & > * {
     flex: 1 1 auto;
   }
 `;
 
 const StyledHomeWriteupBox = styled.div`
-  * {
+  & > * {
     margin: 20px 0;
   }
 `;
@@ -38,7 +37,7 @@ const HomeHeader: React.FC = () => {
           <BigDarkButton>Create New Quiz</BigDarkButton>
         </StyledHomeWriteupBox>
         <div>
-          <Owl />
+          <img src={'./owl.png'} style={{ width: '450px', height: '400px' }} />
         </div>
       </StyledHomeHeader>
     </>

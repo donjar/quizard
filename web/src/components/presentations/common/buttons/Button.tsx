@@ -9,6 +9,7 @@ const Button = styled.button`
 
   :active {
     transform: translateY(4px);
+    box-shadow: 4px 4px 10px rgba(56, 57, 88, 0.25);
   }
 `;
 

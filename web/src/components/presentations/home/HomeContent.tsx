@@ -5,7 +5,7 @@ import UnselectedButton from '../common/buttons/UnselectedButton';
 import QuizCard from './QuizCard';
 
 const StyledHomeContent = styled.div`
-  * {
+  & > * {
     margin: 5px 0;
   }
 `;
@@ -13,13 +13,13 @@ const StyledHomeContent = styled.div`
 const QuizTypeToolbar = styled.div`
   display: flex;
 
-  *:not(:first-child) {
+  & > *:not(:first-child) {
     margin-left: 11px;
   }
 `;
 
 const QuizList = styled.div`
-  * {
+  & > * {
     margin: 20px 0;
   }
 `;
@@ -38,7 +38,14 @@ const QuizTypeButton: React.FC<Props> = ({ isSelected, children }) => {
 
 let quizArray: ReactElement[] = [];
 for (let i = 0; i < 5; i++) {
-  quizArray.push(<QuizCard>Quiz Card</QuizCard>);
+  quizArray.push(
+    <QuizCard
+      title="Quiz Title"
+      description="This quiz is about lorem ipsum dolor"
+      numAttempted={50}
+      dateCreated={2}
+    />
+  );
 }
 
 const HomeContent: React.FC = () => {

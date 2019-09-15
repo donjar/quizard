@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "1b1eead459d74f58a746380373e0655cd6f5feef772554975da4f22d33c7608a"
+            "sha256": "ac73f02c06e443da097546a51689723e53691e6e72fc5b687d0b18841c181795"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -368,7 +368,6 @@
                 "sha256:c63b6c0bf33144c604dd72f7eecf2d3a3ac7405c503c67bd98128cf306efe18a",
                 "sha256:e698a20a3b4ccb380d207f9d491d4085d7c38d364f6a0bae98684a1612a9607a"
             ],
-            "markers": "sys_platform != 'win32' and implementation_name == 'cpython'",
             "version": "==0.13.0"
         },
         "websockets": {
@@ -408,30 +407,22 @@
     "develop": {
         "aiohttp": {
             "hashes": [
-                "sha256:02396865118790ebb0bd14d6935e9e4fa80d87683240618894e585048a8b83ec",
-                "sha256:0f448b5d5cd45e642b9fcf4798e48cca4149ae479022f59bd67a47caed44657e",
-                "sha256:1af72f53ccead6d161296e576aa2b5d0c6c7403a389601dd7aa7a7a30a9f41c3",
-                "sha256:32eeef64a5bcf6dc652f19e020b16f36ec66d291957f62ffad18ecfc58695966",
-                "sha256:36c4e234a85a81e325d8b1d7fdeb696a3d51bb8eb09a8c8e69c7532b421e8a29",
-                "sha256:371a5f1bb604fc262ba32893931f5aad3bb3e797dbebcf2b5b2c36f97603e4c7",
-                "sha256:3f5a30f67e4152d4075063ae9f2286313af2e39b950869edba76232569e08793",
-                "sha256:48c65d65d0de79f1a4391bc29c8c8ec7655671a03ad7902d5e66fd735531893e",
-                "sha256:4ede22808195126d55879f1a14aaa3d1004f188c341f92ec3b9ca5ea13e695b9",
-                "sha256:53228028648b40f59fc941c0cd67b7899bce52f35eb66aeb9e33b75bac0aac0a",
-                "sha256:67cb8e71c043686f806cfdb4189774c57ef929d32890024c3775d72b54381797",
-                "sha256:6b1e99dc838c28f14e45bffef6fb77bf5b54bd2bfb1a475c776da5ba8a9fec2d",
-                "sha256:6c30eca95e7d60fbf13e6ebcaf62b7c0f3f93ec5de8862919aa5ede3720b1c86",
-                "sha256:6f2c905ab82aa0ee8a06210d5a6c1359c79f3f2088cc1b53c8758cae1dbc0d55",
-                "sha256:746b73eff86a1618025093b9c86ff4d642cff71a7ac7244f7fd8a186967cee22",
-                "sha256:9ebf518c7bc08e65b5396f80e8155c7bb1380b921b84b510570e62196c9fca56",
-                "sha256:9efc80ced0936f3fb2774e1bc981006324c74d1e58fc7f7164ecd98ede727c7d",
-                "sha256:abc43651f2c6d70b812cb874fc8caa00eb69fac11930cd2640d32a11ee7beef0",
-                "sha256:b4c6e1f5a591511537d4ccd4c807f6c8bb8d1b8a5043395950ba339086380904",
-                "sha256:bee80820a8ef5f6bddd58d762fc9f981ef1041a464d382d7d9a992bb94cd23c6",
-                "sha256:f0c304dcc1494dbc3fc492ebc2e61d0db323be9756a1bb14f407097d8adf82ec",
-                "sha256:fb9c2f27d2db6d709a02421733bb6ad22e16104beb2cf403e1120c24f3cc8668"
+                "sha256:1ab7ab0a710135133dcc2980dd48fdd92f6f6066b66ef0356f458f395aa375af",
+                "sha256:1cf5b433a0aa3cf45b0acd4adb14cb20d99166aaa967ab89f629635ac263ca64",
+                "sha256:27b2bc8ca5555d5dadeee07cc2d6f8c06092c9d9c3f203c79c124d07474d3cf8",
+                "sha256:315f55a8469284f3ee54534d76f525b5c104dc514999dca4a007524a458aaba2",
+                "sha256:4f3c1572716ce2c8f22877a8185414ec213c057df35d27f7195f185691828608",
+                "sha256:635bef0626e28446372511e1fd31585205db2f18dab37a43d8adb30b0483e1bf",
+                "sha256:6907359de725e7ccd04b458a0f3322c7d1ba78df3df02e2ceb5abb0e21c975e6",
+                "sha256:772cfc0ff7c088d9e211377951a51c8a5173110cf56214f3e3d08a89be07badc",
+                "sha256:a91251585acf5203842551e37d2700c13c0bb411fa61b13485ab9e8d2dd400e9",
+                "sha256:acbbf0c47aa713d7a4baf52f11a356b01b82cabb53da452328546acaa21c6605",
+                "sha256:af7809ce7de6709afc7770403a70dfdbc4e988c91451108c8e123fac46b870d9",
+                "sha256:de611d7b95c1067d9a415979c63503dbdc735b943d08779506886614b410644a",
+                "sha256:e0fe698d1e6a852a27a88d2844a1a63839ee764d7cf214fd58cbea480407cc1d",
+                "sha256:fa155e309cc2277d6f9d099aecaf3ce78d86a31f5a62a994debc872e4c34ddf4"
             ],
-            "version": "==4.0.0a0"
+            "version": "==3.6.0"
         },
         "appdirs": {
             "hashes": [

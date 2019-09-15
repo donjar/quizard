@@ -16,6 +16,8 @@ matrix:
       language: node_js
       before_install:
         - 'cd web'
+      install:
+        - 'yarn install'
       script:
         - 'yarn lint'
         - 'yarn test'

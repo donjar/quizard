@@ -7,6 +7,6 @@ const HideOnMedium = styled.div`
   @media (max-width: ${mdMax}) {
     display: none;
   }
-`
+`;
 
 export { smMax, mdMax, HideOnMedium };

@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import BigDarkButton from '../common/buttons/BigDarkButton';
 import { HideOnMedium } from '../../../utils/media';
+import BigDarkButton from '../common/buttons/BigDarkButton';
 
 const StyledHomeHeader = styled.div`
   display: flex;
@@ -33,7 +33,7 @@ const StyledQuizardLogo = styled.div`
     width: 100%;
     height: 100%;
   }
-`
+`;
 
 const HomeHeader: React.FC = () => {
   return (

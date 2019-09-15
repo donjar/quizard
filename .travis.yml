@@ -3,18 +3,18 @@ matrix:
     - name: 'API'
       language: python
       python: '3.7'
+      env: 'PIPENV_IGNORE_VIRTUALENVS=1'
       before_install:
         - 'cd api'
-        - 'pip install pipenv'
       install:
         - 'pipenv install'
       script:
-        - 'pipenv run black --check'
+        - 'pipenv run black . --check'
         # - 'scripts/test_dev.sh'
     - name: 'Front-end'
       cache: 'yarn'
       language: node_js
-      node: '10'
+      node_js: '10'
       before_install:
         - 'cd web'
       install:

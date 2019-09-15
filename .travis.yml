@@ -1,0 +1,21 @@
+matrix:
+  include:
+    - name: 'API'
+      language: python
+      python: '3.7'
+      before_install:
+        - 'cd api'
+        - 'sudo apt-get install -y pipenv'
+      install:
+        - 'pipenv install'
+      script:
+        - 'black --check'
+        - 'scripts/test_dev.sh'
+    - name: 'Front-end'
+      cache: 'yarn'
+      language: node_js
+      before_install:
+        - 'cd web'
+      script:
+        - 'yarn lint'
+        - 'yarn test'

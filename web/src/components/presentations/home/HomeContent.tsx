@@ -24,11 +24,11 @@ const QuizList = styled.div`
   }
 `;
 
-type Props = {
+interface IHomeContentProps {
   isSelected: number;
-};
+}
 
-const QuizTypeButton: React.FC<Props> = ({ isSelected, children }) => {
+const QuizTypeButton: React.FC<IHomeContentProps> = ({ isSelected, children }) => {
   return isSelected ? (
     <DarkButton>{children}</DarkButton>
   ) : (
@@ -36,7 +36,7 @@ const QuizTypeButton: React.FC<Props> = ({ isSelected, children }) => {
   );
 };
 
-let quizArray: ReactElement[] = [];
+const quizArray: ReactElement[] = [];
 for (let i = 0; i < 5; i++) {
   quizArray.push(
     <QuizCard

@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 
-type Props = {
+interface INavbarProps {
   background: string;
-};
+}
 
 const StyledNavBar = styled.nav`
   position: absolute;
@@ -11,7 +11,7 @@ const StyledNavBar = styled.nav`
   height: 100px;
   left: 0px;
   top: 3px;
-  background: ${(props: Props) => (props ? props.background : ``)};
+  background: ${(props: INavbarProps) => (props ? props.background : ``)};
   align-items: center;
 `;
 
@@ -23,7 +23,7 @@ const StyledNavBody = styled.div`
   align-items: center;
 `;
 
-const NavBar: React.FC<Props> = ({ background, children }) => {
+const NavBar: React.FC<INavbarProps> = ({ background, children }) => {
   return (
     <StyledNavBar background={background}>
       <StyledNavBody>{children}</StyledNavBody>

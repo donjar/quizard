@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
-import { ReactComponent as People } from '../../../svg/people.svg';
 import { ReactComponent as BackBtn } from '../../../svg/btn-back.svg';
-import { QuizDateCreatedDiv } from './QuizDateCreatedDiv';
+import { ReactComponent as People } from '../../../svg/people.svg';
 import { QuizCardContents } from './QuizCardContents';
+import { QuizDateCreatedDiv } from './QuizDateCreatedDiv';
 
 const StyledQuizCard = styled.div`
   position: relative;
@@ -31,14 +31,14 @@ const MiscDetails = styled.div`
   margin-top: 15px;
 `;
 
-type QuizCardProps = {
+interface IQuizCardProps {
   title: string;
   description: string;
   numAttempted: number;
   dateCreated: number;
-};
+}
 
-const QuizCard: React.FC<QuizCardProps> = ({
+const QuizCard: React.FC<IQuizCardProps> = ({
   title,
   description,
   numAttempted,

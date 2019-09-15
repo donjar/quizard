@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { smMax } from '../../../utils/media';
 
 const StyledInputField = styled.div`
   position: relative;
@@ -9,7 +10,7 @@ const StyledInputField = styled.div`
   align-items: center;
   overflow: hidden;
 
-  @media (max-width: 576px) {
+  @media (max-width: ${smMax}) {
     width: 100%;
   }
 

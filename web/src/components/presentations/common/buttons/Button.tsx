@@ -6,6 +6,7 @@ const Button = styled.button`
   outline: none;
   width: 130px;
   height: 48px;
+  cursor: pointer;
 
   :active {
     transform: translateY(4px);

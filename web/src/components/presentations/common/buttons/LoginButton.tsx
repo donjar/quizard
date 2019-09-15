@@ -4,10 +4,8 @@ import DarkButton from './DarkButton';
 
 export const LoginButton: React.FC = () => {
   return (
-    <>
-      <Link to="/home">
-        <DarkButton> Login </DarkButton>
-      </Link>
-    </>
+    <Link to="/home">
+      <DarkButton> Login </DarkButton>
+    </Link>
   );
 };

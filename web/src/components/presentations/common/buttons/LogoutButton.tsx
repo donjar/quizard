@@ -1,6 +1,6 @@
 import React from 'react';
-import DarkButton from './DarkButton';
 import { Link } from 'react-router-dom';
+import DarkButton from './DarkButton';
 
 export const LogoutButton: React.FC = () => {
   return (

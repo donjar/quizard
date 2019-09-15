@@ -1,9 +1,9 @@
 import React from 'react';
-import Body from '../common/Body';
-import HomeNavBar from './HomeNavBar';
 import styled from 'styled-components';
-import HomeHeader from './HomeHeader';
+import Body from '../common/Body';
 import HomeContent from './HomeContent';
+import HomeHeader from './HomeHeader';
+import HomeNavBar from './HomeNavBar';
 
 const StyledHome = styled.div`
   height: 100%;
@@ -14,7 +14,7 @@ const StyledHomeBody = styled(Body)`
   padding: 0 15%;
 `;
 
-const Home: React.FC = props => {
+const Home: React.FC = (props) => {
   return (
     <StyledHome>
       <HomeNavBar />

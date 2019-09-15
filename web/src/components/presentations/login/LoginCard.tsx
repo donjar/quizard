@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { LoginButton } from '../common/buttons/LoginButton';
 import { ReactComponent as Quizard } from '../../../svg/quizard.svg';
+import { LoginButton } from '../common/buttons/LoginButton';
 import InputField from './InputField';
 
 const StyledLoginCard = styled.div`

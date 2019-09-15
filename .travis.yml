@@ -1,0 +1,23 @@
+matrix:
+  include:
+    - name: 'API'
+      language: python
+      python: '3.7'
+      before_install:
+        - 'cd api'
+      install:
+        - 'pipenv install --dev'
+      script:
+        - 'pipenv run black . --check'
+        # - 'scripts/test_dev.sh'
+    - name: 'Front-end'
+      cache: 'yarn'
+      language: node_js
+      node_js: '10'
+      before_install:
+        - 'cd web'
+      install:
+        - 'yarn install'
+      script:
+        - 'yarn lint'
+        - 'yarn test'

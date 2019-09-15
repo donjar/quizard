@@ -1,8 +1,8 @@
 import React from 'react';
 
-import NavBar from '../common/NavBar';
-import { LogoutButton } from '../common/buttons/LogoutButton';
 import { ReactComponent as Quizard } from '../../../svg/quizard.svg';
+import { LogoutButton } from '../common/buttons/LogoutButton';
+import NavBar from '../common/NavBar';
 
 const HomeNavBar: React.FC = () => {
   return (

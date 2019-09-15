@@ -28,7 +28,7 @@ https://docs.docker.com/install/
 ### 1. Run the server locally for development:
 
 ```
-sh scripts/dev.sh
+scripts/dev.sh
 ```
 
 ### 2. Run the tests locally:
@@ -36,7 +36,7 @@ sh scripts/dev.sh
 On the first run, it will be a bit slow, as the script creates a `Docker` container for a testing `PostgreSQL` database.
 
 ```
-sh scripts/test_dev.sh
+scripts/test_dev.sh
 ```
 
 #### Run a specific test
@@ -45,14 +45,14 @@ Edit the `pipenv run pytest` line inside `scripts/test_dev.sh` to run the test y
 
 ### 3. Setup fake DB content + Update dev database schema:
 ```
-sh scripts/setup_dev_db.sh
+scripts/setup_dev_db.sh
 ```
 
 ### 4. Pipenv to requirements.txt
 
 In case you would like to get `requirements.txt`, run:
 ```
-sh scripts/lock_pipenv.sh
+scripts/lock_pipenv.sh
 ```
 
 And the 2 `requirements.txt` for `test` and `main` will be created in folder `requirements`.
@@ -61,10 +61,10 @@ And the 2 `requirements.txt` for `test` and `main` will be created in folder `re
 
 Before committing your changes, it is recommended to run:
 ```
-sh scripts/black.sh
+black .
 ```
 
-which will format the code styles all the `*.py` files in this repo using `python-black`.
+which will format the code styles all Python files
 
 
 ## Rules
@@ -123,20 +123,20 @@ GET /quizzes?id=5
 GET /quizzes?limit=5&many=True&last_id=10
 
 POST /quizzes
-	body={
-		"questions": [
-			{
-				"text": "This is question 1",
-				"options": ["Option 1", "Option 2", "Option 3"],
-				"correct_option": 0,
-			},
-			{
-				"text": "This is question 2",
-				"options": ["Option 1a", "Option 2a", "Option 3a"],
-				"correct_option": 2,
-			}
-		]
-	}
+body={
+  "questions": [
+  {
+    "text": "This is question 1",
+    "options": ["Option 1", "Option 2", "Option 3"],
+    "correct_option": 0,
+  },
+  {
+    "text": "This is question 2",
+    "options": ["Option 1a", "Option 2a", "Option 3a"],
+    "correct_option": 2,
+  }
+  ]
+}
 ```
 
 ### 3. `/login`

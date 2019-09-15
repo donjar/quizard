@@ -9,11 +9,12 @@ matrix:
       install:
         - 'pipenv install'
       script:
-        - 'black --check'
-        - 'scripts/test_dev.sh'
+        - 'pipenv run black --check'
+        # - 'scripts/test_dev.sh'
     - name: 'Front-end'
       cache: 'yarn'
       language: node_js
+      node: '10'
       before_install:
         - 'cd web'
       install:

@@ -122,7 +122,6 @@ async def test_create_quiz(client, users, quizzes, token_user):
 
     # Cannot create an quiz without token
     res = await client.post("/quizzes", json=new_quiz)
-    print("hello", await res.json())
     assert res.status == 401
 
     # Create a quiz with valid args

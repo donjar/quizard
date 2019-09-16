@@ -18,8 +18,6 @@ users = [get_fake_user() for _ in range(number_of_users)]
 quizzes = [get_fake_quiz(users[index]["uuid"]) for index in range(number_of_quizzes)]
 questions = [get_fake_questions_for_quiz(quiz["uuid"]) for quiz in quizzes]
 
-# from pprint import pprint
-# pprint(questions)
 # Update the questions' order in all quizzes
 for index, quiz in enumerate(quizzes):
     quizzes[index]["questions_order"] = [

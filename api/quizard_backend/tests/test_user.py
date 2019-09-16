@@ -253,6 +253,87 @@ async def test_update_one_user(client, users, token_user):
     assert res.status == 400
 
 
+## REPLACE USER ##
+
+
+async def test_replace_user(client, users, token_user):
+    new_user = get_fake_user()
+    new_user.pop("uuid")
+
+    # Missing token
+    res = await client.put("/users/{}".format(users[0]["uuid"]), json=new_user)
+    assert res.status == 401
+
+    # Valid request
+    res = await client.put(
+        "/users/{}".format(users[0]["uuid"]),
+        json=new_user,
+        headers={"Authorization": token_user},
+    )
+    assert res.status == 200
+
+    body = await res.json()
+    assert "data" in body
+    assert isinstance(body["data"], dict)
+
+    updated_user = await get_one(User, id=1)
+    updated_user = updated_user.to_dict()
+    updated_user["id"] = updated_user.pop("uuid")
+    assert profile_created_from_origin(new_user, updated_user)
+
+
+async def test_replace_user_with_invalid_args(client, users):
+    res = await client.put("/users/{}".format(users[0]["uuid"]), json={})
+    assert res.status == 400
+
+    res = await client.put("/users/{}".format(users[0]["uuid"]), json={"id": 4})
+    assert res.status == 400
+
+    res = await client.put("/users/{}".format(users[0]["uuid"]), json={"full_name": ""})
+    assert res.status == 400
+
+    res = await client.put("/users/{}".format(users[0]["uuid"]), json={"full_name": ""})
+    assert res.status == 400
+
+    res = await client.put(
+        "/users/{}".format(users[0]["uuid"]), json={"full_name": "Josh", "password": ""}
+    )
+    assert res.status == 400
+
+    res = await client.put("/users/{}".format(users[0]["uuid"]), json={"email": ""})
+    assert res.status == 400
+
+    res = await client.put("/users/{}".format(users[0]["uuid"]), json={"location": 2})
+    assert res.status == 400
+
+    res = await client.put("/users/{}".format(users[0]["uuid"]), json={"created_at": 2})
+    assert res.status == 400
+
+    res = await client.put("/users/{}".format(users[0]["uuid"]), json={"updated_at": 2})
+    assert res.status == 400
+
+    # Invalid or weak password
+    res = await client.put(
+        "/users/{}".format(users[0]["uuid"]),
+        json={"full_name": "Josh", "password": "mmmw"},
+    )
+    assert res.status == 400
+
+    res = await client.put(
+        "/users/{}".format(users[0]["uuid"]),
+        json={"full_name": "Josh", "password": "qweon@qweqweklasl"},
+    )
+    assert res.status == 400
+
+    # Assert no new users are created
+    all_users = await User.query.gino.all()
+    assert len(all_users) == len(users)
+    updated_user = await get_one(User, id=1)
+    updated_user = updated_user.to_dict()
+    updated_user["id"] = updated_user.pop("uuid")
+    assert profile_created_from_origin(users[0], updated_user)
+
+
 ## DELETE ##
 
 

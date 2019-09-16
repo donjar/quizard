@@ -76,11 +76,10 @@ def validate_request(
             req_body = _validator.document
 
         if not skip_args:
-            # For request's arguments of POST requests,
+            # For request's arguments,
             # use READ schema
-            if update:
-                model_name = schema.split("_")[0]
-                _schema = schemas[model_name + "_read"]
+            model_name = schema.split("_")[0]
+            _schema = schemas[model_name + "_read"]
 
             if not _validator.validate(req_args, _schema):
                 raise SchemaValidationError(_validator.errors)

@@ -14,6 +14,9 @@ def serialize_row(row, fields=None):
     if not fields:
         fields = set(_dict.keys())
 
+    # Replace internal ID with external UUID
+    _dict["id"] = _dict.pop("uuid")
+
     # Hide all properties with readonly=True
     return {
         key: val

@@ -5,7 +5,7 @@ export MODE=testing
 
 # Create a PostgreSQL container
 echo 'Starting the test container...'
-docker create --name test_postgres_cs3216_a3 -v test_cs3216_a3_dbdata:/var/lib/postgresql/data -p 54321:5432 postgres:11
+docker create --name test_postgres_cs3216_a3 -v test_cs3216_a3_dbdata:/var/lib/postgresql/data -p 54321:5432 postgres:11 || true
 
 # Start the test container
 docker start test_postgres_cs3216_a3
@@ -16,7 +16,7 @@ docker exec -it test_postgres_cs3216_a3 psql -U postgres -c "DROP SCHEMA public 
 
 # Run the actual tests
 pipenv run pytest --loop uvloop
-# pipenv run pytest --loop uvloop quizard_backend/tests/test_user.py::test_update_user_self
+# pipenv run pytest --loop uvloop quizard_backend/tests/test_user.py::test_get_one_user
 
 # Stop the container after running
 echo 'Shutting down the test container...'

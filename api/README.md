@@ -28,7 +28,7 @@ https://docs.docker.com/install/
 ### 1. Run the server locally for development:
 
 ```
-scripts/dev.sh
+./scripts/dev.sh
 ```
 
 ### 2. Run the tests locally:
@@ -36,23 +36,25 @@ scripts/dev.sh
 On the first run, it will be a bit slow, as the script creates a `Docker` container for a testing `PostgreSQL` database.
 
 ```
-scripts/test_dev.sh
+./scripts/test_dev.sh
 ```
 
 #### Run a specific test
 
-Edit the `pipenv run pytest` line inside `scripts/test_dev.sh` to run the test you want. An example is commented out in the file.
+Edit the `pipenv run pytest` line inside `./scripts/test_dev.sh` to run the test you want. An example is commented out in the file.
 
 ### 3. Setup fake DB content + Update dev database schema:
+
+> Requires the `dev` instance to be running
 ```
-scripts/setup_dev_db.sh
+./scripts/setup_dev_db.sh
 ```
 
 ### 4. Pipenv to requirements.txt
 
 In case you would like to get `requirements.txt`, run:
 ```
-scripts/lock_pipenv.sh
+./scripts/lock_pipenv.sh
 ```
 
 And the 2 `requirements.txt` for `test` and `main` will be created in folder `requirements`.
@@ -73,7 +75,8 @@ which will format the code styles all Python files
 
 - `GET`: Retrieve a resource(s).
 - `POST`: Create a resource.
-- `PUT`: Update a resource. (*TO-DO: Separate this into `PUT` and `PATCH`*)
+- `PUT`: Replace a resource.
+- `PATCH`: Update a resource.
 - `DELETE`: Delete a resource. (*WIP*)
 
 
@@ -81,10 +84,9 @@ which will format the code styles all Python files
 
  - `GET` and `DELETE` requests will ignore the request's body.
  - `POST` requests will ignore the request's query parameters.
- - `PUT` requests use the request's query parameters to retrieve the resources, and use the request's body to update them.
+ - `PUT` and `PATCH` requests use the request's query parameters to retrieve the resources, and use the request's body to update them.
 
 ### 1. GET
-- many (`bool`): If True, return a list of rows. Default: False.
 - limit (`int`): the maximum number of rows to return(Min=0, Max=100). Default: 15.
 - last_id (`int`): The returned rows will have their IDs starting from `last_id` (exclusive) (Keyset pagination). Default: 0.
 
@@ -107,9 +109,12 @@ The supported endpoints are listed here.
 
 Example:
 ```
-GET /users?many=True
-GET /users?id=5
-GET /users?limit=5&many=True&last_id=10
+# Only 1 user
+GET /users/<uuid>
+
+# Multiple users
+GET /users
+GET /users?limit=5&last_id=<uuid>
 ```
 
 ### 2. `/quizzes`
@@ -118,10 +123,14 @@ GET /users?limit=5&many=True&last_id=10
 
 Example:
 ```
-GET /quizzes?many=True
-GET /quizzes?id=5
-GET /quizzes?limit=5&many=True&last_id=10
+# Only 1 user
+GET /quizzes/<uuid>
 
+# Multiple users
+GET /quizzes
+GET /quizzes?limit=5&last_id=<uuid>
+
+# Create a quiz
 POST /quizzes
 body={
   "questions": [

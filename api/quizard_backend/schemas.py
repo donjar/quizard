@@ -8,66 +8,43 @@ to_boolean = lambda v: v.lower() in ["true", "1"]
 
 # Common rules
 is_integer = {"type": "integer", "coerce": int, "nullable": False, "empty": False}
-is_unsigned_integer_with_max = {
-    "type": "integer",
-    "coerce": int,
-    "nullable": False,
-    "empty": False,
-    "min": 0,
-    "max": 100,
-}
-is_unsigned_integer = {
-    "type": "integer",
-    "coerce": int,
-    "nullable": False,
-    "empty": False,
-    "min": 0,
-}
+is_unsigned_integer = {**is_integer, "min": 0}
+is_unsigned_integer_with_max = {**is_unsigned_integer, "max": 100}
 is_nullable_integer = {"type": "integer", "coerce": int}
-is_required_integer = {
-    "type": "integer",
-    "coerce": int,
-    "nullable": False,
-    "empty": False,
-    "required": True,
-}
-is_required_unsigned_integer = {
-    "type": "integer",
-    "coerce": int,
-    "nullable": False,
-    "empty": False,
-    "required": True,
-    "min": 0,
-}
+is_required_integer = {**is_integer, "required": True}
+is_required_unsigned_integer = {**is_unsigned_integer, "required": True}
 is_boolean = {
     "type": "boolean",
     "coerce": to_boolean,
     "nullable": False,
     "empty": False,
 }
-is_string = {"type": "string", "empty": False, "nullable": False}
-is_required_string = {
+is_uuid = {
     "type": "string",
     "empty": False,
     "nullable": False,
-    "required": True,
+    "minlength": 32,
+    "maxlength": 32,
 }
+is_required_uuid = {**is_uuid, "required": True}
+is_string = {"type": "string", "empty": False, "nullable": False}
+is_required_string = {**is_string, "required": True}
 is_string_list = {"type": "list", "schema": is_string}
-is_required_string_list = {"type": "list", "required": True, "schema": is_string}
-is_unsigned_integer_list = {"type": "list", "schema": is_unsigned_integer}
+is_required_string_list = {
+    "type": "list",
+    "required": True,
+    "schema": is_required_string,
+}
+is_uuid_list = {"type": "list", "schema": is_required_uuid}
 
 
 # Schemas
 
-QUERY_PARAM_READ_SCHEMA = {
-    "many": is_boolean,
-    "last_id": is_unsigned_integer,
-    "limit": is_unsigned_integer_with_max,
-}
+QUERY_PARAM_READ_SCHEMA = {"last_id": is_uuid, "limit": is_unsigned_integer_with_max}
 
 QUIZ_QUESTION_READ_SCHEMA = {
-    "id": is_unsigned_integer,
-    "quiz_id": is_unsigned_integer,
+    "id": is_uuid,
+    "quiz_id": is_uuid,
     "text": {"type": "string"},
     "animation_id": is_unsigned_integer,
     "options": {"readonly": True},
@@ -79,7 +56,7 @@ QUIZ_QUESTION_READ_SCHEMA = {
 
 QUIZ_QUESTION_WRITE_SCHEMA = {
     "id": {"readonly": True},
-    "quiz_id": is_required_unsigned_integer,
+    "quiz_id": is_uuid,
     "text": is_required_string,
     "animation_id": is_unsigned_integer,
     "options": is_required_string_list,
@@ -89,9 +66,9 @@ QUIZ_QUESTION_WRITE_SCHEMA = {
 }
 
 QUIZ_ATTEMPT_READ_SCHEMA = {
-    "id": is_unsigned_integer,
-    "quiz_id": is_unsigned_integer,
-    "user_id": is_unsigned_integer,
+    "id": is_uuid,
+    "quiz_id": is_uuid,
+    "user_id": is_uuid,
     "score": is_integer,
     "created_at": is_unsigned_integer,
     "updated_at": is_unsigned_integer,
@@ -100,18 +77,18 @@ QUIZ_ATTEMPT_READ_SCHEMA = {
 
 QUIZ_ATTEMPT_WRITE_SCHEMA = {
     "id": {"readonly": True},
-    "quiz_id": is_required_unsigned_integer,
-    "user_id": is_required_unsigned_integer,
+    "quiz_id": is_uuid,
+    "user_id": is_uuid,
     "score": {"readonly": True},
     "created_at": {"readonly": True},
     "updated_at": {"readonly": True},
 }
 
 QUIZ_ANSWER_READ_SCHEMA = {
-    "id": is_unsigned_integer,
-    "quiz_id": is_unsigned_integer,
-    "attempt_id": is_unsigned_integer,
-    "user_id": is_unsigned_integer,
+    "id": is_uuid,
+    "quiz_id": is_uuid,
+    "attempt_id": is_uuid,
+    "user_id": is_uuid,
     "selected_option": is_unsigned_integer,
     "created_at": is_unsigned_integer,
     "updated_at": is_unsigned_integer,
@@ -120,9 +97,9 @@ QUIZ_ANSWER_READ_SCHEMA = {
 
 QUIZ_ANSWER_WRITE_SCHEMA = {
     "id": {"readonly": True},
-    "quiz_id": is_required_unsigned_integer,
-    "attempt_id": is_required_unsigned_integer,
-    "user_id": is_required_unsigned_integer,
+    "quiz_id": is_uuid,
+    "attempt_id": is_uuid,
+    "user_id": is_uuid,
     "selected_option": is_required_integer,
     "created_at": {"readonly": True},
     "updated_at": {"readonly": True},
@@ -133,13 +110,13 @@ QUIZ_ANSWER_WRITE_SCHEMA = {
 
 
 QUIZ_READ_SCHEMA = {
-    "id": is_unsigned_integer,
+    "id": is_uuid,
     "title": is_string,
-    "creator_id": is_unsigned_integer,
+    "creator_id": is_uuid,
     "category_id": is_unsigned_integer,
     "type_id": is_unsigned_integer,
     "animation_id": is_unsigned_integer,
-    "questions_order": is_unsigned_integer_list,
+    "questions_order": is_uuid_list,
     "questions": {  # A list of dicts
         "type": "list",
         "schema": {"type": "dict", "schema": QUIZ_QUESTION_READ_SCHEMA},
@@ -152,11 +129,11 @@ QUIZ_READ_SCHEMA = {
 QUIZ_WRITE_SCHEMA = {
     "id": {"readonly": True},
     "title": is_string,
-    "creator_id": is_required_unsigned_integer,
+    "creator_id": is_uuid,
     "category_id": is_unsigned_integer,
     "type_id": is_unsigned_integer,
     "animation_id": is_unsigned_integer,
-    "questions_order": is_unsigned_integer_list,
+    "questions_order": is_uuid_list,
     "questions": {  # A list of dicts
         "type": "list",
         "required": True,
@@ -171,7 +148,7 @@ QUIZ_WRITE_SCHEMA = {
 }
 
 USER_READ_SCHEMA = {
-    "id": is_integer,
+    "id": is_uuid,
     "full_name": {"type": "string"},
     "email": {"type": "string"},
     "password": {"readonly": True},

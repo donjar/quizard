@@ -4,6 +4,7 @@ from string import ascii_lowercase, digits
 from faker import Faker
 from faker.providers import python as py_provider, profile as profile_provider, lorem
 
+from quizard_backend.models import generate_uuid
 
 # Set up Faker
 fake = Faker()
@@ -25,24 +26,32 @@ def get_fake_password():
 def get_fake_user():
     profile = fake.profile(fields=fake_profile_fields)
     return {
+        "uuid": generate_uuid(),
         "full_name": profile["name"],
         "email": profile["mail"],
         "password": get_fake_password(),
     }
 
 
-def get_fake_question_data():
-    return {
+def get_fake_question_data(has_uuid=True):
+    question_data = {
+        "uuid": generate_uuid(),
         "text": fake.sentence(nb_words=10),
         "options": [
             fake.sentence(nb_words=10) for _ in range(number_of_options_per_question)
         ],
         "correct_option": fake.pyint(max_value=number_of_options_per_question - 1),
     }
+    if not has_uuid:
+        question_data.pop("uuid")
+    return question_data
 
 
-def get_fake_quiz_questions():
-    return [get_fake_question_data() for _ in range(number_of_questions_per_quiz)]
+def get_fake_quiz_questions(has_uuid=True):
+    return [
+        get_fake_question_data(has_uuid=has_uuid)
+        for _ in range(number_of_questions_per_quiz)
+    ]
 
 
 def get_fake_questions_for_quiz(quiz_id):
@@ -53,10 +62,7 @@ def get_fake_questions_for_quiz(quiz_id):
 
 
 def get_fake_quiz(creator_id=None):
-    if not creator_id:
-        creator_id = fake.pyint(min_value=1, max_value=number_of_users)
-
-    return {"creator_id": creator_id}
+    return {"uuid": generate_uuid(), "creator_id": creator_id}
 
 
 # Helper functions
@@ -68,6 +74,7 @@ def profile_created_from_origin(
     for key, val in origin.items():
         if key in ignore:
             continue
+        key = "id" if key == "uuid" else key
 
         if val != created[key]:
             return False

@@ -14,8 +14,8 @@ from quizard_backend.utils.validation import validate_request, validate_permissi
 
 
 @validate_request(schema="quiz_read", skip_body=True)
-async def quiz_retrieve(req, req_args, req_body, *args, **kwargs):
-    return await Quiz.get(**req_args)
+async def quiz_retrieve(req, req_args, req_body, many=True, *args, **kwargs):
+    return await Quiz.get(**req_args, many=many)
 
 
 @validate_request(schema="quiz_write", skip_args=True)
@@ -25,7 +25,7 @@ async def quiz_create(req, req_args, req_body, *args, **kwargs):
     quiz_questions = req_body.pop("questions", [])
 
     # Assign the requester to be the creator of the quiz
-    req_body["creator_id"] = jwt_data["identity"]["id"]
+    req_body["creator_id"] = jwt_data["identity"]["uuid"]
     result = await Quiz.add(**req_body)
 
     # Create the questions
@@ -39,10 +39,16 @@ async def quiz_create(req, req_args, req_body, *args, **kwargs):
     # using the IDs of created questions
     if not questions_order:
         return await Quiz.modify(
-            {"id": result["id"]}, {"questions_order": questions_order}
+            {"uuid": result["id"]}, {"questions_order": questions_order}
         )
 
     return result
+
+
+@validate_request(schema="quiz_write")
+@validate_permission(model=Quiz)
+async def quiz_replace(req, req_args, req_body, *args, **kwargs):
+    return await Quiz.modify(req_args, req_body)
 
 
 @validate_request(schema="quiz_write", update=True)
@@ -57,15 +63,33 @@ async def quiz_delete(req, req_args, req_body, *args, **kwargs):
     await Quiz.remove(**req_args)
 
 
-@blueprint.route("/", methods=["GET", "POST", "PUT", "DELETE"])
+@blueprint.route("/", methods=["GET", "POST", "PUT", "PATCH", "DELETE"])
 async def quiz_route(request):
     call_funcs = {
         "GET": quiz_retrieve,
         "POST": quiz_create,
-        "PUT": quiz_update,
-        "DELETE": quiz_delete,
+        # "PUT": quiz_replace,
+        # "PATCH": quiz_update,
+        # "DELETE": quiz_delete,
     }
     data = await call_funcs[request.method](request)
+    return json({"data": data})
+
+
+@blueprint.route("/<quiz_id>", methods=["GET", "PUT", "PATCH"])
+async def quiz_route(request, quiz_id):
+    quiz_id = quiz_id.strip()
+
+    call_funcs = {
+        "GET": quiz_retrieve,
+        "PUT": quiz_replace,
+        "PATCH": quiz_update,
+        # "DELETE": quiz_delete,
+    }
+
+    data = await call_funcs[request.method](
+        request, req_args=None, req_body=None, id=quiz_id, many=False
+    )
     return json({"data": data})
 
 

@@ -15,14 +15,15 @@ from quizard_backend.tests import (
 
 
 users = [get_fake_user() for _ in range(number_of_users)]
-quizzes = [get_fake_quiz() for _ in range(number_of_quizzes)]
-questions = [get_fake_questions_for_quiz(index + 1) for index in range(len(quizzes))]
+quizzes = [get_fake_quiz(users[index]["uuid"]) for index in range(number_of_quizzes)]
+questions = [get_fake_questions_for_quiz(quiz["uuid"]) for quiz in quizzes]
 
+# from pprint import pprint
+# pprint(questions)
 # Update the questions' order in all quizzes
 for index, quiz in enumerate(quizzes):
     quizzes[index]["questions_order"] = [
-        number_of_questions_per_quiz * index + question_index
-        for question_index in range(len(questions[index]))
+        question["uuid"] for question in questions[index]
     ]
 
 # Flatten the questions

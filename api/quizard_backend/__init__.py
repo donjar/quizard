@@ -10,7 +10,7 @@ from quizard_backend.config import SANIC_CONFIG
 app = Sanic(__name__)
 app.config.update(SANIC_CONFIG)
 app.config["JWT_SECRET_KEY"] = "oi123n1k231kloiqwescqklwn"  # Remove later
-app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=48)
+app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(minutes=15)
 
 # Note: Gino doesn't auto-generate any new changes in the schema
 # Use alembic to apply new changes to the db

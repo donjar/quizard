@@ -368,6 +368,7 @@
                 "sha256:c63b6c0bf33144c604dd72f7eecf2d3a3ac7405c503c67bd98128cf306efe18a",
                 "sha256:e698a20a3b4ccb380d207f9d491d4085d7c38d364f6a0bae98684a1612a9607a"
             ],
+            "markers": "sys_platform != 'win32' and implementation_name == 'cpython'",
             "version": "==0.13.0"
         },
         "websockets": {

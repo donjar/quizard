@@ -65,21 +65,34 @@ def validate_request(
             else {}
         )
 
+        # For views getting a single resource,
+        # The id is passed from kwargs, rather than `req_args`
+        if "id" in kwargs and "id" not in req_args:
+            req_args["id"] = kwargs["id"]
+
         if not skip_body:
             if not _validator.validate(req_body, _schema, update=update):
                 raise SchemaValidationError(_validator.errors)
             req_body = _validator.document
 
         if not skip_args:
-            # For request's arguments of POST requests,
+            # For request's arguments,
             # use READ schema
-            if update:
-                model_name = schema.split("_")[0]
-                _schema = schemas[model_name + "_read"]
+            model_name = schema.split("_")[0]
+            _schema = schemas[model_name + "_read"]
 
             if not _validator.validate(req_args, _schema):
                 raise SchemaValidationError(_validator.errors)
             req_args = _validator.document
+
+        # Avoid duplication of assigning `req_args` and `req_args`
+        # to functions
+        kwargs.pop("req_args", None)
+        kwargs.pop("req_body", None)
+
+        # Rename "id" to internal "id"
+        if "id" in req_args:
+            req_args["uuid"] = req_args.pop("id")
 
         return await func(
             request, req_args=req_args, req_body=req_body, *args, **kwargs
@@ -119,7 +132,7 @@ def validate_permission(func=None, model=None, token_type="access"):
                 quiz_parent = await Quiz.get(**req_args)
                 resource_owner_id = quiz_parent["creator_id"]
 
-            if requester["id"] != resource_owner_id:
+            if requester["uuid"] != resource_owner_id:
                 raise Unauthorized("You are not allowed to perform this action")
 
         return await func(request, req_args=req_args, *args, **kwargs)

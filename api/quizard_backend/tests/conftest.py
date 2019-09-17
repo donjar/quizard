@@ -51,5 +51,7 @@ def quizzes():
 
 @pytest.fixture
 async def token_user(app):
-    token = await create_access_token(identity=_users[0], app=app)
+    identity = {key: val for key, val in _users[0].items()}
+    identity["id"] = identity.pop("uuid")
+    token = await create_access_token(identity=identity, app=app)
     return "Bearer " + token

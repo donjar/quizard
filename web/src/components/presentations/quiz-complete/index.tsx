@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import LoginCard from './LoginCard';
+import QuizCompleteCard from './QuizCompleteCard';
 
-const StyledLogin = styled.div`
+const StyledQuizCompletePage = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -12,9 +12,9 @@ const StyledLogin = styled.div`
 
 const QuizComplete: React.FC = () => {
   return (
-    <StyledLogin>
-      <LoginCard />
-    </StyledLogin>
+    <StyledQuizCompletePage>
+      <QuizCompleteCard score={8} maxScore={10} isGood={true} quizName={'Quiz Name Here'} />
+    </StyledQuizCompletePage>
   );
 };
 

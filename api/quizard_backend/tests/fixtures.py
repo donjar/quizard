@@ -20,9 +20,7 @@ questions = [get_fake_questions_for_quiz(quiz["uuid"]) for quiz in quizzes]
 
 # Update the questions' order in all quizzes
 for index, quiz in enumerate(quizzes):
-    quizzes[index]["questions_order"] = [
-        question["uuid"] for question in questions[index]
-    ]
+    quizzes[index]["questions"] = [question["uuid"] for question in questions[index]]
 
 # Flatten the questions
 questions = [item for sublist in questions for item in sublist]

@@ -30,17 +30,15 @@ async def quiz_create(req, req_args, req_body, *args, **kwargs):
 
     # Create the questions
     quiz_id = result["id"]
-    questions_order = []
+    questions = []
     for question in quiz_questions:
         quiz_question = await QuizQuestion.add(**question, quiz_id=quiz_id)
-        questions_order.append(quiz_question["id"])
+        questions.append(quiz_question["id"])
 
     # Update the questions' order in quiz
     # using the IDs of created questions
-    if not questions_order:
-        return await Quiz.modify(
-            {"uuid": result["id"]}, {"questions_order": questions_order}
-        )
+    if not questions:
+        return await Quiz.modify({"uuid": result["id"]}, {"questions": questions})
 
     return result
 
@@ -63,28 +61,22 @@ async def quiz_delete(req, req_args, req_body, *args, **kwargs):
     await Quiz.remove(**req_args)
 
 
-@blueprint.route("/", methods=["GET", "POST", "PUT", "PATCH", "DELETE"])
+@blueprint.route("/", methods=["GET", "POST"])
 async def quiz_route(request):
-    call_funcs = {
-        "GET": quiz_retrieve,
-        "POST": quiz_create,
-        # "PUT": quiz_replace,
-        # "PATCH": quiz_update,
-        # "DELETE": quiz_delete,
-    }
+    call_funcs = {"GET": quiz_retrieve, "POST": quiz_create}
     data = await call_funcs[request.method](request)
     return json({"data": data})
 
 
-@blueprint.route("/<quiz_id>", methods=["GET", "PUT", "PATCH"])
+@blueprint.route("/<quiz_id>", methods=["GET", "DELETE"])
 async def quiz_route(request, quiz_id):
     quiz_id = quiz_id.strip()
 
     call_funcs = {
         "GET": quiz_retrieve,
-        "PUT": quiz_replace,
-        "PATCH": quiz_update,
-        # "DELETE": quiz_delete,
+        # "PUT": quiz_replace,
+        # "PATCH": quiz_update,
+        "DELETE": quiz_delete,
     }
 
     data = await call_funcs[request.method](

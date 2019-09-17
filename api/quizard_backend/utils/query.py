@@ -71,3 +71,11 @@ async def update_many(model, get_kwargs, update_kwargs):
         and_(*and_(*dict_to_filter_args(model, **get_kwargs)))
     ).gino.status()
     return status[0]
+
+
+@in_transaction
+async def delete_many(model, **kwargs):
+    status: Tuple[str, list] = await model.delete.where(
+        and_(*dict_to_filter_args(model, **kwargs))
+    ).gino.status()
+    return status[0]

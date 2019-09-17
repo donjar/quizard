@@ -16,7 +16,7 @@ fake_profile_fields = ["name", "mail"]
 number_of_users = 20
 number_of_quizzes = 20
 number_of_questions_per_quiz = 10
-number_of_options_per_question = 5
+number_of_options_per_question = 4
 
 
 def get_fake_password():
@@ -62,7 +62,11 @@ def get_fake_questions_for_quiz(quiz_id):
 
 
 def get_fake_quiz(creator_id=None):
-    return {"uuid": generate_uuid(), "creator_id": creator_id}
+    return {
+        "uuid": generate_uuid(),
+        "creator_id": creator_id,
+        "title": fake.sentence(nb_words=8),
+    }
 
 
 # Helper functions

@@ -31,10 +31,10 @@ const StyledInput = styled.input`
   line-height: 22px;
 `;
 
-const InputField: React.FC<IInputFieldProps> = ({ type, placeholder }) => {
+const InputField: React.FC<IInputFieldProps> = ({ type, placeholder, value, onChange }) => {
   return (
     <StyledInputField>
-      <StyledInput type={type} placeholder={placeholder} />
+      <StyledInput type={type} placeholder={placeholder} value={value} onChange={onChange} />
     </StyledInputField>
   );
 };

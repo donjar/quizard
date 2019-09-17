@@ -2,9 +2,10 @@ import React from 'react';
 import styled from 'styled-components';
 import { ReactComponent as Quizard } from '../../../svg/quizard.svg';
 import { smMax } from '../../../utils/media';
-import { LoginButton } from '../common/buttons/LoginButton';
+import DarkButton from '../common/buttons/DarkButton';
 import { CenteredDiv } from '../common/CenteredDiv';
 import InputField from './InputField';
+import { login } from '../../../api';
 
 const StyledLoginCard = styled.div`
   position: relative;
@@ -40,32 +41,58 @@ const LoginForm = styled.form`
   }
 `;
 
-const LoginCard: React.FC = () => {
-  return (
-    <StyledLoginCard>
-      <CenteredDiv>
-        <img
-          src={'./owl.png'}
-          style={{ width: '195px', height: '170px' }}
-          alt={'Quizard logo'}
-        />
-        <Quizard />
-      </CenteredDiv>
-      <LoginForm>
-        <InputField type="text" placeholder="Email" />
-        <InputField type="password" placeholder="Password" />
-      </LoginForm>
-      <LoginButton />
-      <CenteredDiv>
-        <div style={{ fontSize: '18px', textDecoration: 'underline' }}>
-          Don't have an account?
-        </div>
-        <div style={{ fontSize: '18px', textDecoration: 'underline' }}>
-          Sign up now!
-        </div>
-      </CenteredDiv>
-    </StyledLoginCard>
-  );
-};
+export interface ILoginCardProps {
+}
+
+export interface ILoginCardState {
+  email: string;
+  password: string;
+}
+
+class LoginCard extends React.Component<ILoginCardProps, ILoginCardState> {
+  constructor(props: ILoginCardProps) {
+    super(props);
+    this.state = {
+      email: '',
+      password: ''
+    }
+  }
+
+  render() {
+    const onChangeEmail = (newEmail: string) => {
+      this.setState({ email: newEmail });
+    };
+
+    const onChangePassword = (newPassword: string) => {
+      this.setState({ password: newPassword });
+    };
+
+    return (
+      <StyledLoginCard>
+        <CenteredDiv>
+          <img
+            src={'./owl.png'}
+            style={{ width: '195px', height: '170px' }}
+            alt={'Quizard logo'}
+          />
+          <Quizard />
+        </CenteredDiv>
+        <LoginForm>
+          <InputField type="text" placeholder="Email" value={this.state.email} onChange={(event) => onChangeEmail(event.target.value)} />
+          <InputField type="password" placeholder="Password" value={this.state.password} onChange={(event) => onChangePassword(event.target.value)} />
+        </LoginForm>
+        <DarkButton onClick={() => login(this.state.email, this.state.password)}>Login</DarkButton>
+        <CenteredDiv>
+          <div style={{ fontSize: '18px', textDecoration: 'underline' }}>
+            Don't have an account?
+          </div>
+          <div style={{ fontSize: '18px', textDecoration: 'underline' }}>
+            Sign up now!
+          </div>
+        </CenteredDiv>
+      </StyledLoginCard>
+    );
+  }
+}
 
 export default LoginCard;

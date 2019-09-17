@@ -7,17 +7,8 @@ from quizard_backend.tests import (
 
 
 async def test_get_one_quiz(client, quizzes):
-    # Default: returns the first quiz
-    res = await client.get("/quizzes")
-    assert res.status == 200
-
-    body = await res.json()
-    assert "data" in body
-    assert isinstance(body["data"], dict)
-    assert profile_created_from_origin(quizzes[0], body["data"])
-
     # Get one quiz with id
-    res = await client.get("/quizzes?id=3")
+    res = await client.get("/quizzes/{}".format(quizzes[2]["uuid"]))
     assert res.status == 200
 
     body = await res.json()
@@ -26,19 +17,16 @@ async def test_get_one_quiz(client, quizzes):
     assert profile_created_from_origin(quizzes[2], body["data"])
 
     # quiz doesnt exist
-    res = await client.get("/quizzes?id=9999")
+    res = await client.get("/quizzes/{}".format("9" * 32))
     assert res.status == 404
 
     # Invalid id
-    res = await client.get("/quizzes?id=true")
-    assert res.status == 400
-
-    res = await client.get("/quizzes?id=")
+    res = await client.get("/quizzes/3")
     assert res.status == 400
 
 
 async def test_get_all_quizzes(client, quizzes):
-    res = await client.get("/quizzes?many=trUe")
+    res = await client.get("/quizzes")
     assert res.status == 200
 
     body = await res.json()
@@ -51,7 +39,7 @@ async def test_get_all_quizzes(client, quizzes):
     )
 
     # GET request will have its body ignored.
-    res = await client.get("/quizzes?many=True", json={"category_id": 3})
+    res = await client.get("/quizzes", json={"category_id": 3})
     assert res.status == 200
 
     body = await res.json()
@@ -60,7 +48,7 @@ async def test_get_all_quizzes(client, quizzes):
     assert len(body["data"]) == 15  # Default offset for quiz is 15
 
     # Get one quiz by id with many=True
-    res = await client.get("/quizzes?id=3&many=true")
+    res = await client.get("/quizzes?id={}".format(quizzes[2]["uuid"]))
     assert res.status == 200
 
     body = await res.json()
@@ -71,7 +59,7 @@ async def test_get_all_quizzes(client, quizzes):
 
     ## LIMIT ##
     # No quizzes
-    res = await client.get("/quizzes?many=true&limit=0")
+    res = await client.get("/quizzes?limit=0")
     assert res.status == 200
 
     body = await res.json()
@@ -80,7 +68,7 @@ async def test_get_all_quizzes(client, quizzes):
     assert not body["data"]
 
     # 10 quizzes
-    res = await client.get("/quizzes?many=true&limit=10")
+    res = await client.get("/quizzes?limit=10")
     assert res.status == 200
 
     body = await res.json()
@@ -93,13 +81,13 @@ async def test_get_all_quizzes(client, quizzes):
     )
 
     # -1 quizzes
-    res = await client.get("/quizzes?many=true&limit=-1")
+    res = await client.get("/quizzes?limit=-1")
     assert res.status == 400
 
 
 async def test_get_quizzes_with_last_id(client, quizzes):
     # Use last_id in query parameter.
-    res = await client.get("/quizzes?last_id=3&many=true")
+    res = await client.get("/quizzes?last_id={}".format(quizzes[2]["uuid"]))
     assert res.status == 200
 
     body = await res.json()
@@ -113,19 +101,8 @@ async def test_get_quizzes_with_last_id(client, quizzes):
         for origin, created in zip(quizzes[3:20], body["data"])
     )
 
-    ## Get quiz and ignore pagination
-    # Although last_id is provided,
-    # it is ignored if many=False (default)
-    res = await client.get("/quizzes?last_id=3")
-    assert res.status == 200
-
-    body = await res.json()
-    assert "data" in body
-    assert isinstance(body["data"], dict)
-    assert body["data"]["id"] == 1
-
     # Invalid last_id
-    res = await client.get("/quizzes?last_id=true")
+    res = await client.get("/quizzes?last_id=3")
     assert res.status == 400
 
     res = await client.get("/quizzes?last_id=")
@@ -135,13 +112,15 @@ async def test_get_quizzes_with_last_id(client, quizzes):
 ## CREATE ##
 
 
-async def test_create_quiz(client, quizzes, token_user):
-    # Cannot create an quiz without token
+async def test_create_quiz(client, users, quizzes, token_user):
     new_quiz = {
         **get_fake_quiz(),
-        "questions": get_fake_quiz_questions(),
-        "creator_id": 1,
+        "questions": get_fake_quiz_questions(has_uuid=False),
+        "creator_id": users[0]["uuid"],
     }
+    new_quiz.pop("uuid", None)
+
+    # Cannot create an quiz without token
     res = await client.post("/quizzes", json=new_quiz)
     assert res.status == 401
 
@@ -159,10 +138,6 @@ async def test_create_quiz(client, quizzes, token_user):
     assert len(all_quizzes) == len(quizzes) + 1
     assert profile_created_from_origin(
         new_quiz, all_quizzes[-1].to_dict(), ignore={"questions"}
-    )
-    assert all(
-        profile_created_from_origin(origin, created.to_dict())
-        for origin, created in zip(quizzes, all_quizzes)
     )
 
 

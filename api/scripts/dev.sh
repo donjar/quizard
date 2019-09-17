@@ -4,7 +4,7 @@ set -e
 export MODE=development
 
 # Create a PostgreSQL container
-docker create --name dev_postgres_cs3216_a3 -v dev_cs3216_a3_dbdata:/var/lib/postgresql/data -p 54320:5432 postgres:11
+docker create --name dev_postgres_cs3216_a3 -v dev_cs3216_a3_dbdata:/var/lib/postgresql/data -p 54320:5432 postgres:11 || true
 
 # Start a Postgres container
 # docker run --name my_postgres -v my_dbdata:/var/lib/postgresql/data -p 54320:5432 postgres:11 || docker start -a my_postgres

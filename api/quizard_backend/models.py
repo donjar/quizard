@@ -1,5 +1,6 @@
 from time import time
 
+from uuid import uuid4
 from sanic.exceptions import InvalidUsage, NotFound
 from gino.dialects.asyncpg import ARRAY
 
@@ -10,6 +11,10 @@ from quizard_backend.utils.crypto import hash_password, validate_password_streng
 from quizard_backend.utils.serialization import serialize_to_dict
 
 
+def generate_uuid():
+    return uuid4().hex
+
+
 def unix_time():
     """Return the current unix timestamp."""
     return int(time())
@@ -17,12 +22,12 @@ def unix_time():
 
 class BaseModel(db.Model):
     @classmethod
-    async def get(cls, many=False, last_id=0, limit=15, fields=None, **kwargs):
+    async def get(cls, many=False, last_id=None, limit=15, fields=None, **kwargs):
         """
         Retrieve the row(s) of a model, using Keyset Pagination (last_id).
 
         Kwargs:
-            last_id (integer):
+            last_id (str):
                 The returned result will start from row
                 with id == last_id (exclusive).
 
@@ -55,21 +60,21 @@ class BaseModel(db.Model):
 
     @classmethod
     async def modify(cls, get_kwargs, update_kwargs):
-        model_id = get_kwargs.get("id")
+        model_id = get_kwargs.get("uuid")
         if not model_id:
             raise InvalidUsage("Missing field 'id' in query parameter")
 
-        payload = await get_one(cls, id=model_id)
+        payload = await get_one(cls, uuid=model_id)
         data = await update_one(payload, **update_kwargs)
         return serialize_to_dict(data)
 
     @classmethod
     async def remove(cls, **kwargs):
-        model_id = kwargs.get("id")
+        model_id = kwargs.get("uuid")
         if not model_id:
             raise InvalidUsage("Missing field 'id' in query parameter")
 
-        model = await get_one(cls, id=model_id)
+        model = await get_one(cls, uuid=model_id)
         await model.delete()
 
 
@@ -77,16 +82,22 @@ class Quiz(BaseModel):
     __tablename__ = "quiz"
 
     id = db.Column(db.BigInteger, primary_key=True, autoincrement=True)
+    uuid = db.Column(
+        db.String(length=32), nullable=False, unique=True, default=generate_uuid
+    )
     title = db.Column(db.String)
-    creator_id = db.Column(db.BigInteger, db.ForeignKey("user.id"), nullable=False)
+    creator_id = db.Column(
+        db.String(length=32), db.ForeignKey("user.uuid"), nullable=False
+    )
     category_id = db.Column(db.SmallInteger)
     type_id = db.Column(db.SmallInteger)
     animation_id = db.Column(db.SmallInteger)
-    questions_order = db.Column(ARRAY(db.SmallInteger), server_default="{}")
+    questions_order = db.Column(ARRAY(db.String), server_default="{}")
     created_at = db.Column(db.BigInteger, nullable=False, default=unix_time)
     updated_at = db.Column(db.BigInteger, onupdate=unix_time)
 
     # Index
+    _idx_quiz_uuid = db.Index("idx_quiz_uuid", "uuid")
     _idx_quiz_creator = db.Index("idx_quiz_creator", "creator_id")
     _idx_quiz_category_id = db.Index("idx_quiz_category_id", "category_id")
 
@@ -104,7 +115,12 @@ class QuizQuestion(BaseModel):
     __tablename__ = "quiz_question"
 
     id = db.Column(db.BigInteger, primary_key=True, autoincrement=True)
-    quiz_id = db.Column(db.BigInteger, db.ForeignKey("quiz.id"), nullable=False)
+    uuid = db.Column(
+        db.String(length=32), nullable=False, unique=True, default=generate_uuid
+    )
+    quiz_id = db.Column(
+        db.String(length=32), db.ForeignKey("quiz.uuid"), nullable=False
+    )
     text = db.Column(db.String, nullable=False)
     options = db.Column(ARRAY(db.String), server_default="{}")
     correct_option = db.Column(db.SmallInteger, nullable=False, default=0)
@@ -112,6 +128,7 @@ class QuizQuestion(BaseModel):
     updated_at = db.Column(db.BigInteger, onupdate=unix_time)
 
     # Index
+    _idx_quiz_question_uuid = db.Index("idx_quiz_question_uuid", "uuid")
     _idx_quiz_question_quiz_id = db.Index("idx_quiz_question_quiz_id", "quiz_id")
 
 
@@ -119,13 +136,21 @@ class QuizAttempt(BaseModel):
     __tablename__ = "quiz_attempt"
 
     id = db.Column(db.BigInteger, primary_key=True, autoincrement=True)
-    quiz_id = db.Column(db.BigInteger, db.ForeignKey("quiz.id"), nullable=False)
-    user_id = db.Column(db.BigInteger, db.ForeignKey("user.id"), nullable=False)
+    uuid = db.Column(
+        db.String(length=32), nullable=False, unique=True, default=generate_uuid
+    )
+    quiz_id = db.Column(
+        db.String(length=32), db.ForeignKey("quiz.uuid"), nullable=False
+    )
+    user_id = db.Column(
+        db.String(length=32), db.ForeignKey("user.uuid"), nullable=False
+    )
     score = db.Column(db.BigInteger, nullable=False, default=0)
     created_at = db.Column(db.BigInteger, nullable=False, default=unix_time)
     updated_at = db.Column(db.BigInteger, onupdate=unix_time)
 
     # Index
+    _idx_quiz_attempt_uuid = db.Index("idx_quiz_attempt_uuid", "uuid")
     _idx_quiz_attempt_quiz_id_score = db.Index(
         "idx_quiz_attempt_quiz_id_score", "quiz_id", "score"
     )
@@ -135,16 +160,24 @@ class QuizAnswer(BaseModel):
     __tablename__ = "quiz_answer"
 
     id = db.Column(db.BigInteger, primary_key=True, autoincrement=True)
-    quiz_id = db.Column(db.BigInteger, db.ForeignKey("quiz.id"), nullable=False)
-    attempt_id = db.Column(
-        db.BigInteger, db.ForeignKey("quiz_attempt.id"), nullable=False
+    uuid = db.Column(
+        db.String(length=32), nullable=False, unique=True, default=generate_uuid
     )
-    user_id = db.Column(db.BigInteger, db.ForeignKey("user.id"), nullable=False)
+    quiz_id = db.Column(
+        db.String(length=32), db.ForeignKey("quiz.uuid"), nullable=False
+    )
+    attempt_id = db.Column(
+        db.String(length=32), db.ForeignKey("quiz_attempt.uuid"), nullable=False
+    )
+    user_id = db.Column(
+        db.String(length=32), db.ForeignKey("user.uuid"), nullable=False
+    )
     selected_option = db.Column(db.SmallInteger)
     created_at = db.Column(db.BigInteger, nullable=False, default=unix_time)
     updated_at = db.Column(db.BigInteger, onupdate=unix_time)
 
     # Index
+    _idx_quiz_anawer_uuid = db.Index("idx_quiz_anawer_uuid", "uuid")
     _idx_quiz_answer_quiz_attempt_user = db.Index(
         "idx_quiz_answer_quiz_attempt_user", "quiz_id", "attempt_id", "user_id"
     )
@@ -154,6 +187,9 @@ class User(BaseModel):
     __tablename__ = "user"
 
     id = db.Column(db.BigInteger, primary_key=True, autoincrement=True)
+    uuid = db.Column(
+        db.String(length=32), nullable=False, unique=True, default=generate_uuid
+    )
     full_name = db.Column(db.String, nullable=False)
     display_name = db.Column(db.String)
     email = db.Column(db.String, unique=True, nullable=False)
@@ -163,6 +199,7 @@ class User(BaseModel):
     updated_at = db.Column(db.BigInteger, onupdate=unix_time)
 
     # Index
+    _idx_user_uuid = db.Index("idx_user_uuid", "uuid")
     _idx_user_email = db.Index("idx_user_email", "email")
 
     @classmethod
@@ -187,8 +224,7 @@ class User(BaseModel):
     @classmethod
     async def remove(cls, **kwargs):
         """For User, only disabled it, without completely delete it."""
-        model_id = kwargs.get("id")
-        if not model_id:
+        if "uuid" not in kwargs:
             raise InvalidUsage("Missing field 'id' in query parameter")
 
         await super(User, cls).modify(kwargs, {"disabled": True})

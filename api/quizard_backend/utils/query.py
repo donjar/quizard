@@ -35,10 +35,15 @@ async def get_one(model, **kwargs):
     ).gino.first()
 
 
-async def get_many(model, last_id=0, limit=15, **kwargs):
+async def get_many(model, last_id=None, limit=15, **kwargs):
+    last_internal_id = 0
+    if last_id:
+        row_of_last_id = await model.query.where(model.uuid == last_id).gino.first()
+        last_internal_id = row_of_last_id.id
+
     return (
         await model.query.where(
-            and_(*dict_to_filter_args(model, **kwargs), model.id > last_id)
+            and_(*dict_to_filter_args(model, **kwargs), model.id > last_internal_id)
         )
         .order_by(model.id)
         .limit(limit)

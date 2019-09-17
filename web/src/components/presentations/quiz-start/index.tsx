@@ -1,18 +1,26 @@
 import React from 'react';
 
+import { IQuizStartProps } from '../../../interfaces/quiz-start';
 import { BeigeBackground } from '../common/BeigeBackground';
 import { BodyAfterNavBarWithPadding } from '../common/BodyAfterNavBarWithPadding';
-import HomeContent from '../home/HomeContent';
-import HomeHeader from '../home/HomeHeader';
-import { QuizStartHeader } from './QuizStartHeader';
+import { StartButton } from '../common/buttons/StartButton';
+import { CenteredDiv } from '../common/CenteredDiv';
+import { QuizStartNavBar } from './QuizStartNavBar';
 
-const QuizStart: React.FC = (props) => {
+const QuizStart: React.FC<IQuizStartProps> = ({ quiz }) => {
+  const { name, dueDate, description, type } = quiz;
+
   return (
     <BeigeBackground>
-      <QuizStartHeader />
+      <QuizStartNavBar />
       <BodyAfterNavBarWithPadding>
-        <HomeHeader />
-        <HomeContent>{props.children}</HomeContent>
+        <div>{name}</div>
+        <div>{dueDate}</div>
+        <div>{description}</div>
+        <div>{type}</div>
+        <CenteredDiv>
+          <StartButton />
+        </CenteredDiv>
       </BodyAfterNavBarWithPadding>
     </BeigeBackground>
   );

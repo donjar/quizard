@@ -5,7 +5,7 @@ import { ReactComponent as Quizard } from '../../../svg/quizard.svg';
 import GreenButton from '../common/buttons/GreenButton';
 import NavBar from '../common/NavBar';
 
-export const QuizCreateHeader: React.FC = () => {
+export const QuizCreateNavBar: React.FC = () => {
   return (
     <NavBar background={'var(--beige)'}>
       <Link to="/home">

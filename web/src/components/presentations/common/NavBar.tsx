@@ -1,9 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-
-interface INavbarProps {
-  background: string;
-}
+import { INavbarProps } from '../../../interfaces/common';
 
 const StyledNavBar = styled.nav`
   position: absolute;

@@ -1,6 +1,7 @@
 import React from 'react';
 import { ChevronRight, Users } from 'react-feather';
 import styled from 'styled-components';
+import { IQuizCardProps } from '../../../interfaces/home/index';
 import { QuizCardContents } from './QuizCardContents';
 import { QuizDateCreatedDiv } from './QuizDateCreatedDiv';
 
@@ -29,13 +30,6 @@ const MiscDetails = styled.div`
   font-size: 18px;
   margin-top: 15px;
 `;
-
-interface IQuizCardProps {
-  title: string;
-  description: string;
-  numAttempted: number;
-  dateCreated: number;
-}
 
 const QuizCard: React.FC<IQuizCardProps> = ({
   title,

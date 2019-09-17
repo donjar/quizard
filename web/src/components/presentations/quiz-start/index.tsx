@@ -1,14 +1,15 @@
 import React from 'react';
+
 import { BeigeBackground } from '../common/BeigeBackground';
 import { BodyAfterNavBarWithPadding } from '../common/BodyAfterNavBarWithPadding';
-import HomeContent from './HomeContent';
-import HomeHeader from './HomeHeader';
-import HomeNavBar from './HomeNavBar';
+import HomeContent from '../home/HomeContent';
+import HomeHeader from '../home/HomeHeader';
+import { QuizStartHeader } from './QuizStartHeader';
 
-const Home: React.FC = (props) => {
+const QuizStart: React.FC = (props) => {
   return (
     <BeigeBackground>
-      <HomeNavBar />
+      <QuizStartHeader />
       <BodyAfterNavBarWithPadding>
         <HomeHeader />
         <HomeContent>{props.children}</HomeContent>
@@ -17,4 +18,4 @@ const Home: React.FC = (props) => {
   );
 };
 
-export default Home;
+export default QuizStart;

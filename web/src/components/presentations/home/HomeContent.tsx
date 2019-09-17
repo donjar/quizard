@@ -1,5 +1,6 @@
 import React, { ReactElement } from 'react';
 import styled from 'styled-components';
+import { IHomeContentProps } from '../../../interfaces/home/index';
 import DarkButton from '../common/buttons/DarkButton';
 import UnselectedButton from '../common/buttons/UnselectedButton';
 import QuizCard from './QuizCard';
@@ -24,11 +25,10 @@ const QuizList = styled.div`
   }
 `;
 
-interface IHomeContentProps {
-  isSelected: number;
-}
-
-const QuizTypeButton: React.FC<IHomeContentProps> = ({ isSelected, children }) => {
+const QuizTypeButton: React.FC<IHomeContentProps> = ({
+  isSelected,
+  children
+}) => {
   return isSelected ? (
     <DarkButton>{children}</DarkButton>
   ) : (

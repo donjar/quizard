@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { ReactComponent as Quizard } from '../../../svg/quizard.svg';
 import { smMax } from '../../../utils/media';
 import { LoginButton } from '../common/buttons/LoginButton';
-import { CenteredDiv } from '../common/CenteredDiv';
 import InputField from './InputField';
 
 const StyledLoginCard = styled.div`
@@ -30,6 +29,12 @@ const StyledLoginCard = styled.div`
   }
 `;
 
+const SeparatedDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
 const LoginForm = styled.form`
   display: flex;
   flex-direction: column;
@@ -43,27 +48,23 @@ const LoginForm = styled.form`
 const LoginCard: React.FC = () => {
   return (
     <StyledLoginCard>
-      <CenteredDiv>
-        <img
-          src={'./owl.png'}
-          style={{ width: '195px', height: '170px' }}
-          alt={'Quizard logo'}
-        />
+      <SeparatedDiv>
+        <img src={'./owl.png'} style={{ width: '195px', height: '170px' }} alt={'Quizard logo'} />
         <Quizard />
-      </CenteredDiv>
+      </SeparatedDiv>
       <LoginForm>
         <InputField type="text" placeholder="Email" />
         <InputField type="password" placeholder="Password" />
       </LoginForm>
       <LoginButton />
-      <CenteredDiv>
+      <SeparatedDiv>
         <div style={{ fontSize: '18px', textDecoration: 'underline' }}>
           Don't have an account?
         </div>
         <div style={{ fontSize: '18px', textDecoration: 'underline' }}>
           Sign up now!
         </div>
-      </CenteredDiv>
+      </SeparatedDiv>
     </StyledLoginCard>
   );
 };

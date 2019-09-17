@@ -7,6 +7,7 @@ export const DELETE_ANSWER_OPTION = 'DELETE_ANSWER_OPTION';
 export const CHANGE_ANSWER_OPTION = 'CHANGE_ANSWER_OPTION';
 export const SET_CORRECT_ANSWER = 'SET_CORRECT_ANSWER';
 
+// TODO: Shift common interfaces into interfaces folder
 export interface IAnswerOption {
   questionIdx: number;
   optionIdx: number;

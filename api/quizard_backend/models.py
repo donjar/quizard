@@ -6,8 +6,15 @@ from gino.dialects.asyncpg import ARRAY
 
 from quizard_backend import db
 from quizard_backend.exceptions import LoginFailureError
-from quizard_backend.utils.query import get_one, get_many, create_one, update_one
+from quizard_backend.utils.query import (
+    get_one,
+    get_many,
+    create_one,
+    update_one,
+    delete_many,
+)
 from quizard_backend.utils.crypto import hash_password, validate_password_strength
+from quizard_backend.utils.exceptions import raise_not_found_exception
 from quizard_backend.utils.serialization import serialize_to_dict
 
 
@@ -44,12 +51,7 @@ class BaseModel(db.Model):
         # Raise NotFound if no single user is found
         # Ignore if many=True, as returning an empty List is expected
         if not many and not serialized_data:
-            message = "Unable to find {}".format(cls.__name__)
-            if kwargs:
-                message += " with " + ", ".join(
-                    "{!s}={!r}".format(key, val) for (key, val) in kwargs.items()
-                )
-            raise NotFound(message)
+            raise_not_found_exception(cls, **kwargs)
 
         return serialized_data
 
@@ -65,6 +67,9 @@ class BaseModel(db.Model):
             raise InvalidUsage("Missing field 'id' in query parameter")
 
         payload = await get_one(cls, uuid=model_id)
+        if not payload:
+            raise_not_found_exception(cls, id=model_id)
+
         data = await update_one(payload, **update_kwargs)
         return serialize_to_dict(data)
 
@@ -75,40 +80,10 @@ class BaseModel(db.Model):
             raise InvalidUsage("Missing field 'id' in query parameter")
 
         model = await get_one(cls, uuid=model_id)
+        if not model:
+            raise_not_found_exception(cls, id=model_id)
+
         await model.delete()
-
-
-class Quiz(BaseModel):
-    __tablename__ = "quiz"
-
-    id = db.Column(db.BigInteger, primary_key=True, autoincrement=True)
-    uuid = db.Column(
-        db.String(length=32), nullable=False, unique=True, default=generate_uuid
-    )
-    title = db.Column(db.String)
-    creator_id = db.Column(
-        db.String(length=32), db.ForeignKey("user.uuid"), nullable=False
-    )
-    category_id = db.Column(db.SmallInteger)
-    type_id = db.Column(db.SmallInteger)
-    animation_id = db.Column(db.SmallInteger)
-    questions_order = db.Column(ARRAY(db.String), server_default="{}")
-    created_at = db.Column(db.BigInteger, nullable=False, default=unix_time)
-    updated_at = db.Column(db.BigInteger, onupdate=unix_time)
-
-    # Index
-    _idx_quiz_uuid = db.Index("idx_quiz_uuid", "uuid")
-    _idx_quiz_creator = db.Index("idx_quiz_creator", "creator_id")
-    _idx_quiz_category_id = db.Index("idx_quiz_category_id", "category_id")
-
-    @classmethod
-    async def add(cls, creator_id=None, **kwargs):
-        return await super(Quiz, cls).add(creator_id=creator_id, **kwargs)
-
-    @classmethod
-    async def remove(cls, **kwargs):
-        # TO-DO: Explicitly remove the quiz questions/answers (if we want to)
-        return await super(Quiz, cls).remove(**kwargs)
 
 
 class QuizQuestion(BaseModel):
@@ -130,30 +105,6 @@ class QuizQuestion(BaseModel):
     # Index
     _idx_quiz_question_uuid = db.Index("idx_quiz_question_uuid", "uuid")
     _idx_quiz_question_quiz_id = db.Index("idx_quiz_question_quiz_id", "quiz_id")
-
-
-class QuizAttempt(BaseModel):
-    __tablename__ = "quiz_attempt"
-
-    id = db.Column(db.BigInteger, primary_key=True, autoincrement=True)
-    uuid = db.Column(
-        db.String(length=32), nullable=False, unique=True, default=generate_uuid
-    )
-    quiz_id = db.Column(
-        db.String(length=32), db.ForeignKey("quiz.uuid"), nullable=False
-    )
-    user_id = db.Column(
-        db.String(length=32), db.ForeignKey("user.uuid"), nullable=False
-    )
-    score = db.Column(db.BigInteger, nullable=False, default=0)
-    created_at = db.Column(db.BigInteger, nullable=False, default=unix_time)
-    updated_at = db.Column(db.BigInteger, onupdate=unix_time)
-
-    # Index
-    _idx_quiz_attempt_uuid = db.Index("idx_quiz_attempt_uuid", "uuid")
-    _idx_quiz_attempt_quiz_id_score = db.Index(
-        "idx_quiz_attempt_quiz_id_score", "quiz_id", "score"
-    )
 
 
 class QuizAnswer(BaseModel):
@@ -181,6 +132,82 @@ class QuizAnswer(BaseModel):
     _idx_quiz_answer_quiz_attempt_user = db.Index(
         "idx_quiz_answer_quiz_attempt_user", "quiz_id", "attempt_id", "user_id"
     )
+
+
+class QuizAttempt(BaseModel):
+    __tablename__ = "quiz_attempt"
+
+    id = db.Column(db.BigInteger, primary_key=True, autoincrement=True)
+    uuid = db.Column(
+        db.String(length=32), nullable=False, unique=True, default=generate_uuid
+    )
+    quiz_id = db.Column(
+        db.String(length=32), db.ForeignKey("quiz.uuid"), nullable=False
+    )
+    user_id = db.Column(
+        db.String(length=32), db.ForeignKey("user.uuid"), nullable=False
+    )
+    score = db.Column(db.BigInteger, nullable=False, default=0)
+    created_at = db.Column(db.BigInteger, nullable=False, default=unix_time)
+    updated_at = db.Column(db.BigInteger, onupdate=unix_time)
+
+    # Index
+    _idx_quiz_attempt_uuid = db.Index("idx_quiz_attempt_uuid", "uuid")
+    _idx_quiz_attempt_quiz_id_score = db.Index(
+        "idx_quiz_attempt_quiz_id_score", "quiz_id", "score"
+    )
+
+    @classmethod
+    async def remove(cls, **kwargs):
+        if "attempt_id" not in kwargs:
+            raise KeyError("Missing key 'attempt_id' in kwargs.")
+
+        # Delete all the answers linked to the attempt
+        await delete_many(QuizAnswer, attempt_id=kwargs["attempt_id"])
+
+        return await super(QuizAttempt, cls).remove(**kwargs)
+
+
+class Quiz(BaseModel):
+    __tablename__ = "quiz"
+
+    id = db.Column(db.BigInteger, primary_key=True, autoincrement=True)
+    uuid = db.Column(
+        db.String(length=32), nullable=False, unique=True, default=generate_uuid
+    )
+    title = db.Column(db.String, nullable=False)
+    description = db.Column(db.String)
+    creator_id = db.Column(
+        db.String(length=32), db.ForeignKey("user.uuid"), nullable=False
+    )
+    category_id = db.Column(db.SmallInteger)
+    type_id = db.Column(db.SmallInteger)
+    animation_id = db.Column(db.SmallInteger)
+    questions = db.Column(ARRAY(db.String), server_default="{}")
+    created_at = db.Column(db.BigInteger, nullable=False, default=unix_time)
+    updated_at = db.Column(db.BigInteger, onupdate=unix_time)
+
+    # Index
+    _idx_quiz_uuid = db.Index("idx_quiz_uuid", "uuid")
+    _idx_quiz_creator = db.Index("idx_quiz_creator", "creator_id")
+    _idx_quiz_category_id = db.Index("idx_quiz_category_id", "category_id")
+
+    @classmethod
+    async def add(cls, creator_id=None, **kwargs):
+        return await super(Quiz, cls).add(creator_id=creator_id, **kwargs)
+
+    @classmethod
+    async def remove(cls, **kwargs):
+        if "uuid" not in kwargs:
+            raise KeyError("Missing key 'id' in query parameter.")
+
+        # Delete all the attempts linked to the quiz
+        await delete_many(QuizAttempt, quiz_id=kwargs["uuid"])
+
+        # Delete all the questions linked to the quiz
+        await delete_many(QuizQuestion, quiz_id=kwargs["uuid"])
+
+        return await super(Quiz, cls).remove(**kwargs)
 
 
 class User(BaseModel):

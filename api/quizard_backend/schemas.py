@@ -3,6 +3,8 @@ Schemas are Cerberus rules used for validation of user input
 and serializing results to return to users.
 """
 
+from quizard_backend.constants import MAX_QUESTIONS_PER_QUIZ, MAX_OPTIONS_PER_QUESTION
+
 # Conversion
 to_boolean = lambda v: v.lower() in ["true", "1"]
 
@@ -48,7 +50,7 @@ QUIZ_QUESTION_READ_SCHEMA = {
     "text": {"type": "string"},
     "animation_id": is_unsigned_integer,
     "options": {"readonly": True},
-    "correct_option": is_unsigned_integer,  # Check correct answer in backend ?
+    "correct_option": {"readonly": True},
     "created_at": is_unsigned_integer,
     "updated_at": is_unsigned_integer,
     **QUERY_PARAM_READ_SCHEMA,
@@ -59,7 +61,7 @@ QUIZ_QUESTION_WRITE_SCHEMA = {
     "quiz_id": is_uuid,
     "text": is_required_string,
     "animation_id": is_unsigned_integer,
-    "options": is_required_string_list,
+    "options": {**is_required_string_list, "maxlength": MAX_OPTIONS_PER_QUESTION},
     "correct_option": is_required_unsigned_integer,
     "created_at": {"readonly": True},
     "updated_at": {"readonly": True},
@@ -116,7 +118,7 @@ QUIZ_READ_SCHEMA = {
     "category_id": is_unsigned_integer,
     "type_id": is_unsigned_integer,
     "animation_id": is_unsigned_integer,
-    "questions_order": is_uuid_list,
+    "questions": is_uuid_list,
     "questions": {  # A list of dicts
         "type": "list",
         "schema": {"type": "dict", "schema": QUIZ_QUESTION_READ_SCHEMA},
@@ -128,15 +130,16 @@ QUIZ_READ_SCHEMA = {
 
 QUIZ_WRITE_SCHEMA = {
     "id": {"readonly": True},
-    "title": is_string,
+    "title": is_required_string,
     "creator_id": is_uuid,
     "category_id": is_unsigned_integer,
     "type_id": is_unsigned_integer,
     "animation_id": is_unsigned_integer,
-    "questions_order": is_uuid_list,
+    "questions": is_uuid_list,
     "questions": {  # A list of dicts
         "type": "list",
         "required": True,
+        "maxlength": MAX_QUESTIONS_PER_QUIZ,
         "schema": {
             "type": "dict",
             "required": True,

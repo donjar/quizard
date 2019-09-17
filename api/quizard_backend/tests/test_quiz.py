@@ -276,40 +276,46 @@ async def test_create_quiz_with_invalid_args(client, quizzes, token_user):
 #         assert profile_created_from_origin({**new_quiz, **new_changes}, created_quiz)
 #
 #
-# ## DELETE ##
-#
-#
-# async def test_delete_quiz_as_admin(client, quizzes, token_admin):
-#     # As admin
-#     res = await client.delete("/quizzes?id=7", headers={"Authorization": token_admin})
-#     assert res.status == 200
-#
-#     body = await res.json()
-#     assert "data" in body
-#     assert body["data"] is None
-#
-#     all_quizzes = await Quiz.query.gino.all()
-#     assert len(all_quizzes) == len(quizzes) - 1
-#     assert all(quiz.to_dict()["id"] != 7 for quiz in all_quizzes)
-#
-#
-# async def test_delete_quiz_as_mod(client, quizzes, token_mod):
-#     res = await client.delete("/quizzes?id=7", headers={"Authorization": token_mod})
-#     assert res.status == 200
-#
-#     body = await res.json()
-#     assert "data" in body
-#     assert body["data"] is None
-#
-#     all_quizzes = await Quiz.query.gino.all()
-#     assert len(all_quizzes) == len(quizzes) - 1
-#     assert all(quiz.to_dict()["id"] != 7 for quiz in all_quizzes)
-#
-#
-# async def test_delete_quiz_as_user(client, token_user):
-#     res = await client.delete("/quizzes?id=7", headers={"Authorization": token_user})
-#     assert res.status == 401
-#
-#     # Without token
-#     res = await client.delete("/quizzes?id=7")
-#     assert res.status == 401
+
+
+## DELETE ##
+
+
+async def test_delete_quiz(client, users, quizzes, token_user):
+    # Create a dummy quiz
+    new_quiz = {
+        **get_fake_quiz(),
+        "questions": get_fake_quiz_questions(has_uuid=False),
+        "creator_id": users[0]["uuid"],
+    }
+    new_quiz.pop("uuid", None)
+
+    res = await client.post(
+        "/quizzes", json=new_quiz, headers={"Authorization": token_user}
+    )
+    assert res.status == 200
+    created_quiz_id = (await res.json()).get("data", {})["id"]
+
+    # Without token
+    res = await client.delete("/quizzes/{}".format(created_quiz_id))
+    assert res.status == 401
+
+    # Delete your own quiz
+    res = await client.delete(
+        "/quizzes/{}".format(created_quiz_id), headers={"Authorization": token_user}
+    )
+    assert res.status == 200
+
+    body = await res.json()
+    assert "data" in body
+    assert body["data"] is None
+
+    all_quizzes = await Quiz.query.gino.all()
+    assert len(all_quizzes) == len(quizzes)
+    assert all(quiz.to_dict()["id"] != created_quiz_id for quiz in all_quizzes)
+
+    # Delete a deleted quiz
+    res = await client.delete(
+        "/quizzes/{}".format(created_quiz_id), headers={"Authorization": token_user}
+    )
+    assert res.status == 404

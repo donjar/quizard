@@ -45,7 +45,8 @@ Edit the `pipenv run pytest` line inside `./scripts/test_dev.sh` to run the test
 
 ### 3. Setup fake DB content + Update dev database schema:
 
-> Requires the `dev` instance to be running
+> Requires the `dev` instance from part 1 to be running
+
 ```
 ./scripts/setup_dev_db.sh
 ```
@@ -95,6 +96,7 @@ which will format the code styles all Python files
 - `400`: Missing field `email` and/or `password` in the request's body, or incorrect format of `email` and/or `password`.
 - `401`: Invalid `email` or `password`.
 - `404`: Resource is not found.
+- `405`: HTTP method is not allowed for the endpoint.
 - `422`: The token has expired or is invalid.
 
 ## Endpoints
@@ -105,9 +107,9 @@ The supported endpoints are listed here.
 
 ### 1. `/users`:
 
-> Support `GET`, `POST`, `PUT` methods
+> Support `GET`, `POST`, `PUT` and `PATCH` methods
 
-Example:
+#### Retrieve
 ```
 # Only 1 user
 GET /users/<uuid>
@@ -117,35 +119,90 @@ GET /users
 GET /users?limit=5&last_id=<uuid>
 ```
 
+#### Create
+Minimum requirements for password:
+- Minimum length: 8 characters
+- Maximum length: 128 characters
+- Has at least 1 number
+
+```
+POST /users
+body={
+  "full_name": <str>,
+  "email": <str>,
+  "password": <str>,
+}
+```
+
+#### Edit
+> Only the user himself can modify
+
+```
+PATCH /users/<user_id>
+body={
+  "email": <str>,
+}
+headers={
+  "Authorization": "Bearer ...",
+}
+```
+
+#### Replace
+> Only the user himself can modify
+
+```
+POST /users/<user_id>
+body={
+  "full_name": <str>,
+  "email": <str>,
+  "password": <str>,
+}
+headers={
+  "Authorization": "Bearer ...",
+}
+```
+
 ### 2. `/quizzes`
 
-> Support `GET`, `POST`, `PUT` methods
+> Support `GET`, `POST` and `DELETE` methods
 
-Example:
+#### Retrieve
+
 ```
-# Only 1 user
+# Only 1 quiz
 GET /quizzes/<uuid>
 
-# Multiple users
+# Multiple quizzes
 GET /quizzes
 GET /quizzes?limit=5&last_id=<uuid>
+```
 
-# Create a quiz
+#### Create
+
+```
 POST /quizzes
 body={
   "questions": [
-  {
-    "text": "This is question 1",
-    "options": ["Option 1", "Option 2", "Option 3"],
-    "correct_option": 0,
-  },
-  {
-    "text": "This is question 2",
-    "options": ["Option 1a", "Option 2a", "Option 3a"],
-    "correct_option": 2,
-  }
+    {
+      "text": "This is question 1",
+      "options": ["Option 1", "Option 2", "Option 3"],
+      "correct_option": 0,
+    },
+    {
+      "text": "This is question 2",
+      "options": ["Option 1a", "Option 2a", "Option 3a"],
+      "correct_option": 2,
+    }
   ]
 }
+```
+
+#### Delete
+
+> Only the quiz owner himself can modify
+
+```
+DELETE /quizzes/<uuid>
 ```
 
 ### 3. `/login`

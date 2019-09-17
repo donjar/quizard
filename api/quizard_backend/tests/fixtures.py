@@ -15,6 +15,7 @@ from quizard_backend.tests import (
 
 
 users = [get_fake_user() for _ in range(number_of_users)]
+users += [{"full_name": "Quizard", "email": "quizard", "password": "cs3216a3"}]
 quizzes = [get_fake_quiz(users[index]["uuid"]) for index in range(number_of_quizzes)]
 questions = [get_fake_questions_for_quiz(quiz["uuid"]) for quiz in quizzes]
 

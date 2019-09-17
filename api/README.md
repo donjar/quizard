@@ -182,6 +182,7 @@ GET /quizzes?limit=5&last_id=<uuid>
 ```
 POST /quizzes
 body={
+  "title": "Sample quiz",
   "questions": [
     {
       "text": "This is question 1",

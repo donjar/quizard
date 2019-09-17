@@ -1,7 +1,6 @@
 import React from 'react';
+import { ChevronRight, Users } from 'react-feather';
 import styled from 'styled-components';
-import { ReactComponent as BackBtn } from '../../../svg/btn-back.svg';
-import { ReactComponent as People } from '../../../svg/people.svg';
 import { QuizCardContents } from './QuizCardContents';
 import { QuizDateCreatedDiv } from './QuizDateCreatedDiv';
 
@@ -53,12 +52,12 @@ const QuizCard: React.FC<IQuizCardProps> = ({
           <QuizTitle>{title}</QuizTitle>
           <QuizDescription>{description}</QuizDescription>
           <MiscDetails>
-            <People /> {numAttempted} people attended
+            <Users /> {numAttempted} people attended
           </MiscDetails>
           {children}
         </div>
         <div>
-          <BackBtn />
+          <ChevronRight />
         </div>
       </QuizCardContents>
     </StyledQuizCard>

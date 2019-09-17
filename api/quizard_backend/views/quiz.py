@@ -25,7 +25,7 @@ async def quiz_create(req, req_args, req_body, *args, **kwargs):
     quiz_questions = req_body.pop("questions", [])
 
     # Assign the requester to be the creator of the quiz
-    req_body["creator_id"] = jwt_data["identity"]["uuid"]
+    req_body["creator_id"] = jwt_data["identity"]["id"]
     result = await Quiz.add(**req_body)
 
     # Create the questions

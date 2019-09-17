@@ -132,7 +132,7 @@ def validate_permission(func=None, model=None, token_type="access"):
                 quiz_parent = await Quiz.get(**req_args)
                 resource_owner_id = quiz_parent["creator_id"]
 
-            if requester["uuid"] != resource_owner_id:
+            if requester["id"] != resource_owner_id:
                 raise Unauthorized("You are not allowed to perform this action")
 
         return await func(request, req_args=req_args, *args, **kwargs)

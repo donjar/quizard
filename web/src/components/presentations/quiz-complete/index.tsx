@@ -13,7 +13,7 @@ const StyledQuizCompletePage = styled.div`
 const QuizComplete: React.FC = () => {
   return (
     <StyledQuizCompletePage>
-      <QuizCompleteCard score={8} maxScore={10} isGood={true} quizName={'Quiz Name Here'} />
+      <QuizCompleteCard score={8} maxScore={10} quizName={'Quiz Name Here'} />
     </StyledQuizCompletePage>
   );
 };

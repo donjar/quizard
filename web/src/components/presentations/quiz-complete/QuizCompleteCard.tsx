@@ -23,11 +23,9 @@ export interface IQuizCompleteCardProps {
   score: number;
   maxScore: number;
   quizName: string;
-  isGood: boolean;
 }
 
-const QuizCompleteCard: React.FC<IQuizCompleteCardProps> = ({ score, maxScore, quizName, isGood }) => {
-  const messagePrefix = isGood ? 'Well done!' : 'Try harder!';
+const QuizCompleteCard: React.FC<IQuizCompleteCardProps> = ({ score, maxScore, quizName }) => {
   return (
     <StyledQuizCompleteCard>
       <div>
@@ -36,7 +34,7 @@ const QuizCompleteCard: React.FC<IQuizCompleteCardProps> = ({ score, maxScore, q
       <button>X button</button>
       <h1>You have scored {score}/{maxScore} for {quizName}!</h1>
       <p>
-        {messagePrefix} Your quiz results have been saved and you can review your quiz answers anytime.
+        Your quiz results have been saved and you can review your quiz answers anytime.
       </p>
       <BigDarkButton>Try Again</BigDarkButton>
       <BigDarkButton>Review Quiz Results</BigDarkButton>

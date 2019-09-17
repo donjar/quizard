@@ -1,7 +1,7 @@
 import React from 'react';
-import Home from '../../presentations/home/index';
 import { connect } from 'react-redux';
 import { AppState } from '../../../store/store';
+import Home from '../../presentations/home/index';
 
 const HomeContainer: React.FC = () => {
   return <Home />;

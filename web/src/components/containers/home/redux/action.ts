@@ -1,13 +1,13 @@
-import { FIRST_ACTION, Payload } from './types';
+import { AnyAction } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 import { AppState } from '../../../../store/store';
-import { AnyAction } from 'redux';
+import { FIRST_ACTION, IPayload } from './types';
 
 export const simpleAction = (
-  payload: Payload
-): ThunkAction<void, AppState, void, AnyAction> => dispatch => {
+  payload: IPayload
+): ThunkAction<void, AppState, void, AnyAction> => (dispatch) => {
   dispatch({
-    type: FIRST_ACTION,
-    payload: payload
+    payload,
+    type: FIRST_ACTION
   });
 };

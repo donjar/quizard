@@ -1,10 +1,10 @@
 export const FIRST_ACTION = 'FIRST_ACTION';
 
-export interface Payload {
+export interface IPayload {
   data: string;
 }
 
-export interface FirstAction {
+export interface IFirstAction {
   type: typeof FIRST_ACTION;
-  payload: Payload;
+  payload: IPayload;
 }

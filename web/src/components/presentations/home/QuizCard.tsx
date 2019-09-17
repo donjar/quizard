@@ -10,7 +10,7 @@ const StyledQuizCard = styled.div`
   max-width: 1065px;
   max-height: 206px;
 
-  padding: 20px;
+  padding: 20px calc(20px + 2%) 40px calc(20px + 2%);
 
   background: #ffffff;
   border-radius: 15px;

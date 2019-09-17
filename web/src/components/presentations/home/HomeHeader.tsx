@@ -1,12 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
+import { HideOnMedium } from '../../../utils/media';
 import BigDarkButton from '../common/buttons/BigDarkButton';
 
 const StyledHomeHeader = styled.div`
   display: flex;
 
   & > * {
-    flex: 1 1 auto;
+    flex: 1 1 0;
   }
 `;
 
@@ -24,6 +25,16 @@ const StyledHomeWriteup = styled.div`
   font-weight: 300;
 `;
 
+const StyledQuizardLogo = styled.div`
+  max-width: 450px;
+  max-height: 400px;
+
+  & > img {
+    width: 100%;
+    height: 100%;
+  }
+`;
+
 const HomeHeader: React.FC = () => {
   return (
     <>
@@ -34,11 +45,15 @@ const HomeHeader: React.FC = () => {
             Easily create new quizzes with Quizard and share them with your
             students and peers!
           </StyledHomeWriteup>
-          <BigDarkButton>Create New Quiz</BigDarkButton>
+          <div>
+            <BigDarkButton>Create New Quiz</BigDarkButton>
+          </div>
         </StyledHomeWriteupBox>
-        <div>
-          <img src={'./owl.png'} style={{ width: '450px', height: '400px' }} />
-        </div>
+        <HideOnMedium>
+          <StyledQuizardLogo>
+            <img src={'./owl.png'} alt={ 'Quizard logo' } />
+          </StyledQuizardLogo>
+        </HideOnMedium>
       </StyledHomeHeader>
     </>
   );

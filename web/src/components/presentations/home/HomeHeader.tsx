@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { HideOnMedium } from '../../../utils/media';
-import BigDarkButton from '../common/buttons/BigDarkButton';
+import { CreateQuizButton } from '../common/buttons/CreateQuizButton';
 
 const StyledHomeHeader = styled.div`
   display: flex;
@@ -46,12 +46,12 @@ const HomeHeader: React.FC = () => {
             students and peers!
           </StyledHomeWriteup>
           <div>
-            <BigDarkButton>Create New Quiz</BigDarkButton>
+            <CreateQuizButton />
           </div>
         </StyledHomeWriteupBox>
         <HideOnMedium>
           <StyledQuizardLogo>
-            <img src={'./owl.png'} alt={ 'Quizard logo' } />
+            <img src={'./owl.png'} alt={'Quizard logo'} />
           </StyledQuizardLogo>
         </HideOnMedium>
       </StyledHomeHeader>

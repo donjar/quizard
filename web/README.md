@@ -11,6 +11,10 @@ Run yarn install:
 To see on localhost:3000, type the following:
 `yarn start`
 
+Lint: `yarn lint`
+
+Fix tslint errors: `yarn lint:fix`
+
 That's about it.
 
 <!-- This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

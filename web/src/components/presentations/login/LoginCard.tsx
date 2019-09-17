@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { ReactComponent as Quizard } from '../../../svg/quizard.svg';
+import { smMax } from '../../../utils/media';
 import { LoginButton } from '../common/buttons/LoginButton';
 import InputField from './InputField';
 
@@ -17,7 +18,7 @@ const StyledLoginCard = styled.div`
   box-shadow: 6px 6px 0px #dcd9cf;
   border-radius: 25px;
 
-  @media (max-width: 576px) {
+  @media (max-width: ${smMax}) {
     width: 100%;
     border-radius: 0;
     box-shadow: none;

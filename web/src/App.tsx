@@ -1,8 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
-import HomeContainer from './components/containers/HomeContainer';
-import LoginContainer from './components/containers/LoginContainer';
-import QuizQuestionContainer from './components/containers/QuizQuestionContainer';
+import HomeContainer from './components/containers/home/HomeContainer';
+import LoginContainer from './components/containers/login/LoginContainer';
+import QuizQuestionContainer from './components/containers/quiz-question/QuizQuestionContainer';
 
 const App: React.FC = () => {
   return (

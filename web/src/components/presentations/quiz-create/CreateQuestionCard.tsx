@@ -38,9 +38,8 @@ const QuizCreateCard: React.FC<IQuizCreateCardProps> = ({
           value={option}
           onChange={(e) => onChangeOption(idx, e.target.value)}
           required />
-        <DarkButton
-          onClick={() => onSetCorrectAnswer(idx)}>Answer {idx === correctOption ? '(correct)' : ''}
-        >
+        <DarkButton onClick={() => onSetCorrectAnswer(idx)}>
+          Answer {idx === correctOption ? '(correct)' : ''}
         </DarkButton>
         <div onClick={() => onEraseOption(idx)}>Erase</div>
       </div>

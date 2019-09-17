@@ -4,7 +4,8 @@ export interface IQuestion {
   correctOption: number;
 }
 
-export interface IQuizCreateProps
+export interface IQuizCreateProps {
+}
 
 export interface IQuizCreateState {
   questions: IQuestion[];

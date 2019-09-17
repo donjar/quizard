@@ -36,8 +36,14 @@ class QuizCreate extends React.Component<IQuizCreateProps, IQuizCreateState> {
     };
 
     const onEraseOption = (questionIdx: number, optionIdx: number) => {
+      const newQuestion = this.state.questions[questionIdx];
+      newQuestion.options.splice(optionIdx, 1);
+      if (newQuestion.options.length > 0 && newQuestion.correctOption >= newQuestion.options.length) {
+        newQuestion.correctOption = newQuestion.options.length - 1;
+      }
+
       const newQuestions = this.state.questions;
-      newQuestions[questionIdx].options.splice(optionIdx, 1);
+      newQuestions[questionIdx] = newQuestion;
       this.setState({questions: newQuestions});
     };
 

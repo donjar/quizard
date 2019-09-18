@@ -215,26 +215,25 @@ async def test_get_attempt_with_fully_answered_questions(
         "score": correct_answers,
     }
 
+
 async def test_create_attempt(client, questions, quizzes, token_user):
     res = await client.post(
         "/quizzes/{}/attempt".format(quizzes[2]["uuid"]),
         headers={"Authorization": token_user},
     )
-    print('hello', await res.json())
+    print("hello", await res.json())
     assert res.status == 200
 
     # Without token
-    res = await client.post(
-        "/quizzes/{}/attempt".format(quizzes[2]["uuid"]),
-    )
+    res = await client.post("/quizzes/{}/attempt".format(quizzes[2]["uuid"]))
     assert res.status == 401
 
     # NotFound quiz
     res = await client.post(
-        "/quizzes/{}/attempt".format("9" * 32),
-        headers={"Authorization": token_user},
+        "/quizzes/{}/attempt".format("9" * 32), headers={"Authorization": token_user}
     )
     assert res.status == 404
+
 
 async def test_create_answer_attempt_from_answers_with_invalid_args(
     client, questions, quizzes, token_user

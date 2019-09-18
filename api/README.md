@@ -69,6 +69,51 @@ black .
 
 which will format the code styles all Python files
 
+## Workflow (for front-end)
+
+### Do a quiz
+
+1. Upon the start quiz page, check if there are any previous attempts:
+```
+GET /quizzes/<quiz_id>/attempt
+```
+2. If there is a finished attempt, show the score and ask if the user wants to re-do it. And if the user wants to re-do the quiz, send a request to create a new attempt:
+```
+POST /quizzes/<quiz_id>/attempt
+```
+
+- If there are no finished attempt, send a request to retrieve all the questions for the quiz:
+```
+GET /quizzes/<quiz_id>/questions
+```
+3. Show the questions on front-end.
+4. When the user chooses an option, send a request to submit the answer, and retrieve the correctness of the answer:
+```
+POST /quizzes/<quizzes_id>/questions/<question_id>/answers
+body = {
+  "selected_option": <answer_index>,
+}
+```
+
+5. Continue step 4 until all questions are answered.
+6. At the result page, send a request to get the score:
+```
+GET /quizzes/<quiz_id>/attempt
+```
+
+### Login
+```
+An access token is a short-life token used for sending authorized requests.
+A refresh token is a long-life token used to generate new access tokens. In this application, refresh tokens don't expire.
+```
+
+1. The client sends a request with fields `email` and  `password` in the request's body.
+2. The server returns an access token and refresh token.
+3. The client stores both `access_token` and `refresh_token` to its browser.
+4. The client uses the `access_token` to authorize the user's requests, by adding it to the headers of the requests.
+5. When the `access_token` expires, the client sends the `refresh_token` to endpoint `/refresh` to get a new `access_token`.
+6. Replace the expired `access_token` with the freshly retrieved one in the browser.
+6. Repeat from step 4.
 
 ## Rules
 
@@ -174,14 +219,6 @@ An access token is a short-life token used for sending authorized requests.
 A refresh token is a long-life token used to generate new access tokens. In this application, refresh tokens don't expire.
 ```
 
-#### Process flow
-1. The client sends a request with fields `email` and  `password` in the request's body.
-2. The server returns an access token and refresh token.
-3. The client stores both `access_token` and `refresh_token` to its browser.
-4. The client uses the `access_token` to authorize the user's requests, by adding it to the headers of the requests.
-5. When the `access_token` expires, the client sends the `refresh_token` to endpoint `/refresh` to get a new `access_token`.
-6. Repeat from step 4.
-
 #### Example
 
 ```
@@ -257,11 +294,34 @@ GET /quizzes/<quiz_id>/questions
 
 **Response**:
 ```
+# Example
 {
   "data": [
     {
-      "text": <str>,
-      "options": <a_list_of_str>,
+        "options": [
+            "Impact film event despite political its appear so seat.",
+            "Than way item middle of tend expert level fire central senior foreign.",
+            "Same month article condition unit dinner discuss mother feeling usually we.",
+            "Hotel find real during head report west."
+        ],
+        "updated_at": null,
+        "text": "Such camera director baby democratic need but affect Mrs here.",
+        "created_at": 1568782579,
+        "id": "ff4023731a8e4f3aa3339a136abfdb75",
+        "quiz_id": "efe78f6975aa4a2b84be2d1113fda7eb"
+    },
+    {
+      "options": [
+          "Wide research early old specific heavy paper better.",
+          "Black doctor rich enjoy seven matter job red war training interesting.",
+          "Seem heavy avoid alone door some boy the often.",
+          "Health animal assume identify office through wall structure."
+      ],
+      "updated_at": null,
+      "text": "Couple yeah education friend effect along voice yes per event majority.",
+      "created_at": 1568782579,
+      "id": "3851be7efc7b42e88cd4b19b899c58c7",
+      "quiz_id": "efe78f6975aa4a2b84be2d1113fda7eb"
     },
     ...
   ],

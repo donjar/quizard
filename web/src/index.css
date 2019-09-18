@@ -76,7 +76,7 @@ form {
 }
 
 body {
-  font-size: 24px;
+  font-size: calc(16px + 0.5vw);
 }
 
 code {

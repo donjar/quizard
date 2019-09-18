@@ -1,7 +1,7 @@
 import React from 'react';
-import { connect, useDispatch } from 'react-redux';
+import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
-import { IQuestion, IQuizCreateProps } from '../../../interfaces/quiz-create';
+import { IQuestion } from '../../../interfaces/quiz-create';
 import { AppState } from '../../../store/store';
 import QuizCreate from '../../presentations/quiz-create/index';
 import QuizCreateQuestionCard from '../../presentations/quiz-create/QuizCreateQuestionCard';

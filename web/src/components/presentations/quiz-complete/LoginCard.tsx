@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { ReactComponent as Quizard } from '../../../svg/quizard.svg';
 import { smMax } from '../../../utils/media';
-import { LoginButton } from '../common/buttons/LoginButton';
+import DarkButton from '../common/buttons/DarkButton';
 import InputField from './InputField';
 
 const StyledLoginCard = styled.div`
@@ -56,7 +56,7 @@ const LoginCard: React.FC = () => {
         <InputField type="text" placeholder="Email" />
         <InputField type="password" placeholder="Password" />
       </LoginForm>
-      <LoginButton />
+      <DarkButton />
       <SeparatedDiv>
         <div style={{ fontSize: '18px', textDecoration: 'underline' }}>
           Don't have an account?

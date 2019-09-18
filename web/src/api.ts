@@ -1,11 +1,10 @@
-const apiUrl = "http://165.22.54.169";
+const apiUrl = 'http://localhost:8000';
 
 export const login = async (email: string, password: string) => {
   const res = await fetch(`${apiUrl}/login`, {
     method: 'POST',
-    body: JSON.stringify({email: email, password: password})
+    body: JSON.stringify({email, password})
   });
 
-  const data = await res.json();
-  console.log(data);
-}
+  return await res.json();
+};

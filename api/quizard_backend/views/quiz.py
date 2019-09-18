@@ -26,6 +26,7 @@ async def quiz_create(req, req_args, req_body, *args, **kwargs):
 
     # Assign the requester to be the creator of the quiz
     req_body["creator_id"] = jwt_data["identity"]["id"]
+    req_body["questions"] = []
     result = await Quiz.add(**req_body)
 
     # Create the questions
@@ -39,7 +40,6 @@ async def quiz_create(req, req_args, req_body, *args, **kwargs):
     # using the IDs of created questions
     if not questions:
         return await Quiz.modify({"uuid": result["id"]}, {"questions": questions})
-
     return result
 
 

@@ -112,10 +112,11 @@ async def test_get_quizzes_with_last_id(client, quizzes):
 
 
 async def test_create_quiz(client, users, quizzes, token_user):
+    fake_quiz = get_fake_quiz()
+    fake_quiz.pop("creator_id")
     new_quiz = {
-        **get_fake_quiz(),
+        **fake_quiz,
         "questions": get_fake_quiz_questions(has_uuid=False),
-        "creator_id": users[0]["uuid"],
     }
     new_quiz.pop("uuid", None)
 
@@ -282,10 +283,11 @@ async def test_create_quiz_with_invalid_args(client, quizzes, token_user):
 
 async def test_delete_quiz(client, users, quizzes, token_user):
     # Create a dummy quiz
+    fake_quiz = get_fake_quiz()
+    fake_quiz.pop("creator_id")
     new_quiz = {
-        **get_fake_quiz(),
+        **fake_quiz,
         "questions": get_fake_quiz_questions(has_uuid=False),
-        "creator_id": users[0]["uuid"],
     }
     new_quiz.pop("uuid", None)
 

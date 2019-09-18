@@ -36,7 +36,9 @@ async def get_one(model, **kwargs):
     ).gino.first()
 
 
-async def get_many(model, last_id=None, limit=15, **kwargs):
+async def get_many(
+    model, last_id=None, limit=15, in_column=None, in_values=None, **kwargs
+):
     last_internal_id = 0
     if last_id:
         row_of_last_id = await model.query.where(model.uuid == last_id).gino.first()
@@ -44,7 +46,13 @@ async def get_many(model, last_id=None, limit=15, **kwargs):
 
     return (
         await model.query.where(
-            and_(*dict_to_filter_args(model, **kwargs), model.id > last_internal_id)
+            and_(
+                *dict_to_filter_args(model, **kwargs),
+                model.id > last_internal_id,
+                getattr(model, in_column).in_(in_values)
+                if in_column and in_values
+                else True,
+            )
         )
         .order_by(model.id)
         .limit(limit)

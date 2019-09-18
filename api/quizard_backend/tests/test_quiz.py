@@ -20,9 +20,8 @@ async def test_get_one_quiz(client, quizzes):
     res = await client.get("/quizzes/{}".format("9" * 32))
     assert res.status == 404
 
-    # Invalid id
     res = await client.get("/quizzes/3")
-    assert res.status == 400
+    assert res.status == 404
 
 
 async def test_get_all_quizzes(client, quizzes):

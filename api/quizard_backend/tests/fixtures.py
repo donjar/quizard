@@ -17,11 +17,13 @@ from quizard_backend.tests import (
 users = [get_fake_user() for _ in range(number_of_users)]
 users += [{"full_name": "Quizard", "email": "quizard", "password": "cs3216a3"}]
 quizzes = [get_fake_quiz(users[index]["uuid"]) for index in range(number_of_quizzes)]
-questions = [get_fake_questions_for_quiz(quiz["uuid"]) for quiz in quizzes]
+questions_list = [get_fake_questions_for_quiz(quiz["uuid"]) for quiz in quizzes]
 
 # Update the questions' order in all quizzes
 for index, quiz in enumerate(quizzes):
-    quizzes[index]["questions"] = [question["uuid"] for question in questions[index]]
+    quizzes[index]["questions"] = [
+        question["uuid"] for question in questions_list[index]
+    ]
 
-# Flatten the questions
-questions = [item for sublist in questions for item in sublist]
+# Flatten the questions, for `setup_dev_db`
+questions = [item for sublist in questions_list for item in sublist]

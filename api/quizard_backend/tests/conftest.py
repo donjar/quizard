@@ -5,7 +5,11 @@ from sanic_jwt_extended import create_access_token
 
 from quizard_backend import app as _app, db
 from quizard_backend.tests.setup_dev_db import setup_db
-from quizard_backend.tests.fixtures import users as _users, quizzes as _quizzes
+from quizard_backend.tests.fixtures import (
+    users as _users,
+    quizzes as _quizzes,
+    questions_list as _questions,
+)
 from quizard_backend.config.db import get_db_url
 
 
@@ -47,6 +51,11 @@ def users():
 @pytest.fixture
 def quizzes():
     return _quizzes
+
+
+@pytest.fixture
+def questions():
+    return _questions
 
 
 @pytest.fixture

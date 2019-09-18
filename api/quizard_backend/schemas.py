@@ -45,11 +45,11 @@ is_uuid_list = {"type": "list", "schema": is_required_uuid}
 QUERY_PARAM_READ_SCHEMA = {"last_id": is_uuid, "limit": is_unsigned_integer_with_max}
 
 QUIZ_QUESTION_READ_SCHEMA = {
-    "id": is_uuid,
-    "quiz_id": is_uuid,
+    "id": is_string,
+    "quiz_id": is_string,
     "text": {"type": "string"},
     "animation_id": is_unsigned_integer,
-    "options": {"readonly": True},
+    "options": is_string_list,
     "correct_option": {"readonly": True},
     "created_at": is_unsigned_integer,
     "updated_at": is_unsigned_integer,
@@ -58,7 +58,7 @@ QUIZ_QUESTION_READ_SCHEMA = {
 
 QUIZ_QUESTION_WRITE_SCHEMA = {
     "id": {"readonly": True},
-    "quiz_id": is_uuid,
+    "quiz_id": is_required_uuid,
     "text": is_required_string,
     "animation_id": is_unsigned_integer,
     "options": {**is_required_string_list, "maxlength": MAX_OPTIONS_PER_QUESTION},
@@ -68,9 +68,9 @@ QUIZ_QUESTION_WRITE_SCHEMA = {
 }
 
 QUIZ_ATTEMPT_READ_SCHEMA = {
-    "id": is_uuid,
-    "quiz_id": is_uuid,
-    "user_id": is_uuid,
+    "id": is_string,
+    "quiz_id": is_string,
+    "user_id": is_string,
     "score": is_integer,
     "created_at": is_unsigned_integer,
     "updated_at": is_unsigned_integer,
@@ -79,18 +79,18 @@ QUIZ_ATTEMPT_READ_SCHEMA = {
 
 QUIZ_ATTEMPT_WRITE_SCHEMA = {
     "id": {"readonly": True},
-    "quiz_id": is_uuid,
-    "user_id": is_uuid,
+    "quiz_id": is_required_uuid,
+    "user_id": is_required_uuid,
     "score": {"readonly": True},
     "created_at": {"readonly": True},
     "updated_at": {"readonly": True},
 }
 
 QUIZ_ANSWER_READ_SCHEMA = {
-    "id": is_uuid,
-    "quiz_id": is_uuid,
-    "attempt_id": is_uuid,
-    "user_id": is_uuid,
+    "id": is_string,
+    "question_id": is_string,
+    "attempt_id": is_string,
+    "user_id": is_string,
     "selected_option": is_unsigned_integer,
     "created_at": is_unsigned_integer,
     "updated_at": is_unsigned_integer,
@@ -99,22 +99,19 @@ QUIZ_ANSWER_READ_SCHEMA = {
 
 QUIZ_ANSWER_WRITE_SCHEMA = {
     "id": {"readonly": True},
-    "quiz_id": is_uuid,
-    "attempt_id": is_uuid,
-    "user_id": is_uuid,
+    "question_id": is_required_uuid,
+    "attempt_id": is_required_uuid,
+    "user_id": is_required_uuid,
     "selected_option": is_required_integer,
     "created_at": {"readonly": True},
     "updated_at": {"readonly": True},
-    "many": is_boolean,
-    "last_id": is_unsigned_integer,
-    "limit": is_unsigned_integer_with_max,
 }
 
 
 QUIZ_READ_SCHEMA = {
-    "id": is_uuid,
+    "id": is_string,
     "title": is_string,
-    "creator_id": is_uuid,
+    "creator_id": is_string,
     "category_id": is_unsigned_integer,
     "type_id": is_unsigned_integer,
     "animation_id": is_unsigned_integer,
@@ -131,7 +128,7 @@ QUIZ_READ_SCHEMA = {
 QUIZ_WRITE_SCHEMA = {
     "id": {"readonly": True},
     "title": is_required_string,
-    "creator_id": is_uuid,
+    "creator_id": is_required_uuid,
     "category_id": is_unsigned_integer,
     "type_id": is_unsigned_integer,
     "animation_id": is_unsigned_integer,
@@ -151,7 +148,7 @@ QUIZ_WRITE_SCHEMA = {
 }
 
 USER_READ_SCHEMA = {
-    "id": is_uuid,
+    "id": is_string,
     "full_name": {"type": "string"},
     "email": {"type": "string"},
     "password": {"readonly": True},

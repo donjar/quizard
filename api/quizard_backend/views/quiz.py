@@ -3,14 +3,14 @@ from sanic_jwt_extended import jwt_required
 from sanic_jwt_extended.decorators import get_jwt_data_in_request_header
 
 from quizard_backend.views.urls import quiz_blueprint as blueprint
-from quizard_backend.models import Quiz, QuizQuestion
-from quizard_backend.utils.validation import validate_request, validate_permission
-
-# from quizard_backend.views.quiz_attempt import (
-#     quiz_attempt_retrieve,
-#     quiz_attempt_create,
-#     quiz_attempt_update,
-# )
+from quizard_backend.exceptions import ExistingAnswerError
+from quizard_backend.models import Quiz, QuizQuestion, QuizAttempt, QuizAnswer
+from quizard_backend.utils.query import get_one_latest, get_many, get_one
+from quizard_backend.utils.validation import (
+    validate_request,
+    validate_permission,
+    validate_against_schema,
+)
 
 
 @validate_request(schema="quiz_read", skip_body=True)
@@ -69,7 +69,7 @@ async def quiz_route(request):
 
 
 @blueprint.route("/<quiz_id>", methods=["GET", "DELETE"])
-async def quiz_route(request, quiz_id):
+async def quiz_route_quiz_id(request, quiz_id):
     quiz_id = quiz_id.strip()
 
     call_funcs = {
@@ -85,12 +85,149 @@ async def quiz_route(request, quiz_id):
     return json({"data": data})
 
 
-# @blueprint.route("/attempt", methods=["GET", "POST", "PUT"])
-# async def quiz_register_route(request):
-#     call_funcs = {
-#         "GET": quiz_attempt_retrieve,
-#         "POST": quiz_attempt_create,
-#         "PUT": quiz_attempt_update,
-#     }
-#     data = await call_funcs[request.method](request)
-#     return json({"data": data})
+@blueprint.route("/<quiz_id>/questions/<question_id>/answers", methods=["POST"])
+async def quiz_route_submit_answer(request, quiz_id, question_id):
+    jwt_data = await get_jwt_data_in_request_header(request.app, request)
+    requester = jwt_data["identity"]
+
+    # Check if the quiz exists, before further processing
+    await Quiz.get(uuid=quiz_id)
+
+    # Get the latest attempt
+    latest_attempt = await get_one_latest(
+        QuizAttempt, user_id=requester["id"], quiz_id=quiz_id
+    )
+
+    if not latest_attempt:
+        latest_attempt = await QuizAttempt.add(quiz_id=quiz_id, user_id=requester["id"])
+        attempt_id = latest_attempt["id"]
+    else:
+        attempt_id = latest_attempt.uuid
+
+    # Request's body validation
+    req_body = request.json or {}
+    quiz_answer_data = validate_against_schema(
+        {
+            **req_body,
+            "attempt_id": attempt_id,
+            "user_id": requester["id"],
+            "question_id": question_id,
+        },
+        "quiz_answer_write",
+    )
+    # Check if the quiz exists, before further processing
+    await QuizQuestion.get(uuid=question_id)
+
+    # Fail the creation of answer
+    # if the question is already answered in the current attempt
+    if await get_one(
+        QuizAnswer,
+        attempt_id=attempt_id,
+        user_id=requester["id"],
+        question_id=question_id,
+    ):
+        raise ExistingAnswerError()
+
+    await QuizAnswer.add(**quiz_answer_data)
+
+    # Return the answer is correct or wrong
+    question = await get_one(QuizQuestion, uuid=question_id)
+    return json(
+        {
+            "data": {
+                "is_correct": question.correct_option
+                == quiz_answer_data.get("selected_option", -1)
+            }
+        }
+    )
+
+
+@blueprint.route("/<quiz_id>/questions", methods=["GET"])
+async def quiz_route_get_questions(request, quiz_id):
+    quiz = await Quiz.get(uuid=quiz_id)
+    quiz_question_ids = quiz["questions"]
+
+    questions = []
+    if quiz_question_ids:
+        quiz_questions = await QuizQuestion.get(
+            in_column="uuid", in_values=quiz_question_ids, many=True
+        )
+        questions_dict = {question["id"]: question for question in quiz_questions}
+        questions = [questions_dict[question_id] for question_id in quiz_question_ids]
+
+    return json({"data": questions})
+
+
+async def calculate_score(question_ids, answers):
+    score = 0
+    questions = await get_many(QuizQuestion, in_column="uuid", in_values=question_ids)
+
+    for question in questions:
+        if question.correct_option == answers[question.uuid]:
+            score += 1
+
+    return score
+
+
+async def quiz_route_get_attempt(request, requester, quiz_id):
+    quiz = await Quiz.get(uuid=quiz_id)
+    quiz_question_ids = quiz["questions"]
+
+    # Get the latest attempt
+    latest_attempt = await get_one_latest(
+        QuizAttempt, user_id=requester["id"], quiz_id=quiz_id
+    )
+    is_finished = False
+    first_unanswered_question = quiz_question_ids[0]
+    requester_answers = []
+
+    if not latest_attempt:
+        latest_attempt = await QuizAttempt.add(quiz_id=quiz_id, user_id=requester["id"])
+
+    # If the user has at least 1 answer in this quiz
+    requester_answers = await get_many(
+        QuizAnswer, attempt_id=latest_attempt.uuid, user_id=requester["id"]
+    )
+
+    first_unanswered_question = None
+    if len(quiz_question_ids) > len(requester_answers):
+        answered_question_ids = {answer.question_id for answer in requester_answers}
+        for question_id in quiz_question_ids:
+            if question_id not in answered_question_ids:
+                first_unanswered_question = question_id
+                break
+
+    is_finished = first_unanswered_question is None
+    answers = {
+        answer.question_id: answer.selected_option for answer in requester_answers
+    }
+    if is_finished:
+        score = latest_attempt.score
+        if score is None:
+            score = await calculate_score(quiz_question_ids, answers)
+
+        return {"score": score, "is_finished": True, "answers": answers}
+
+    return {
+        "is_finished": False,
+        "continue_from": first_unanswered_question,
+        "answers": answers,
+    }
+
+
+async def quiz_route_create_attempt(request, requester, quiz_id):
+    # Check if the quiz exists, before further processing
+    await Quiz.get(uuid=quiz_id)
+
+    return await QuizAttempt.add(user_id=requester["id"], quiz_id=quiz_id)
+
+
+@blueprint.route("/<quiz_id>/attempt", methods=["GET", "POST"])
+async def quiz_route_attempt(request, quiz_id):
+    jwt_data = await get_jwt_data_in_request_header(request.app, request)
+    requester = jwt_data["identity"]
+
+    call_funcs = {"GET": quiz_route_get_attempt, "POST": quiz_route_create_attempt}
+
+    data = await call_funcs[request.method](request, requester, quiz_id)
+    return json({"data": data})

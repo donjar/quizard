@@ -29,6 +29,13 @@ class LoginFailureError(SanicException):
         super().__init__(message, status_code)
 
 
+class ExistingAnswerError(SanicException):
+    def __init__(self, message=None, status_code=422):
+        if not message:
+            message = "You need to finish the current attempt first."
+        super().__init__(message, status_code)
+
+
 class UniqueViolationError(SanicException):
     """
     An overwritten error for asyncpg.exceptions.UniqueViolationError.

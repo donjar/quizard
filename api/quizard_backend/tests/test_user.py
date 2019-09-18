@@ -24,10 +24,10 @@ async def test_get_one_user(client, users):
     res = await client.get("/users/{}".format("9" * 32))
     assert res.status == 404
 
-    # Invalid id
     res = await client.get("/users/true")
-    assert res.status == 400
+    assert res.status == 404
 
+    # Invalid query
     res = await client.get("/users?id=")
     assert res.status == 400
 

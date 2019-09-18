@@ -29,7 +29,16 @@ def unix_time():
 
 class BaseModel(db.Model):
     @classmethod
-    async def get(cls, many=False, last_id=None, limit=15, fields=None, **kwargs):
+    async def get(
+        cls,
+        many=False,
+        last_id=None,
+        limit=15,
+        fields=None,
+        in_column=None,
+        in_values=None,
+        **kwargs
+    ):
         """
         Retrieve the row(s) of a model, using Keyset Pagination (last_id).
 
@@ -42,7 +51,14 @@ class BaseModel(db.Model):
         """
         # Using an param `many` to optimize Select queries for single row
         if many:
-            data = await get_many(cls, last_id=last_id, limit=limit, **kwargs)
+            data = await get_many(
+                cls,
+                last_id=last_id,
+                limit=limit,
+                in_column=in_column,
+                in_values=in_values,
+                **kwargs
+            )
         else:
             data = await get_one(cls, **kwargs)
 
@@ -114,8 +130,8 @@ class QuizAnswer(BaseModel):
     uuid = db.Column(
         db.String(length=32), nullable=False, unique=True, default=generate_uuid
     )
-    quiz_id = db.Column(
-        db.String(length=32), db.ForeignKey("quiz.uuid"), nullable=False
+    question_id = db.Column(
+        db.String(length=32), db.ForeignKey("quiz_question.uuid"), nullable=False
     )
     attempt_id = db.Column(
         db.String(length=32), db.ForeignKey("quiz_attempt.uuid"), nullable=False
@@ -129,8 +145,8 @@ class QuizAnswer(BaseModel):
 
     # Index
     _idx_quiz_anawer_uuid = db.Index("idx_quiz_anawer_uuid", "uuid")
-    _idx_quiz_answer_quiz_attempt_user = db.Index(
-        "idx_quiz_answer_quiz_attempt_user", "quiz_id", "attempt_id", "user_id"
+    _idx_quiz_answer_question_attempt_user = db.Index(
+        "idx_quiz_answer_question_attempt_user", "question_id", "attempt_id", "user_id"
     )
 
 
@@ -147,7 +163,7 @@ class QuizAttempt(BaseModel):
     user_id = db.Column(
         db.String(length=32), db.ForeignKey("user.uuid"), nullable=False
     )
-    score = db.Column(db.BigInteger, nullable=False, default=0)
+    score = db.Column(db.BigInteger, nullable=True)
     created_at = db.Column(db.BigInteger, nullable=False, default=unix_time)
     updated_at = db.Column(db.BigInteger, onupdate=unix_time)
 

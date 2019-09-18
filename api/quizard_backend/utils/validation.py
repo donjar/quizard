@@ -13,6 +13,14 @@ from quizard_backend.schemas import schemas
 from quizard_backend.utils.request import req_args_to_dict
 
 
+def validate_against_schema(document, schema_name, update=False):
+    _validator = Validator()
+    if not _validator.validate(document, schemas[schema_name], update=update):
+        raise SchemaValidationError(_validator.errors)
+
+    return _validator.document
+
+
 def validate_request(
     func=None, schema=None, update=False, skip_body=False, skip_args=False, **kargs
 ):
@@ -56,7 +64,7 @@ def validate_request(
         if not schema or schema not in schemas:
             return await func(request, req_args={}, req_body={}, *args, **kwargs)
 
-        _validator = Validator()
+        # _validator = Validator()
         _schema = schemas[schema]
         req_body = request.json or {}
         req_args = (
@@ -71,19 +79,21 @@ def validate_request(
             req_args["id"] = kwargs["id"]
 
         if not skip_body:
-            if not _validator.validate(req_body, _schema, update=update):
-                raise SchemaValidationError(_validator.errors)
-            req_body = _validator.document
+            # if not _validator.validate(req_body, _schema, update=update):
+            #     raise SchemaValidationError(_validator.errors)
+            # req_body = _validator.document
+            req_body = validate_against_schema(req_body, schema, update=update)
 
         if not skip_args:
             # For request's arguments,
             # use READ schema
             model_name = schema.split("_")[0]
-            _schema = schemas[model_name + "_read"]
+            _schema = model_name + "_read"
 
-            if not _validator.validate(req_args, _schema):
-                raise SchemaValidationError(_validator.errors)
-            req_args = _validator.document
+            # if not _validator.validate(req_args, _schema):
+            #     raise SchemaValidationError(_validator.errors)
+            # req_args = _validator.document
+            req_args = validate_against_schema(req_args, _schema)
 
         # Avoid duplication of assigning `req_args` and `req_args`
         # to functions

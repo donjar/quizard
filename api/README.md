@@ -94,10 +94,12 @@ which will format the code styles all Python files
 
 ## Common HTTP codes of responses
 - `400`: Missing field `email` and/or `password` in the request's body, or incorrect format of `email` and/or `password`.
-- `401`: Invalid `email` or `password`.
+- `401`:
+    - Login: Invalid `email` or `password`.
+    - The access token has expired, invalid or missing.
 - `404`: Resource is not found.
 - `405`: HTTP method is not allowed for the endpoint.
-- `422`: The token has expired or is invalid.
+- `422`: The token is invalid.
 
 ## Endpoints
 
@@ -105,7 +107,7 @@ The supported endpoints are listed here.
 
 > If there are any endpoints you are interested in and they aren't here, either it is not implemented yet, or the we just forgot to update this docs.
 
-### 1. `/users`:
+### 1. Users
 
 > Support `GET`, `POST`, `PUT` and `PATCH` methods
 
@@ -162,7 +164,46 @@ headers={
 }
 ```
 
-### 2. `/quizzes`
+### 2. Login
+> Support `POST` method only
+
+Return an access token and refresh token to the client.
+
+```
+An access token is a short-life token used for sending authorized requests.
+A refresh token is a long-life token used to generate new access tokens. In this application, refresh tokens don't expire.
+```
+
+#### Process flow
+1. The client sends a request with fields `email` and  `password` in the request's body.
+2. The server returns an access token and refresh token.
+3. The client stores both `access_token` and `refresh_token` to its browser.
+4. The client uses the `access_token` to authorize the user's requests, by adding it to the headers of the requests.
+5. When the `access_token` expires, the client sends the `refresh_token` to endpoint `/refresh` to get a new `access_token`.
+6. Repeat from step 4.
+
+#### Example
+
+```
+# Logging in
+POST json={"email": "user", "password": "random_pwd"} /login
+
+# Using an access token to authorize requests
+GET headers={"Authorization": "Bearer <access_token>"} /users
+```
+
+#### Refresh the access token with `/refresh`
+
+> Support `POST` method only
+
+As mentioned above, this endpoint is for creating a new access token.
+
+```
+POST headers={"Authorization": "Bearer <refresh_token>"} /login
+```
+
+
+### 3. Quizzes
 
 > Support `GET`, `POST` and `DELETE` methods
 
@@ -206,41 +247,101 @@ body={
 DELETE /quizzes/<uuid>
 ```
 
-### 3. `/login`
-> Support `POST` method only
+### 4. Quiz Questions
 
-Return an access token and refresh token to the client.
-
-```
-An access token is a short-life token used for sending authorized requests.
-A refresh token is a long-life token used to generate new access tokens. In this application, refresh tokens don't expire.
-```
-
-#### Process flow
-1. The client sends a request with fields `email` and  `password` in the request's body.
-2. The server returns an access token and refresh token.
-3. The client stores both `access_token` and `refresh_token` to its browser.
-4. The client uses the `access_token` to authorize the user's requests, by adding it to the headers of the requests.
-5. When the `access_token` expires, the client sends the `refresh_token` to endpoint `/refresh` to get a new `access_token`.
-6. Repeat from step 4.
-
-#### Example
+#### GET all questions for a quiz
 
 ```
-# Logging in
-POST json={"email": "user", "password": "random_pwd"} /login
-
-# Using an access token to authorize requests
-GET headers={"Authorization": "Bearer <access_token>"} /users
-
+GET /quizzes/<quiz_id>/questions
 ```
 
+**Response**:
+```
+{
+  "data": [
+    {
+      "text": <str>,
+      "options": <a_list_of_str>,
+    },
+    ...
+  ],
+}
+```
 
-### 4. `/refresh`
-> Support `POST` method only
+### 5. Quiz Attempt
 
-As mentioned in endpoint `/login`, this endpoint is for creating a new access token.
+#### Create an attempt
 
 ```
-POST headers={"Authorization": "Bearer <refresh_token>"} /login
+POST /quizzes/<quiz_id>/attempt
+```
+
+**When to call**: After an user has already finished a quiz, and he/she chooses to do another attempt
+
+#### GET the latest attempt for the quiz of the user
+
+```
+GET /quizzes/<quiz_id>/attempt
+```
+
+**When to call**: Before any quizzes starts, to check if the user has any unfinished attempt to the quiz.
+
+**Back-end behavior**: Get the latest attempt, and check if all the questions have been answered. If yes, return the answers and score; otherwise, return the finished answers and the id of the question to continue from.
+
+**Response**:
+```
+# All questions finished
+{
+  "data": {
+    "score": <score_number>,
+    "is_finished": True,
+    "answers": {
+      <question_id>: <selected_option>,  // selected_option is an index for question.options
+    },
+  }
+}
+
+# Not finished
+{
+  "data": {
+    "is_finished": False,
+    "answers": {
+      <question_id>: <selected_option>,  // selected_option is an index for question.options
+    },
+    "continue_from": <question_id>,
+  }
+}
+```
+
+### 6. Quiz Answer
+
+#### Submit an user's answer
+
+```
+POST /quizzes/<quizzes_id>/questions/<question_id>/answers
+body = {
+  "selected_option": <answer_index>,
+}
+```
+
+**When to call**: The user presses on an option for a question in the quiz. Check if the chosen option is the correct answer.
+
+
+**Back-end behavior**: Upon receiving the answer, the back-end will check if the selected question has been answered in the latest attempt. If yes, raise an `422` error; otherwise, create the answer.
+
+**Response**:
+```
+# The chosen answer is correct
+{
+  "data": {
+    "is_correct": True,
+  }
+}
+
+# The chosen answer is wrong
+{
+  "data": {
+    "is_correct": False,
+  }
+}
 ```

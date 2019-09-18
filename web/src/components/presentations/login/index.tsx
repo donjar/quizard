@@ -1,4 +1,5 @@
 import React from 'react';
+import { Redirect } from 'react-router';
 import styled from 'styled-components';
 import { ILoginProps } from '../../../interfaces/login/index';
 import { ReactComponent as Quizard } from '../../../svg/quizard.svg';
@@ -6,7 +7,6 @@ import { smMax } from '../../../utils/media';
 import DarkButton from '../common/buttons/DarkButton';
 import { CenteredDiv } from '../common/CenteredDiv';
 import InputField from './InputField';
-import { Redirect } from 'react-router';
 
 const StyledLogin = styled.div`
   display: flex;

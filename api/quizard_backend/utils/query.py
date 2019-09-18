@@ -1,7 +1,8 @@
 from typing import Tuple
 
-from sqlalchemy import and_
+from sqlalchemy import and_, desc
 
+from quizard_backend import db
 from quizard_backend.utils.transaction import in_transaction
 
 
@@ -48,6 +49,14 @@ async def get_many(model, last_id=None, limit=15, **kwargs):
         .order_by(model.id)
         .limit(limit)
         .gino.all()
+    )
+
+
+async def get_one_latest(model, **kwargs):
+    return (
+        await model.query.where(and_(*dict_to_filter_args(model, **kwargs)))
+        .order_by(desc(model.id))
+        .gino.first()
     )
 
 

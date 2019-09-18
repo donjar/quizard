@@ -94,10 +94,12 @@ which will format the code styles all Python files
 
 ## Common HTTP codes of responses
 - `400`: Missing field `email` and/or `password` in the request's body, or incorrect format of `email` and/or `password`.
-- `401`: Invalid `email` or `password`.
+- `401`:
+    - Login: Invalid `email` or `password`.
+    - The access token has expired, invalid or missing.
 - `404`: Resource is not found.
 - `405`: HTTP method is not allowed for the endpoint.
-- `422`: The token has expired or is invalid.
+- `422`: The token is invalid.
 
 ## Endpoints
 

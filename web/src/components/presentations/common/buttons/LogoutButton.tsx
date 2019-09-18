@@ -6,7 +6,7 @@ export const LogoutButton: React.FC = () => {
   return (
     <>
       <Link to="/login">
-        <DarkButton> Logout </DarkButton>
+        <DarkButton>Logout</DarkButton>
       </Link>
     </>
   );

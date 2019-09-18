@@ -6,6 +6,7 @@ import { smMax } from '../../../utils/media';
 import DarkButton from '../common/buttons/DarkButton';
 import { CenteredDiv } from '../common/CenteredDiv';
 import InputField from './InputField';
+import { Redirect } from 'react-router';
 
 const StyledLogin = styled.div`
   display: flex;
@@ -52,11 +53,18 @@ const LoginForm = styled.form`
 const Login: React.FC<ILoginProps> = ({
   email,
   password,
+  loggedIn,
   error,
   onChangeEmail,
   onChangePassword,
   onClickLogin
 }) => {
+  if (loggedIn) {
+    return (
+      <Redirect to="/home" />
+    );
+  }
+
   return (
     <StyledLogin>
       <StyledLoginCard>

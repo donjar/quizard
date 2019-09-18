@@ -7,25 +7,26 @@ import Login from '../../presentations/login/index';
 import {
   changeEmail,
   changePassword,
-  setAccessToken,
+  performLogin,
   setError
 } from './redux/actions';
-import { IAccessToken } from './redux/types';
 
 interface ILoginContainerProps {
   email: string;
   password: string;
   error?: string;
+  loggedIn: boolean;
   onChangeEmail: (newEmail: string) => void;
   onChangePassword: (newPassword: string) => void;
   setError: (error: string) => void;
-  setAccessToken: (token: IAccessToken) => void;
+  performLogin: () => void;
 }
 
 const LoginContainer: React.FC<ILoginContainerProps> = ({
   email,
   password,
   error,
+  loggedIn,
   onChangeEmail,
   onChangePassword,
   ...props
@@ -35,8 +36,9 @@ const LoginContainer: React.FC<ILoginContainerProps> = ({
     if ('error' in data) {
       props.setError(JSON.stringify(data.error));
     } else {
-      props.setAccessToken({accessToken: data.access_token, refreshToken: data.refresh_token});
-      window.location.assign('/home');
+      props.performLogin();
+      localStorage.setItem('accessToken', data.access_token);
+      localStorage.setItem('refreshToken', data.refresh_token);
     }
   };
 
@@ -44,6 +46,7 @@ const LoginContainer: React.FC<ILoginContainerProps> = ({
     <Login
       email={email}
       password={password}
+      loggedIn={loggedIn}
       error={error}
       onChangeEmail={onChangeEmail}
       onChangePassword={onChangePassword}
@@ -55,7 +58,8 @@ const LoginContainer: React.FC<ILoginContainerProps> = ({
 const mapStateToProps = (state: AppState) => ({
   email: state.login.email,
   password: state.login.password,
-  error: state.login.error
+  error: state.login.error,
+  loggedIn: state.login.loggedIn
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => {
@@ -66,8 +70,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
     onChangePassword: (newPassword: string) => {
       dispatch(changePassword(newPassword));
     },
-    setAccessToken: (token: IAccessToken) => {
-      dispatch(setAccessToken(token));
+    performLogin: () => {
+      dispatch(performLogin());
     },
     setError: (error: string) => {
       dispatch(setError(error));

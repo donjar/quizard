@@ -1,6 +1,6 @@
 import { ILoginState } from '../../../../interfaces/login';
 import initialState from './initialState';
-import { CHANGE_EMAIL, CHANGE_PASSWORD, ILoginActionTypes, SET_ACCESS_TOKEN, SET_ERROR } from './types';
+import { CHANGE_EMAIL, CHANGE_PASSWORD, ILoginActionTypes, PERFORM_LOGIN, SET_ERROR } from './types';
 
 export default function loginReducer(
   state = initialState,
@@ -17,13 +17,11 @@ export default function loginReducer(
         ...state,
         password: action.payload,
       };
-    case SET_ACCESS_TOKEN:
-      const { accessToken, refreshToken } = action.payload;
+    case PERFORM_LOGIN:
       return {
         email: state.email,
         password: state.password,
-        accessToken,
-        refreshToken,
+        loggedIn: true
       };
     case SET_ERROR:
       return {

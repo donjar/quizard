@@ -4,13 +4,18 @@ from gino.ext.sanic import Gino
 from sanic import Blueprint, Sanic
 from sanic.response import json
 from sanic_jwt_extended import JWTManager
+from sanic_cors import CORS
 
 from quizard_backend.config import SANIC_CONFIG
 
 app = Sanic(__name__)
+
 app.config.update(SANIC_CONFIG)
 app.config["JWT_SECRET_KEY"] = "oi123n1k231kloiqwescqklwn"  # Remove later
 app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(minutes=15)
+
+app.config["CORS_AUTOMATIC_OPTIONS"] = True
+CORS(app)
 
 # Note: Gino doesn't auto-generate any new changes in the schema
 # Use alembic to apply new changes to the db

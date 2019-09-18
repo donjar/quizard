@@ -32,8 +32,6 @@ const QuizQuestionContainer: React.FC<IQuizQuestionContainerProps> = ({
     console.log('LEAVE');
   };
 
-  console.log(`${question}, ${numQuestions}, ${questionNumber}`);
-
   return (
     <QuizQuestion
       questionNumber={questionNumber}
@@ -58,7 +56,10 @@ const mapStateToProps = (state: AppState) => {
 const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
     onSelectOption: (questionIdx: number, optionIdx: number) =>
-      dispatch(selectOption({ questionIdx, optionIdx }))
+      dispatch(selectOption({
+        questionIdx: questionIdx - 1,
+        optionIdx
+      }))
   };
 };
 

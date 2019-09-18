@@ -27,18 +27,17 @@ const QuizQuestionOption: React.FC<IQuizQuestionOptionProps> = ({
   onClick,
   children
 }) => {
-
-  let OptionButton = AnswerButton;
+  let OptionButton;
   switch (displayState) {
-    case OPTION_UNSELECTED:
-      OptionButton = AnswerButton;
-      break;
     case OPTION_CORRECT:
       OptionButton = CorrectAnswerButton;
       break;
     case OPTION_INCORRECT:
       OptionButton = IncorrectAnswerButton;
       break;
+    case OPTION_UNSELECTED:
+    default:
+      OptionButton = AnswerButton;
   }
 
   return (

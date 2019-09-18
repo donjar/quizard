@@ -1,5 +1,5 @@
 import produce from 'immer';
-import { IQuizState, OPTION_CORRECT, QuestionOptionState } from '../../../../interfaces/quiz-question';
+import { IQuizState, OPTION_CORRECT } from '../../../../interfaces/quiz-question';
 import initialState from './initialState';
 import { IQuizQuestionActionTypes, SELECT_QUESTION_OPTION } from './types';
 

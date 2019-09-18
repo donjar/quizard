@@ -12,9 +12,14 @@ export const login = async (email: string, password: string) => {
 };
 
 export const createQuiz = async (values: IQuizCreateApi) => {
+  const token = localStorage.getItem('accessToken');
+
   const res = await fetch(`${apiUrl}/quizzes`, {
     method: 'POST',
-    body: JSON.stringify(values)
+    body: JSON.stringify(values),
+    headers: {
+      'Authentication': `Bearer ${token}`
+    }
   });
 
   return await res.json();

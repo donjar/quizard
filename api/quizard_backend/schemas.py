@@ -128,11 +128,10 @@ QUIZ_READ_SCHEMA = {
 QUIZ_WRITE_SCHEMA = {
     "id": {"readonly": True},
     "title": is_required_string,
-    "creator_id": is_required_uuid,
+    "creator_id": is_uuid,
     "category_id": is_unsigned_integer,
     "type_id": is_unsigned_integer,
     "animation_id": is_unsigned_integer,
-    "questions": is_uuid_list,
     "questions": {  # A list of dicts
         "type": "list",
         "required": True,

@@ -2,6 +2,7 @@
   --dark-blue: #383958;
   --beige: #fffcf3;
   --green: #7cd885;
+  --red: #db7874;
 }
 
 @font-face {
@@ -70,6 +71,7 @@ button,
 input,
 form {
   margin: 0;
+  color: var(--dark-blue);
   font-family: 'GothamRounded', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

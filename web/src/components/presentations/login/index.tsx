@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 import { ILoginProps } from '../../../interfaces/login/index';
 import { ReactComponent as Quizard } from '../../../svg/quizard.svg';
-import { smMax } from '../../../utils/media';
 import DarkButton from '../common/buttons/DarkButton';
 import { CenteredDiv } from '../common/CenteredDiv';
 import WholeScreenCard from '../common/WholeScreenCard';

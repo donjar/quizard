@@ -4,10 +4,13 @@ import {
   ADD_ANSWER_OPTION,
   ADD_QUESTION,
   CHANGE_ANSWER_OPTION,
+  CHANGE_NAME,
+  CHANGE_QUESTION_TEXT,
   DELETE_ANSWER_OPTION,
   DELETE_QUESTION,
   IQuizCreateActionTypes,
-  SET_CORRECT_ANSWER
+  SET_CORRECT_ANSWER,
+  SET_ERROR
 } from './types';
 
 // TODO: split into smaller reducers
@@ -21,16 +24,19 @@ export default function quizCreateReducer(
   switch (action.type) {
     case ADD_QUESTION:
       return {
+        ...state,
         questions: [...state.questions, action.payload]
       };
     case DELETE_QUESTION:
       newQuestions.splice(action.payload, 1);
       return {
+        ...state,
         questions: newQuestions
       };
     case ADD_ANSWER_OPTION:
       newQuestions[action.payload].options.push('');
       return {
+        ...state,
         questions: newQuestions
       };
     case DELETE_ANSWER_OPTION:
@@ -44,18 +50,32 @@ export default function quizCreateReducer(
       }
 
       newQuestions[action.payload.questionIdx] = newQuestion;
-      return { questions: newQuestions };
+      return { ...state, questions: newQuestions };
 
     case CHANGE_ANSWER_OPTION:
       newQuestions[action.payload.questionIdx].options[
         action.payload.optionIdx
       ] = action.payload.newAnswerOption;
-      return { questions: newQuestions };
+      return { ...state, questions: newQuestions };
 
     case SET_CORRECT_ANSWER:
       newQuestions[action.payload.questionIdx].correctOption =
         action.payload.optionIdx;
-      return { questions: newQuestions };
+      return { ...state, questions: newQuestions };
+
+    case CHANGE_NAME:
+      return { ...state, name: action.payload };
+
+    case CHANGE_QUESTION_TEXT:
+      newQuestions[action.payload.questionIdx].text =
+        action.payload.newText;
+      return { ...state, questions: newQuestions };
+
+    case SET_ERROR:
+      return {
+        ...state,
+        error: action.payload,
+      };
 
     default:
       return state;

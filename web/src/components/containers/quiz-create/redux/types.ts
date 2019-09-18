@@ -6,6 +6,9 @@ export const ADD_ANSWER_OPTION = 'ADD_ANSWER_OPTION';
 export const DELETE_ANSWER_OPTION = 'DELETE_ANSWER_OPTION';
 export const CHANGE_ANSWER_OPTION = 'CHANGE_ANSWER_OPTION';
 export const SET_CORRECT_ANSWER = 'SET_CORRECT_ANSWER';
+export const CHANGE_NAME = 'CHANGE_NAME';
+export const CHANGE_QUESTION_TEXT = 'CHANGE_QUESTION_TEXT';
+export const SET_ERROR = 'SET_ERROR';
 
 // TODO: Shift common interfaces into interfaces folder
 export interface IAnswerOption {
@@ -13,8 +16,18 @@ export interface IAnswerOption {
   optionIdx: number;
 }
 
+export interface ISetErrorAction {
+  type: typeof SET_ERROR;
+  payload: string;
+}
+
 export interface IChangeAnswerOption extends IAnswerOption {
   newAnswerOption: string;
+}
+
+export interface IChangeQuestionText {
+  questionIdx: number;
+  newText: string;
 }
 
 export interface IAddQuestionAction {
@@ -47,10 +60,23 @@ export interface ISetCorrectAnswerAction {
   payload: IAnswerOption;
 }
 
+export interface IChangeNameAction {
+  type: typeof CHANGE_NAME;
+  payload: string;
+}
+
+export interface IChangeQuestionTextAction {
+  type: typeof CHANGE_QUESTION_TEXT;
+  payload: IChangeQuestionText;
+}
+
 export type IQuizCreateActionTypes =
   | IAddQuestionAction
   | IDeleteQuestionAction
   | IAddAnswerOptionAction
   | IDeleteAnswerOptionAction
   | IChangeAnswerOptionAction
-  | ISetCorrectAnswerAction;
+  | ISetCorrectAnswerAction
+  | IChangeNameAction
+  | IChangeQuestionTextAction
+  | ISetErrorAction;

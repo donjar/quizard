@@ -7,23 +7,29 @@ import DarkButton from '../common/buttons/DarkButton';
 import { QuizCreateNavBar } from './QuizCreateNavBar';
 
 const QuizCreate: React.FC<IQuizCreateProps> = ({
+  name,
+  error,
   numQuestions,
   onAddQuestion,
+  onChangeName,
+  onCreateQuiz,
   children
 }) => {
   return (
     <BeigeBackground>
-      <QuizCreateNavBar />
+      <QuizCreateNavBar onCreateQuiz={onCreateQuiz} />
       <BodyAfterNavBarWithPadding>
-        <input type="text" name="name" placeholder="Quiz Name" required />
         <input
           type="text"
-          name="description"
-          placeholder="Quiz Description"
+          name="name"
+          placeholder="Quiz Name"
+          value={name}
+          onChange={(e) => onChangeName(e.target.value)}
           required
         />
         <h3>Questions ({numQuestions})</h3>
         <DarkButton onClick={onAddQuestion}>Add Question</DarkButton>
+        {error && (<p>Error: {error}</p>)}
         {children}
       </BodyAfterNavBarWithPadding>
     </BeigeBackground>

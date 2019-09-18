@@ -12,13 +12,14 @@ const QuizCreateQuestionCard: React.FC<IQuizCreateQuestionCardProps> = ({
   onChangeOption,
   onNewOption,
   onEraseOption,
-  onSetCorrectAnswer
+  onSetCorrectAnswer,
+  onChangeText
 }) => (
   <Card>
     Question {questionNumber}
     <div onClick={onEraseQuestion}>Erase button</div>
     <div>Hamburger</div>
-    <div>Question: {text}</div>
+    <input placeholder="Question" value={text} onChange={(e) => onChangeText(e.target.value)} />
     <div>Options</div>
     {options.map((option, idx) => (
       <div key={idx}>

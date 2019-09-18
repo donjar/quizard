@@ -40,6 +40,7 @@ const quizArray: ReactElement[] = [];
 for (let i = 0; i < 5; i++) {
   quizArray.push(
     <QuizCard
+      key={i}
       title="Quiz Title"
       description="This quiz is about lorem ipsum dolor"
       numAttempted={50}

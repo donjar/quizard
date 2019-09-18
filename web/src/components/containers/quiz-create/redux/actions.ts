@@ -3,12 +3,16 @@ import {
   ADD_ANSWER_OPTION,
   ADD_QUESTION,
   CHANGE_ANSWER_OPTION,
+  CHANGE_NAME,
+  CHANGE_QUESTION_TEXT,
   DELETE_ANSWER_OPTION,
   DELETE_QUESTION,
   IAnswerOption,
   IChangeAnswerOption,
+  IChangeQuestionText,
   IQuizCreateActionTypes,
-  SET_CORRECT_ANSWER
+  SET_CORRECT_ANSWER,
+  SET_ERROR
 } from './types';
 
 export const addQuestion = (newQuestion: IQuestion): IQuizCreateActionTypes => {
@@ -58,5 +62,30 @@ export const setCorrectAnswer = (
   return {
     payload: correctAnswerOption,
     type: SET_CORRECT_ANSWER
+  };
+};
+
+export const changeName = (
+  newName: string
+): IQuizCreateActionTypes => {
+  return {
+    payload: newName,
+    type: CHANGE_NAME
+  };
+};
+
+export const changeQuestionText = (
+  payload: IChangeQuestionText,
+): IQuizCreateActionTypes => {
+  return {
+    payload: payload,
+    type: CHANGE_QUESTION_TEXT
+  };
+};
+
+export const setError = (error: string): IQuizCreateActionTypes => {
+  return {
+    payload: error,
+    type: SET_ERROR
   };
 };

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const BodyAfterNavBar = styled.body`
+const BodyAfterNavBar = styled.div`
   margin-top: 100px;
 `;
 

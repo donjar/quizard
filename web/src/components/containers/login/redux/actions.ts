@@ -1,4 +1,4 @@
-import { CHANGE_EMAIL, CHANGE_PASSWORD, IAccessToken, ILoginActionTypes, SET_ACCESS_TOKEN, SET_ERROR } from './types';
+import { CHANGE_EMAIL, CHANGE_PASSWORD, ILoginActionTypes, PERFORM_LOGIN, SET_ERROR } from './types';
 
 export const changeEmail = (newEmail: string): ILoginActionTypes => {
   return {
@@ -14,10 +14,9 @@ export const changePassword = (newPassword: string): ILoginActionTypes => {
   };
 };
 
-export const setAccessToken = (newAccessToken: IAccessToken): ILoginActionTypes => {
+export const performLogin = (): ILoginActionTypes => {
   return {
-    payload: newAccessToken,
-    type: SET_ACCESS_TOKEN
+    type: PERFORM_LOGIN
   };
 };
 

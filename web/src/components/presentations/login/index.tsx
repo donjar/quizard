@@ -1,4 +1,5 @@
 import React from 'react';
+import { Redirect } from 'react-router';
 import styled from 'styled-components';
 import { ILoginProps } from '../../../interfaces/login/index';
 import { ReactComponent as Quizard } from '../../../svg/quizard.svg';
@@ -42,11 +43,18 @@ const LoginForm = styled.form`
 const Login: React.FC<ILoginProps> = ({
   email,
   password,
+  loggedIn,
   error,
   onChangeEmail,
   onChangePassword,
   onClickLogin
 }) => {
+  if (loggedIn) {
+    return (
+      <Redirect to="/home" />
+    );
+  }
+
   return (
     <StyledLogin>
       <StyledLoginCard>

@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
+import { createQuiz } from '../../../api';
 import { IQuestion } from '../../../interfaces/quiz-create';
 import { AppState } from '../../../store/store';
 import QuizCreate from '../../presentations/quiz-create/index';
@@ -9,14 +10,18 @@ import {
   addAnswerOption,
   addQuestion,
   changeAnswerOption,
+  changeName,
+  changeQuestionText,
   deleteAnswerOption,
   deleteQuestion,
-  setCorrectAnswer
+  setCorrectAnswer,
+  setError
 } from './redux/actions';
 
 interface IQuizCreateContainerProps {
   questions: IQuestion[];
-  numQuestions: number;
+  name: string;
+  error?: string;
   onAddQuestion: () => void;
   onDeleteQuestion: (questionIdx: number) => void;
   onChangeAnswerOption: (
@@ -27,17 +32,24 @@ interface IQuizCreateContainerProps {
   onAddAnswerOption: (questionIdx: number) => void;
   onDeleteAnswerOption: (questionIdx: number, optionIdx: number) => void;
   onSetCorrectAnswerOption: (questionIdx: number, optionIdx: number) => void;
+  onChangeName: (newName: string) => void;
+  onChangeQuestionText: (questionIdx: number, newText: string) => void;
+  setError: (error: string) => void;
 }
 
 const QuizCreateContainer: React.FC<IQuizCreateContainerProps> = ({
   questions,
-  numQuestions,
+  name,
+  error,
   onAddQuestion,
   onDeleteQuestion,
   onChangeAnswerOption,
   onAddAnswerOption,
   onDeleteAnswerOption,
-  onSetCorrectAnswerOption
+  onSetCorrectAnswerOption,
+  onChangeName,
+  onChangeQuestionText,
+  ...props
 }) => {
   // TODO: make map only call when questions object changes
   const questionCards = questions.map((question, questionIdx) => (
@@ -58,19 +70,50 @@ const QuizCreateContainer: React.FC<IQuizCreateContainerProps> = ({
       onSetCorrectAnswer={(optionIdx) =>
         onSetCorrectAnswerOption(questionIdx, optionIdx)
       }
+      onChangeText={(newText) =>
+        onChangeQuestionText(questionIdx, newText)
+      }
     />
   ));
 
+  const onCreateQuiz = async () => {
+    const resp = await createQuiz({
+      title: name,
+      questions: questions.map((question) => {
+        return {
+          text: question.text,
+          options: question.options,
+          correct_option: question.correctOption
+        };
+      })
+    });
+
+    if ('error' in resp) {
+      props.setError(JSON.stringify(resp.error));
+      return;
+    }
+
+    alert(`Quiz created! ${resp}`);
+  };
+
   return (
-    <QuizCreate numQuestions={numQuestions} onAddQuestion={onAddQuestion}>
+    <QuizCreate
+      name={name}
+      error={error}
+      onChangeName={onChangeName}
+      numQuestions={questions.length}
+      onAddQuestion={onAddQuestion}
+      onCreateQuiz={onCreateQuiz}
+    >
       {questionCards}
     </QuizCreate>
   );
 };
 
 const mapStateToProps = (state: AppState) => ({
-  numQuestions: state.quizCreate.questions.length,
-  questions: state.quizCreate.questions
+  name: state.quizCreate.name,
+  questions: state.quizCreate.questions,
+  error: state.quizCreate.error
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => {
@@ -103,7 +146,13 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
     onDeleteAnswerOption: (questionIdx: number, optionIdx: number) =>
       dispatch(deleteAnswerOption({ questionIdx, optionIdx })),
     onSetCorrectAnswerOption: (questionIdx: number, optionIdx: number) =>
-      dispatch(setCorrectAnswer({ questionIdx, optionIdx }))
+      dispatch(setCorrectAnswer({ questionIdx, optionIdx })),
+    onChangeName: (newName: string) =>
+      dispatch(changeName(newName)),
+    onChangeQuestionText: (questionIdx: number, newText: string) =>
+      dispatch(changeQuestionText({ questionIdx, newText })),
+    setError: (error: string) =>
+      dispatch(setError(error))
   };
 };
 

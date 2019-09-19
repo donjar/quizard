@@ -1,7 +1,6 @@
 import React from 'react';
 import { BeigeBackground } from '../common/BeigeBackground';
 import { BodyAfterNavBarWithPadding } from '../common/BodyAfterNavBarWithPadding';
-import HomeContent from './HomeContent';
 import HomeHeader from './HomeHeader';
 import HomeNavBar from './HomeNavBar';
 
@@ -11,7 +10,7 @@ const Home: React.FC = (props) => {
       <HomeNavBar />
       <BodyAfterNavBarWithPadding>
         <HomeHeader />
-        <HomeContent>{props.children}</HomeContent>
+        {props.children}
       </BodyAfterNavBarWithPadding>
     </BeigeBackground>
   );

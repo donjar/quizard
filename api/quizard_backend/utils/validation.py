@@ -122,7 +122,7 @@ def validate_permission(func=None, model=None, token_type="access"):
         # Validate the token before checking permission
         jwt_token_data = await validate_token(request)
 
-        if request.method in ("PUT", "PATCH"):
+        if model and request.method in ("PUT", "PATCH"):
             requester = jwt_token_data["identity"]
             # Get the resource, to check if the requester
             # is modifying a resource he/she owns

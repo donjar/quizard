@@ -6,9 +6,16 @@ from quizard_backend.tests import (
 )
 
 
-async def test_get_one_quiz(client, quizzes):
+async def test_get_one_quiz(client, quizzes, token_user):
+    # Without token
     # Get one quiz with id
     res = await client.get("/quizzes/{}".format(quizzes[2]["id"]))
+    assert res.status == 401
+
+    # Get one quiz with id
+    res = await client.get(
+        "/quizzes/{}".format(quizzes[2]["id"]), headers={"Authorization": token_user}
+    )
     assert res.status == 200
 
     body = await res.json()
@@ -17,15 +24,21 @@ async def test_get_one_quiz(client, quizzes):
     assert profile_created_from_origin(quizzes[2], body["data"])
 
     # quiz doesnt exist
-    res = await client.get("/quizzes/{}".format("9" * 32))
+    res = await client.get(
+        "/quizzes/{}".format("9" * 32), headers={"Authorization": token_user}
+    )
     assert res.status == 404
 
-    res = await client.get("/quizzes/3")
+    res = await client.get("/quizzes/3", headers={"Authorization": token_user})
     assert res.status == 404
 
 
-async def test_get_all_quizzes(client, quizzes):
+async def test_get_all_quizzes(client, quizzes, token_user):
+    # Without token
     res = await client.get("/quizzes")
+    assert res.status == 401
+
+    res = await client.get("/quizzes", headers={"Authorization": token_user})
     assert res.status == 200
 
     body = await res.json()
@@ -38,7 +51,9 @@ async def test_get_all_quizzes(client, quizzes):
     )
 
     # GET request will have its body ignored.
-    res = await client.get("/quizzes", json={"category_id": 3})
+    res = await client.get(
+        "/quizzes", json={"category_id": 3}, headers={"Authorization": token_user}
+    )
     assert res.status == 200
 
     body = await res.json()
@@ -47,7 +62,9 @@ async def test_get_all_quizzes(client, quizzes):
     assert len(body["data"]) == 15  # Default offset for quiz is 15
 
     # Get one quiz by id with many=True
-    res = await client.get("/quizzes?id={}".format(quizzes[2]["id"]))
+    res = await client.get(
+        "/quizzes?id={}".format(quizzes[2]["id"]), headers={"Authorization": token_user}
+    )
     assert res.status == 200
 
     body = await res.json()
@@ -58,7 +75,7 @@ async def test_get_all_quizzes(client, quizzes):
 
     ## LIMIT ##
     # No quizzes
-    res = await client.get("/quizzes?limit=0")
+    res = await client.get("/quizzes?limit=0", headers={"Authorization": token_user})
     assert res.status == 200
 
     body = await res.json()
@@ -67,7 +84,7 @@ async def test_get_all_quizzes(client, quizzes):
     assert not body["data"]
 
     # 10 quizzes
-    res = await client.get("/quizzes?limit=10")
+    res = await client.get("/quizzes?limit=10", headers={"Authorization": token_user})
     assert res.status == 200
 
     body = await res.json()
@@ -80,13 +97,16 @@ async def test_get_all_quizzes(client, quizzes):
     )
 
     # -1 quizzes
-    res = await client.get("/quizzes?limit=-1")
+    res = await client.get("/quizzes?limit=-1", headers={"Authorization": token_user})
     assert res.status == 400
 
 
-async def test_get_quizzes_with_last_id(client, quizzes):
+async def test_get_quizzes_with_last_id(client, quizzes, token_user):
     # Use last_id in query parameter.
-    res = await client.get("/quizzes?last_id={}".format(quizzes[2]["id"]))
+    res = await client.get(
+        "/quizzes?last_id={}".format(quizzes[2]["id"]),
+        headers={"Authorization": token_user},
+    )
     assert res.status == 200
 
     body = await res.json()
@@ -101,10 +121,10 @@ async def test_get_quizzes_with_last_id(client, quizzes):
     )
 
     # Invalid last_id
-    res = await client.get("/quizzes?last_id=3")
+    res = await client.get("/quizzes?last_id=3", headers={"Authorization": token_user})
     assert res.status == 400
 
-    res = await client.get("/quizzes?last_id=")
+    res = await client.get("/quizzes?last_id=", headers={"Authorization": token_user})
     assert res.status == 400
 
 

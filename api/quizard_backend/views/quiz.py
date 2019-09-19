@@ -14,6 +14,7 @@ from quizard_backend.utils.validation import (
 
 
 @validate_request(schema="quiz_read", skip_body=True)
+@validate_permission(model=Quiz)
 async def quiz_retrieve(req, req_args, req_body, many=True, *args, **kwargs):
     return await Quiz.get(**req_args, many=many)
 
@@ -143,7 +144,8 @@ async def quiz_route_submit_answer(request, quiz_id, question_id):
 
 
 @blueprint.route("/<quiz_id>/questions", methods=["GET"])
-async def quiz_route_get_questions(request, quiz_id):
+@validate_permission
+async def quiz_route_get_questions(request, quiz_id, **kwargs):
     quiz = await Quiz.get(id=quiz_id)
     quiz_question_ids = quiz["questions"]
 

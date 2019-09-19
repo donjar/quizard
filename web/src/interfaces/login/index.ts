@@ -14,7 +14,7 @@ export interface ILoginProps {
   loggedIn: boolean;
   onChangeEmail: (newEmail: string) => void;
   onChangePassword: (newPassword: string) => void;
-  onClickLogin: () => void;
+  onLogin: () => void;
 }
 
 export interface ILoginState {

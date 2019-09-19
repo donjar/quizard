@@ -47,13 +47,18 @@ const Login: React.FC<ILoginProps> = ({
   error,
   onChangeEmail,
   onChangePassword,
-  onClickLogin
+  onLogin
 }) => {
   if (loggedIn) {
     return (
       <Redirect to="/home" />
     );
   }
+
+  const onLoginFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    onLogin();
+  };
 
   return (
     <StyledLogin>
@@ -66,7 +71,7 @@ const Login: React.FC<ILoginProps> = ({
           />
           <Quizard />
         </CenteredDiv>
-        <LoginForm>
+        <LoginForm onSubmit={onLoginFormSubmit}>
           <InputField
             type="text"
             placeholder="Email"
@@ -79,8 +84,8 @@ const Login: React.FC<ILoginProps> = ({
             value={password}
             onChange={(event) => onChangePassword(event.target.value)}
           />
+          <DarkButton type="submit">Login</DarkButton>
         </LoginForm>
-        <DarkButton onClick={onClickLogin}>Login</DarkButton>
         <CenteredDiv>
           <div style={{ fontSize: '18px', textDecoration: 'underline' }}>
             Don't have an account?

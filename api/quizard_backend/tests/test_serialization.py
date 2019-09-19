@@ -1,10 +1,10 @@
 from quizard_backend.tests import get_fake_user, get_fake_quiz, get_fake_quiz_questions
 
 
-async def test_get_internal_id_success_quizzes(client, quizzes):
+async def test_get_internal_id_success_quizzes(client, quizzes, token_user):
     """Check the responses doesnt contain `internal_id`"""
     # Many
-    res = await client.get("/quizzes")
+    res = await client.get("/quizzes", headers={"Authorization": token_user})
     assert res.status == 200
 
     body = await res.json()
@@ -15,7 +15,9 @@ async def test_get_internal_id_success_quizzes(client, quizzes):
         assert "internal_id" not in item
 
     # Many with args
-    res = await client.get("/quizzes?id={}".format(quizzes[2]["id"]))
+    res = await client.get(
+        "/quizzes?id={}".format(quizzes[2]["id"]), headers={"Authorization": token_user}
+    )
     assert res.status == 200
 
     body = await res.json()
@@ -26,7 +28,9 @@ async def test_get_internal_id_success_quizzes(client, quizzes):
         assert "internal_id" not in item
 
     # Single
-    res = await client.get("/quizzes/{}".format(quizzes[2]["id"]))
+    res = await client.get(
+        "/quizzes/{}".format(quizzes[2]["id"]), headers={"Authorization": token_user}
+    )
     assert res.status == 200
 
     body = await res.json()

@@ -93,7 +93,7 @@ const QuizCreateContainer: React.FC<IQuizCreateContainerProps> = ({
       return;
     }
 
-    console.log(resp);
+    alert(`Quiz created! ${resp}`);
   };
 
   return (

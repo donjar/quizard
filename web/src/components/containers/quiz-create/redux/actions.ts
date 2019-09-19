@@ -78,7 +78,7 @@ export const changeQuestionText = (
   payload: IChangeQuestionText,
 ): IQuizCreateActionTypes => {
   return {
-    payload: payload,
+    payload,
     type: CHANGE_QUESTION_TEXT
   };
 };

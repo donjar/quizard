@@ -18,7 +18,7 @@ export const createQuiz = async (values: IQuizCreateApi) => {
     method: 'POST',
     body: JSON.stringify(values),
     headers: {
-      'Authentication': `Bearer ${token}`
+      Authorization: `Bearer ${token}`
     }
   });
 

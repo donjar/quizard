@@ -1,7 +1,7 @@
 import React from 'react';
 import { ChevronRight, Users } from 'react-feather';
 import styled from 'styled-components';
-import { IQuizCardProps } from '../../../interfaces/home/index';
+import { IQuizCard } from '../../../interfaces/home/index';
 import Card from '../common/Card';
 import { QuizCardContents } from './QuizCardContents';
 import { QuizDateCreatedDiv } from './QuizDateCreatedDiv';
@@ -26,7 +26,7 @@ const MiscDetails = styled.div`
   margin-top: 15px;
 `;
 
-const QuizCard: React.FC<IQuizCardProps> = ({
+const QuizCard: React.FC<IQuizCard> = ({
   title,
   description,
   numAttempted,

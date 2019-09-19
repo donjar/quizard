@@ -1,8 +1,14 @@
-import React, { ReactElement } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import { IHomeContentProps } from '../../../interfaces/home/index';
-import DarkButton from '../common/buttons/DarkButton';
-import UnselectedButton from '../common/buttons/UnselectedButton';
+import { IRowRendererProps } from '../../../interfaces/home';
+import { IHomeContentProps, IQuizCard } from '../../../interfaces/home/index';
+import QuizTypeButtonContainer from '../../containers/home/QuizTypeButtonContainer';
+import {
+  ATTEMPTED_QUIZZES_SELECTED,
+  CREATED_QUIZZES_SELECTED
+} from '../../containers/home/redux/types';
+import { HorizButtonToolbar } from '../common/HorizButtonToolbar';
+import { VirtualizedList } from '../common/VirtualizedList';
 import QuizCard from './QuizCard';
 
 const StyledHomeContent = styled.div`
@@ -11,53 +17,77 @@ const StyledHomeContent = styled.div`
   }
 `;
 
-const QuizTypeToolbar = styled.div`
-  display: flex;
+const createQuizCardList = (quizList: IQuizCard[]) => {
+  return quizList.map((quiz, index) => {
+    const { title, description, numAttempted, dateCreated } = quiz;
 
-  & > *:not(:first-child) {
-    margin-left: 11px;
-  }
-`;
-
-const QuizList = styled.div`
-  & > * {
-    margin: 20px 0;
-  }
-`;
-
-const QuizTypeButton: React.FC<IHomeContentProps> = ({
-  isSelected,
-  children
-}) => {
-  return isSelected ? (
-    <DarkButton>{children}</DarkButton>
-  ) : (
-    <UnselectedButton>{children}</UnselectedButton>
-  );
+    return (
+      <QuizCard
+        key={index}
+        title={title}
+        description={description}
+        numAttempted={numAttempted}
+        dateCreated={dateCreated}
+      />
+    );
+  });
 };
 
-const quizArray: ReactElement[] = [];
-for (let i = 0; i < 5; i++) {
-  quizArray.push(
-    <QuizCard
-      key={i}
-      title="Quiz Title"
-      description="This quiz is about lorem ipsum dolor"
-      numAttempted={50}
-      dateCreated={2}
-    />
-  );
-}
+const createQuizCardRowRenderer = (quizList: IQuizCard[]) => {
+  const quizCardList = createQuizCardList(quizList);
 
-const HomeContent: React.FC = () => {
+  return ({ key, index, style }: IRowRendererProps) => {
+    return (
+      <div key={key} style={style}>
+        {quizCardList[index]}
+      </div>
+    );
+  };
+};
+
+const isCreatedButtonSelected = (buttonType: string) => {
+  if (buttonType === CREATED_QUIZZES_SELECTED) {
+    return true;
+  }
+
+  return false;
+};
+
+const isAttemptedButtonSelected = (buttonType: string) => {
+  if (buttonType === ATTEMPTED_QUIZZES_SELECTED) {
+    return true;
+  }
+
+  return false;
+};
+
+const HomeContent: React.FC<IHomeContentProps> = ({
+  quizTypeSelected,
+  quizList
+}) => {
   return (
     <StyledHomeContent>
       <div>My Quizzes</div>
-      <QuizTypeToolbar>
-        <QuizTypeButton isSelected={1}>Created</QuizTypeButton>
-        <QuizTypeButton isSelected={0}>Attempted</QuizTypeButton>
-      </QuizTypeToolbar>
-      <QuizList>{quizArray}</QuizList>
+      <HorizButtonToolbar>
+        <QuizTypeButtonContainer
+          quizTypeSelected={CREATED_QUIZZES_SELECTED}
+          isSelected={isCreatedButtonSelected(quizTypeSelected)}
+        >
+          Created
+        </QuizTypeButtonContainer>
+        <QuizTypeButtonContainer
+          quizTypeSelected={ATTEMPTED_QUIZZES_SELECTED}
+          isSelected={isAttemptedButtonSelected(quizTypeSelected)}
+        >
+          Attempted
+        </QuizTypeButtonContainer>
+      </HorizButtonToolbar>
+      <VirtualizedList
+        listHeight={400}
+        rowCount={quizList.length}
+        rowHeight={200}
+        rowRenderer={createQuizCardRowRenderer(quizList)}
+      />
     </StyledHomeContent>
   );
 };

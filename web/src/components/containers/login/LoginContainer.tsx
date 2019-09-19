@@ -31,7 +31,7 @@ const LoginContainer: React.FC<ILoginContainerProps> = ({
   onChangePassword,
   ...props
 }) => {
-  const onClickLogin = async () => {
+  const onLogin = async () => {
     const data = await login(email, password);
     if ('error' in data) {
       props.setError(JSON.stringify(data.error));
@@ -50,7 +50,7 @@ const LoginContainer: React.FC<ILoginContainerProps> = ({
       error={error}
       onChangeEmail={onChangeEmail}
       onChangePassword={onChangePassword}
-      onClickLogin={onClickLogin}
+      onLogin={onLogin}
     />
   );
 };

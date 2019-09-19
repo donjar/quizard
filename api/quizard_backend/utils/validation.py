@@ -100,10 +100,6 @@ def validate_request(
         kwargs.pop("req_args", None)
         kwargs.pop("req_body", None)
 
-        # Rename "id" to internal "id"
-        if "id" in req_args:
-            req_args["uuid"] = req_args.pop("id")
-
         return await func(
             request, req_args=req_args, req_body=req_body, *args, **kwargs
         )

@@ -26,30 +26,30 @@ def get_fake_password():
 def get_fake_user():
     profile = fake.profile(fields=fake_profile_fields)
     return {
-        "uuid": generate_uuid(),
+        "id": generate_uuid(),
         "full_name": profile["name"],
         "email": profile["mail"],
         "password": get_fake_password(),
     }
 
 
-def get_fake_question_data(has_uuid=True):
+def get_fake_question_data(has_id=True):
     question_data = {
-        "uuid": generate_uuid(),
+        "id": generate_uuid(),
         "text": fake.sentence(nb_words=10),
         "options": [
             fake.sentence(nb_words=10) for _ in range(number_of_options_per_question)
         ],
         "correct_option": fake.pyint(max_value=number_of_options_per_question - 1),
     }
-    if not has_uuid:
-        question_data.pop("uuid")
+    if not has_id:
+        question_data.pop("id")
     return question_data
 
 
-def get_fake_quiz_questions(has_uuid=True):
+def get_fake_quiz_questions(has_id=True):
     return [
-        get_fake_question_data(has_uuid=has_uuid)
+        get_fake_question_data(has_id=has_id)
         for _ in range(number_of_questions_per_quiz)
     ]
 
@@ -63,7 +63,7 @@ def get_fake_questions_for_quiz(quiz_id):
 
 def get_fake_quiz(creator_id=None):
     return {
-        "uuid": generate_uuid(),
+        "id": generate_uuid(),
         "creator_id": creator_id,
         "title": fake.sentence(nb_words=8),
     }
@@ -78,7 +78,6 @@ def profile_created_from_origin(
     for key, val in origin.items():
         if key in ignore:
             continue
-        key = "id" if key == "uuid" else key
 
         if val != created[key]:
             return False

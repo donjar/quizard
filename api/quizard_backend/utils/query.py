@@ -39,22 +39,24 @@ async def get_one(model, **kwargs):
 async def get_many(
     model, last_id=None, limit=15, in_column=None, in_values=None, **kwargs
 ):
+    # Get the `internal_id` value from the starting row
+    # And use it to query the next page of results
     last_internal_id = 0
     if last_id:
-        row_of_last_id = await model.query.where(model.uuid == last_id).gino.first()
-        last_internal_id = row_of_last_id.id
+        row_of_last_id = await model.query.where(model.id == last_id).gino.first()
+        last_internal_id = row_of_last_id.internal_id
 
     return (
         await model.query.where(
             and_(
                 *dict_to_filter_args(model, **kwargs),
-                model.id > last_internal_id,
+                model.internal_id > last_internal_id,
                 getattr(model, in_column).in_(in_values)
                 if in_column and in_values
                 else True,
             )
         )
-        .order_by(model.id)
+        .order_by(model.internal_id)
         .limit(limit)
         .gino.all()
     )

@@ -12,7 +12,7 @@ from quizard_backend.utils.crypto import hash_password
 
 
 async def test_get_one_user(client, users):
-    res = await client.get("/users/{}".format(users[0]["uuid"]))
+    res = await client.get("/users/{}".format(users[0]["id"]))
     assert res.status == 200
 
     body = await res.json()
@@ -55,7 +55,7 @@ async def test_get_all_users(client, users):
     assert len(body["data"]) == 15  # Default offset for User is 15
 
     # Get one user by id
-    res = await client.get("/users?id={}".format(users[2]["uuid"]))
+    res = await client.get("/users?id={}".format(users[2]["id"]))
     assert res.status == 200
 
     body = await res.json()
@@ -94,7 +94,7 @@ async def test_get_all_users(client, users):
 
 async def test_get_users_with_last_id(client, users):
     # Use last_id in query parameter.
-    res = await client.get("/users?last_id={}".format(users[2]["uuid"]))
+    res = await client.get("/users?last_id={}".format(users[2]["id"]))
     assert res.status == 200
 
     body = await res.json()
@@ -121,7 +121,7 @@ async def test_get_users_with_last_id(client, users):
 
 async def test_create_user(client, users):
     new_user = get_fake_user()
-    new_user.pop("uuid")
+    new_user.pop("id")
 
     res = await client.post("/users", json=new_user)
     assert res.status == 200
@@ -137,7 +137,7 @@ async def test_create_user(client, users):
     # Ignore param args
     # POST request will have its query parameter (args) ignored.
     new_user = get_fake_user()
-    new_user.pop("uuid")
+    new_user.pop("id")
     res = await client.post("/users", json=new_user)
     assert res.status == 200
 
@@ -202,12 +202,12 @@ async def test_update_one_user(client, users, token_user):
     }
 
     # Without token
-    res = await client.patch("/users/{}".format(users[0]["uuid"]), json=new_changes)
+    res = await client.patch("/users/{}".format(users[0]["id"]), json=new_changes)
     assert res.status == 401
 
     # An user cannot update another user
     res = await client.patch(
-        "/users/{}".format(users[3]["uuid"]),
+        "/users/{}".format(users[3]["id"]),
         json=new_changes,
         headers={"Authorization": token_user},
     )
@@ -215,7 +215,7 @@ async def test_update_one_user(client, users, token_user):
 
     # With id
     res = await client.patch(
-        "/users/{}".format(users[0]["uuid"]),
+        "/users/{}".format(users[0]["id"]),
         json=new_changes,
         headers={"Authorization": token_user},
     )
@@ -224,9 +224,8 @@ async def test_update_one_user(client, users, token_user):
     body = await res.json()
     assert "data" in body
     assert isinstance(body["data"], dict)
-    updated_user = await get_one(User, id=1)
+    updated_user = await get_one(User, internal_id=1)
     updated_user = updated_user.to_dict()
-    updated_user["id"] = updated_user.pop("uuid")
 
     ## Assert the new password has been updated
     assert profile_created_from_origin(
@@ -246,7 +245,7 @@ async def test_update_one_user(client, users, token_user):
     # Update to a weak password
     new_changes = {"password": "mmmk"}
     res = await client.patch(
-        "/users/{}".format(users[1]["uuid"]),
+        "/users/{}".format(users[1]["id"]),
         json=new_changes,
         headers={"Authorization": token_user},
     )
@@ -258,15 +257,15 @@ async def test_update_one_user(client, users, token_user):
 
 async def test_replace_user(client, users, token_user):
     new_user = get_fake_user()
-    new_user.pop("uuid")
+    new_user.pop("id")
 
     # Missing token
-    res = await client.put("/users/{}".format(users[0]["uuid"]), json=new_user)
+    res = await client.put("/users/{}".format(users[0]["id"]), json=new_user)
     assert res.status == 401
 
     # Valid request
     res = await client.put(
-        "/users/{}".format(users[0]["uuid"]),
+        "/users/{}".format(users[0]["id"]),
         json=new_user,
         headers={"Authorization": token_user},
     )
@@ -276,51 +275,50 @@ async def test_replace_user(client, users, token_user):
     assert "data" in body
     assert isinstance(body["data"], dict)
 
-    updated_user = await get_one(User, id=1)
+    updated_user = await get_one(User, internal_id=1)
     updated_user = updated_user.to_dict()
-    updated_user["id"] = updated_user.pop("uuid")
     assert profile_created_from_origin(new_user, updated_user)
 
 
 async def test_replace_user_with_invalid_args(client, users):
-    res = await client.put("/users/{}".format(users[0]["uuid"]), json={})
+    res = await client.put("/users/{}".format(users[0]["id"]), json={})
     assert res.status == 400
 
-    res = await client.put("/users/{}".format(users[0]["uuid"]), json={"id": 4})
+    res = await client.put("/users/{}".format(users[0]["id"]), json={"id": 4})
     assert res.status == 400
 
-    res = await client.put("/users/{}".format(users[0]["uuid"]), json={"full_name": ""})
+    res = await client.put("/users/{}".format(users[0]["id"]), json={"full_name": ""})
     assert res.status == 400
 
-    res = await client.put("/users/{}".format(users[0]["uuid"]), json={"full_name": ""})
+    res = await client.put("/users/{}".format(users[0]["id"]), json={"full_name": ""})
     assert res.status == 400
 
     res = await client.put(
-        "/users/{}".format(users[0]["uuid"]), json={"full_name": "Josh", "password": ""}
+        "/users/{}".format(users[0]["id"]), json={"full_name": "Josh", "password": ""}
     )
     assert res.status == 400
 
-    res = await client.put("/users/{}".format(users[0]["uuid"]), json={"email": ""})
+    res = await client.put("/users/{}".format(users[0]["id"]), json={"email": ""})
     assert res.status == 400
 
-    res = await client.put("/users/{}".format(users[0]["uuid"]), json={"location": 2})
+    res = await client.put("/users/{}".format(users[0]["id"]), json={"location": 2})
     assert res.status == 400
 
-    res = await client.put("/users/{}".format(users[0]["uuid"]), json={"created_at": 2})
+    res = await client.put("/users/{}".format(users[0]["id"]), json={"created_at": 2})
     assert res.status == 400
 
-    res = await client.put("/users/{}".format(users[0]["uuid"]), json={"updated_at": 2})
+    res = await client.put("/users/{}".format(users[0]["id"]), json={"updated_at": 2})
     assert res.status == 400
 
     # Invalid or weak password
     res = await client.put(
-        "/users/{}".format(users[0]["uuid"]),
+        "/users/{}".format(users[0]["id"]),
         json={"full_name": "Josh", "password": "mmmw"},
     )
     assert res.status == 400
 
     res = await client.put(
-        "/users/{}".format(users[0]["uuid"]),
+        "/users/{}".format(users[0]["id"]),
         json={"full_name": "Josh", "password": "qweon@qweqweklasl"},
     )
     assert res.status == 400
@@ -328,9 +326,8 @@ async def test_replace_user_with_invalid_args(client, users):
     # Assert no new users are created
     all_users = await User.query.gino.all()
     assert len(all_users) == len(users)
-    updated_user = await get_one(User, id=1)
+    updated_user = await get_one(User, internal_id=1)
     updated_user = updated_user.to_dict()
-    updated_user["id"] = updated_user.pop("uuid")
     assert profile_created_from_origin(users[0], updated_user)
 
 

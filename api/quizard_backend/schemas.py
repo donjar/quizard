@@ -42,8 +42,6 @@ is_uuid_list = {"type": "list", "schema": is_required_uuid}
 
 # Schemas
 
-QUERY_PARAM_READ_SCHEMA = {"last_id": is_uuid, "limit": is_unsigned_integer_with_max}
-
 QUIZ_QUESTION_READ_SCHEMA = {
     "id": is_string,
     "quiz_id": is_string,
@@ -53,12 +51,11 @@ QUIZ_QUESTION_READ_SCHEMA = {
     "correct_option": {"readonly": True},
     "created_at": is_unsigned_integer,
     "updated_at": is_unsigned_integer,
-    **QUERY_PARAM_READ_SCHEMA,
 }
 
 QUIZ_QUESTION_WRITE_SCHEMA = {
     "id": {"readonly": True},
-    "quiz_id": is_required_uuid,
+    "quiz_id": is_required_string,
     "text": is_required_string,
     "animation_id": is_unsigned_integer,
     "options": {**is_required_string_list, "maxlength": MAX_OPTIONS_PER_QUESTION},
@@ -74,13 +71,12 @@ QUIZ_ATTEMPT_READ_SCHEMA = {
     "score": is_integer,
     "created_at": is_unsigned_integer,
     "updated_at": is_unsigned_integer,
-    **QUERY_PARAM_READ_SCHEMA,
 }
 
 QUIZ_ATTEMPT_WRITE_SCHEMA = {
     "id": {"readonly": True},
-    "quiz_id": is_required_uuid,
-    "user_id": is_required_uuid,
+    "quiz_id": is_required_string,
+    "user_id": is_required_string,
     "score": {"readonly": True},
     "created_at": {"readonly": True},
     "updated_at": {"readonly": True},
@@ -94,14 +90,13 @@ QUIZ_ANSWER_READ_SCHEMA = {
     "selected_option": is_unsigned_integer,
     "created_at": is_unsigned_integer,
     "updated_at": is_unsigned_integer,
-    **QUERY_PARAM_READ_SCHEMA,
 }
 
 QUIZ_ANSWER_WRITE_SCHEMA = {
     "id": {"readonly": True},
-    "question_id": is_required_uuid,
-    "attempt_id": is_required_uuid,
-    "user_id": is_required_uuid,
+    "question_id": is_required_string,
+    "attempt_id": is_required_string,
+    "user_id": is_required_string,
     "selected_option": is_required_integer,
     "created_at": {"readonly": True},
     "updated_at": {"readonly": True},
@@ -115,20 +110,18 @@ QUIZ_READ_SCHEMA = {
     "category_id": is_unsigned_integer,
     "type_id": is_unsigned_integer,
     "animation_id": is_unsigned_integer,
-    "questions": is_uuid_list,
+    "questions": is_string_list,
     "questions": {  # A list of dicts
         "type": "list",
         "schema": {"type": "dict", "schema": QUIZ_QUESTION_READ_SCHEMA},
     },
     "created_at": is_unsigned_integer,
     "updated_at": is_unsigned_integer,
-    **QUERY_PARAM_READ_SCHEMA,
 }
 
 QUIZ_WRITE_SCHEMA = {
     "id": {"readonly": True},
     "title": is_required_string,
-    "creator_id": is_uuid,
     "category_id": is_unsigned_integer,
     "type_id": is_unsigned_integer,
     "animation_id": is_unsigned_integer,
@@ -154,7 +147,6 @@ USER_READ_SCHEMA = {
     "disabled": is_boolean,
     "created_at": is_unsigned_integer,
     "updated_at": is_unsigned_integer,
-    **QUERY_PARAM_READ_SCHEMA,
 }
 
 USER_WRITE_SCHEMA = {
@@ -172,6 +164,25 @@ USER_LOGIN_SCHEMA = {
     "email": is_required_string,
     "password": {**is_required_string, "minlength": 8, "maxlength": 128},
 }
+
+# INJECTED SCHEMAS
+
+GLOBAL_SCHEMA = {"internal_id": {"readonly": True}}
+QUERY_PARAM_READ_SCHEMA = {"last_id": is_uuid, "limit": is_unsigned_integer_with_max}
+
+## INJECT FIELDS TO SCHEMAS
+variables = locals()
+for var_name in list(variables.keys()):
+    inject_dict = {}
+
+    if var_name.endswith("_SCHEMA"):
+        inject_dict.update(GLOBAL_SCHEMA)
+        if var_name.endswith("_READ_SCHEMA"):
+            inject_dict.update(QUERY_PARAM_READ_SCHEMA)
+
+        # Update the variable
+        variables[var_name].update(inject_dict)
+
 
 """
 The format for keys in `schemas` is

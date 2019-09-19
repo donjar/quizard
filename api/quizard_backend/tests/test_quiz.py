@@ -8,7 +8,7 @@ from quizard_backend.tests import (
 
 async def test_get_one_quiz(client, quizzes):
     # Get one quiz with id
-    res = await client.get("/quizzes/{}".format(quizzes[2]["uuid"]))
+    res = await client.get("/quizzes/{}".format(quizzes[2]["id"]))
     assert res.status == 200
 
     body = await res.json()
@@ -47,7 +47,7 @@ async def test_get_all_quizzes(client, quizzes):
     assert len(body["data"]) == 15  # Default offset for quiz is 15
 
     # Get one quiz by id with many=True
-    res = await client.get("/quizzes?id={}".format(quizzes[2]["uuid"]))
+    res = await client.get("/quizzes?id={}".format(quizzes[2]["id"]))
     assert res.status == 200
 
     body = await res.json()
@@ -86,7 +86,7 @@ async def test_get_all_quizzes(client, quizzes):
 
 async def test_get_quizzes_with_last_id(client, quizzes):
     # Use last_id in query parameter.
-    res = await client.get("/quizzes?last_id={}".format(quizzes[2]["uuid"]))
+    res = await client.get("/quizzes?last_id={}".format(quizzes[2]["id"]))
     assert res.status == 200
 
     body = await res.json()
@@ -114,8 +114,8 @@ async def test_get_quizzes_with_last_id(client, quizzes):
 async def test_create_quiz(client, users, quizzes, token_user):
     fake_quiz = get_fake_quiz()
     fake_quiz.pop("creator_id")
-    new_quiz = {**fake_quiz, "questions": get_fake_quiz_questions(has_uuid=False)}
-    new_quiz.pop("uuid", None)
+    new_quiz = {**fake_quiz, "questions": get_fake_quiz_questions(has_id=False)}
+    new_quiz.pop("id", None)
 
     # Cannot create an quiz without token
     res = await client.post("/quizzes", json=new_quiz)
@@ -282,8 +282,8 @@ async def test_delete_quiz(client, users, quizzes, token_user):
     # Create a dummy quiz
     fake_quiz = get_fake_quiz()
     fake_quiz.pop("creator_id")
-    new_quiz = {**fake_quiz, "questions": get_fake_quiz_questions(has_uuid=False)}
-    new_quiz.pop("uuid", None)
+    new_quiz = {**fake_quiz, "questions": get_fake_quiz_questions(has_id=False)}
+    new_quiz.pop("id", None)
 
     res = await client.post(
         "/quizzes", json=new_quiz, headers={"Authorization": token_user}

@@ -78,11 +78,11 @@ class BaseModel(db.Model):
 
     @classmethod
     async def modify(cls, get_kwargs, update_kwargs):
-        model_id = get_kwargs.get("uuid")
+        model_id = get_kwargs.get("id")
         if not model_id:
             raise InvalidUsage("Missing field 'id' in query parameter")
 
-        payload = await get_one(cls, uuid=model_id)
+        payload = await get_one(cls, id=model_id)
         if not payload:
             raise_not_found_exception(cls, id=model_id)
 
@@ -91,11 +91,11 @@ class BaseModel(db.Model):
 
     @classmethod
     async def remove(cls, **kwargs):
-        model_id = kwargs.get("uuid")
+        model_id = kwargs.get("id")
         if not model_id:
             raise InvalidUsage("Missing field 'id' in query parameter")
 
-        model = await get_one(cls, uuid=model_id)
+        model = await get_one(cls, id=model_id)
         if not model:
             raise_not_found_exception(cls, id=model_id)
 
@@ -105,13 +105,11 @@ class BaseModel(db.Model):
 class QuizQuestion(BaseModel):
     __tablename__ = "quiz_question"
 
-    id = db.Column(db.BigInteger, primary_key=True, autoincrement=True)
-    uuid = db.Column(
+    id = db.Column(
         db.String(length=32), nullable=False, unique=True, default=generate_uuid
     )
-    quiz_id = db.Column(
-        db.String(length=32), db.ForeignKey("quiz.uuid"), nullable=False
-    )
+    internal_id = db.Column(db.BigInteger, primary_key=True, autoincrement=True)
+    quiz_id = db.Column(db.String(length=32), db.ForeignKey("quiz.id"), nullable=False)
     text = db.Column(db.String, nullable=False)
     options = db.Column(ARRAY(db.String), server_default="{}")
     correct_option = db.Column(db.SmallInteger, nullable=False, default=0)
@@ -119,32 +117,30 @@ class QuizQuestion(BaseModel):
     updated_at = db.Column(db.BigInteger, onupdate=unix_time)
 
     # Index
-    _idx_quiz_question_uuid = db.Index("idx_quiz_question_uuid", "uuid")
+    _idx_quiz_question_id = db.Index("idx_quiz_question_id", "id")
     _idx_quiz_question_quiz_id = db.Index("idx_quiz_question_quiz_id", "quiz_id")
 
 
 class QuizAnswer(BaseModel):
     __tablename__ = "quiz_answer"
 
-    id = db.Column(db.BigInteger, primary_key=True, autoincrement=True)
-    uuid = db.Column(
+    id = db.Column(
         db.String(length=32), nullable=False, unique=True, default=generate_uuid
     )
+    internal_id = db.Column(db.BigInteger, primary_key=True, autoincrement=True)
     question_id = db.Column(
-        db.String(length=32), db.ForeignKey("quiz_question.uuid"), nullable=False
+        db.String(length=32), db.ForeignKey("quiz_question.id"), nullable=False
     )
     attempt_id = db.Column(
-        db.String(length=32), db.ForeignKey("quiz_attempt.uuid"), nullable=False
+        db.String(length=32), db.ForeignKey("quiz_attempt.id"), nullable=False
     )
-    user_id = db.Column(
-        db.String(length=32), db.ForeignKey("user.uuid"), nullable=False
-    )
+    user_id = db.Column(db.String(length=32), db.ForeignKey("user.id"), nullable=False)
     selected_option = db.Column(db.SmallInteger)
     created_at = db.Column(db.BigInteger, nullable=False, default=unix_time)
     updated_at = db.Column(db.BigInteger, onupdate=unix_time)
 
     # Index
-    _idx_quiz_anawer_uuid = db.Index("idx_quiz_anawer_uuid", "uuid")
+    _idx_quiz_anawer_id = db.Index("idx_quiz_anawer_id", "id")
     _idx_quiz_answer_question_attempt_user = db.Index(
         "idx_quiz_answer_question_attempt_user", "question_id", "attempt_id", "user_id"
     )
@@ -153,22 +149,18 @@ class QuizAnswer(BaseModel):
 class QuizAttempt(BaseModel):
     __tablename__ = "quiz_attempt"
 
-    id = db.Column(db.BigInteger, primary_key=True, autoincrement=True)
-    uuid = db.Column(
+    id = db.Column(
         db.String(length=32), nullable=False, unique=True, default=generate_uuid
     )
-    quiz_id = db.Column(
-        db.String(length=32), db.ForeignKey("quiz.uuid"), nullable=False
-    )
-    user_id = db.Column(
-        db.String(length=32), db.ForeignKey("user.uuid"), nullable=False
-    )
+    internal_id = db.Column(db.BigInteger, primary_key=True, autoincrement=True)
+    quiz_id = db.Column(db.String(length=32), db.ForeignKey("quiz.id"), nullable=False)
+    user_id = db.Column(db.String(length=32), db.ForeignKey("user.id"), nullable=False)
     score = db.Column(db.BigInteger, nullable=True)
     created_at = db.Column(db.BigInteger, nullable=False, default=unix_time)
     updated_at = db.Column(db.BigInteger, onupdate=unix_time)
 
     # Index
-    _idx_quiz_attempt_uuid = db.Index("idx_quiz_attempt_uuid", "uuid")
+    _idx_quiz_attempt_id = db.Index("idx_quiz_attempt_id", "id")
     _idx_quiz_attempt_quiz_id_score = db.Index(
         "idx_quiz_attempt_quiz_id_score", "quiz_id", "score"
     )
@@ -187,14 +179,14 @@ class QuizAttempt(BaseModel):
 class Quiz(BaseModel):
     __tablename__ = "quiz"
 
-    id = db.Column(db.BigInteger, primary_key=True, autoincrement=True)
-    uuid = db.Column(
+    id = db.Column(
         db.String(length=32), nullable=False, unique=True, default=generate_uuid
     )
+    internal_id = db.Column(db.BigInteger, primary_key=True, autoincrement=True)
     title = db.Column(db.String, nullable=False)
     description = db.Column(db.String)
     creator_id = db.Column(
-        db.String(length=32), db.ForeignKey("user.uuid"), nullable=False
+        db.String(length=32), db.ForeignKey("user.id"), nullable=False
     )
     category_id = db.Column(db.SmallInteger)
     type_id = db.Column(db.SmallInteger)
@@ -204,7 +196,7 @@ class Quiz(BaseModel):
     updated_at = db.Column(db.BigInteger, onupdate=unix_time)
 
     # Index
-    _idx_quiz_uuid = db.Index("idx_quiz_uuid", "uuid")
+    _idx_quiz_id = db.Index("idx_quiz_id", "id")
     _idx_quiz_creator = db.Index("idx_quiz_creator", "creator_id")
     _idx_quiz_category_id = db.Index("idx_quiz_category_id", "category_id")
 
@@ -214,14 +206,14 @@ class Quiz(BaseModel):
 
     @classmethod
     async def remove(cls, **kwargs):
-        if "uuid" not in kwargs:
+        if "id" not in kwargs:
             raise KeyError("Missing key 'id' in query parameter.")
 
         # Delete all the attempts linked to the quiz
-        await delete_many(QuizAttempt, quiz_id=kwargs["uuid"])
+        await delete_many(QuizAttempt, quiz_id=kwargs["id"])
 
         # Delete all the questions linked to the quiz
-        await delete_many(QuizQuestion, quiz_id=kwargs["uuid"])
+        await delete_many(QuizQuestion, quiz_id=kwargs["id"])
 
         return await super(Quiz, cls).remove(**kwargs)
 
@@ -229,10 +221,10 @@ class Quiz(BaseModel):
 class User(BaseModel):
     __tablename__ = "user"
 
-    id = db.Column(db.BigInteger, primary_key=True, autoincrement=True)
-    uuid = db.Column(
+    id = db.Column(
         db.String(length=32), nullable=False, unique=True, default=generate_uuid
     )
+    internal_id = db.Column(db.BigInteger, primary_key=True, autoincrement=True)
     full_name = db.Column(db.String, nullable=False)
     display_name = db.Column(db.String)
     email = db.Column(db.String, unique=True, nullable=False)
@@ -242,7 +234,7 @@ class User(BaseModel):
     updated_at = db.Column(db.BigInteger, onupdate=unix_time)
 
     # Index
-    _idx_user_uuid = db.Index("idx_user_uuid", "uuid")
+    _idx_user_id = db.Index("idx_user_id", "id")
     _idx_user_email = db.Index("idx_user_email", "email")
 
     @classmethod
@@ -267,7 +259,7 @@ class User(BaseModel):
     @classmethod
     async def remove(cls, **kwargs):
         """For User, only disabled it, without completely delete it."""
-        if "uuid" not in kwargs:
+        if "id" not in kwargs:
             raise InvalidUsage("Missing field 'id' in query parameter")
 
         await super(User, cls).modify(kwargs, {"disabled": True})

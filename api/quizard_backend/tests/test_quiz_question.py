@@ -3,7 +3,7 @@ from quizard_backend.tests import profile_created_from_origin
 
 async def test_get_questions(client, questions, quizzes):
     # Get one quiz with id
-    res = await client.get("/quizzes/{}/questions".format(quizzes[2]["uuid"]))
+    res = await client.get("/quizzes/{}/questions".format(quizzes[2]["id"]))
     assert res.status == 200
 
     body = await res.json()

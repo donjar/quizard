@@ -39,7 +39,7 @@ async def quiz_create(req, req_args, req_body, *args, **kwargs):
     # Update the questions' order in quiz
     # using the IDs of created questions
     if not questions:
-        return await Quiz.modify({"uuid": result["id"]}, {"questions": questions})
+        return await Quiz.modify({"id": result["id"]}, {"questions": questions})
     return result
 
 
@@ -91,7 +91,7 @@ async def quiz_route_submit_answer(request, quiz_id, question_id):
     requester = jwt_data["identity"]
 
     # Check if the quiz exists, before further processing
-    await Quiz.get(uuid=quiz_id)
+    await Quiz.get(id=quiz_id)
 
     # Get the latest attempt
     latest_attempt = await get_one_latest(
@@ -102,7 +102,7 @@ async def quiz_route_submit_answer(request, quiz_id, question_id):
         latest_attempt = await QuizAttempt.add(quiz_id=quiz_id, user_id=requester["id"])
         attempt_id = latest_attempt["id"]
     else:
-        attempt_id = latest_attempt.uuid
+        attempt_id = latest_attempt.id
 
     # Request's body validation
     req_body = request.json or {}
@@ -116,7 +116,7 @@ async def quiz_route_submit_answer(request, quiz_id, question_id):
         "quiz_answer_write",
     )
     # Check if the quiz exists, before further processing
-    await QuizQuestion.get(uuid=question_id)
+    await QuizQuestion.get(id=question_id)
 
     # Fail the creation of answer
     # if the question is already answered in the current attempt
@@ -131,7 +131,7 @@ async def quiz_route_submit_answer(request, quiz_id, question_id):
     await QuizAnswer.add(**quiz_answer_data)
 
     # Return the answer is correct or wrong
-    question = await get_one(QuizQuestion, uuid=question_id)
+    question = await get_one(QuizQuestion, id=question_id)
     return json(
         {
             "data": {
@@ -144,13 +144,13 @@ async def quiz_route_submit_answer(request, quiz_id, question_id):
 
 @blueprint.route("/<quiz_id>/questions", methods=["GET"])
 async def quiz_route_get_questions(request, quiz_id):
-    quiz = await Quiz.get(uuid=quiz_id)
+    quiz = await Quiz.get(id=quiz_id)
     quiz_question_ids = quiz["questions"]
 
     questions = []
     if quiz_question_ids:
         quiz_questions = await QuizQuestion.get(
-            in_column="uuid", in_values=quiz_question_ids, many=True
+            in_column="id", in_values=quiz_question_ids, many=True
         )
         questions_dict = {question["id"]: question for question in quiz_questions}
         questions = [questions_dict[question_id] for question_id in quiz_question_ids]
@@ -160,17 +160,17 @@ async def quiz_route_get_questions(request, quiz_id):
 
 async def calculate_score(question_ids, answers):
     score = 0
-    questions = await get_many(QuizQuestion, in_column="uuid", in_values=question_ids)
+    questions = await get_many(QuizQuestion, in_column="id", in_values=question_ids)
 
     for question in questions:
-        if question.correct_option == answers[question.uuid]:
+        if question.correct_option == answers[question.id]:
             score += 1
 
     return score
 
 
 async def quiz_route_get_attempt(request, requester, quiz_id):
-    quiz = await Quiz.get(uuid=quiz_id)
+    quiz = await Quiz.get(id=quiz_id)
     quiz_question_ids = quiz["questions"]
 
     # Get the latest attempt
@@ -186,7 +186,7 @@ async def quiz_route_get_attempt(request, requester, quiz_id):
 
     # If the user has at least 1 answer in this quiz
     requester_answers = await get_many(
-        QuizAnswer, attempt_id=latest_attempt.uuid, user_id=requester["id"]
+        QuizAnswer, attempt_id=latest_attempt.id, user_id=requester["id"]
     )
 
     first_unanswered_question = None
@@ -217,7 +217,7 @@ async def quiz_route_get_attempt(request, requester, quiz_id):
 
 async def quiz_route_create_attempt(request, requester, quiz_id):
     # Check if the quiz exists, before further processing
-    await Quiz.get(uuid=quiz_id)
+    await Quiz.get(id=quiz_id)
 
     return await QuizAttempt.add(user_id=requester["id"], quiz_id=quiz_id)
 

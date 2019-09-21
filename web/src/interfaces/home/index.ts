@@ -1,4 +1,5 @@
-export interface IQuestion {
+export interface IQuiz {
+  id: string;
   title: string;
   description: string;
   numAttempted: number;
@@ -10,7 +11,7 @@ export interface IHomeContentProps {
   quizList: IQuizCard[];
 }
 
-export interface IQuizCard extends IQuestion {
+export interface IQuizCard extends IQuiz {
 }
 
 export interface IHomeState {
@@ -20,8 +21,8 @@ export interface IHomeState {
 }
 
 export interface IHomeContainerProps extends IHomeState {
-  setCreatedQuizzes: (questions: IQuestion[]) => void;
-  setAttemptedQuizzes: (questions: IQuestion[]) => void;
+  setCreatedQuizzes: (questions: IQuiz[]) => void;
+  setAttemptedQuizzes: (questions: IQuiz[]) => void;
 }
 
 export interface IRowRendererProps {

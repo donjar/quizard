@@ -25,6 +25,7 @@ export interface IQuizCreateProps {
   name: string;
   error?: string;
   numQuestions: number;
+  createdQuizId?: string;
   onAddQuestion: () => void;
   onChangeName: (newName: string) => void;
   onCreateQuiz: () => void;
@@ -34,6 +35,7 @@ export interface IQuizCreateState {
   name: string;
   questions: IQuestion[];
   error?: string;
+  createdQuizId?: string;
 }
 
 export interface IQuestionApi {

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { IRowRendererProps } from '../../../interfaces/home';
 import { IHomeContentProps, IQuizCard } from '../../../interfaces/home/index';
@@ -19,16 +20,10 @@ const StyledHomeContent = styled.div`
 
 const createQuizCardList = (quizList: IQuizCard[]) => {
   return quizList.map((quiz, index) => {
-    const { title, description, numAttempted, dateCreated } = quiz;
-
     return (
-      <QuizCard
-        key={index}
-        title={title}
-        description={description}
-        numAttempted={numAttempted}
-        dateCreated={dateCreated}
-      />
+      <Link to={`/quiz-create-summary/${quiz.id}`}>
+        <QuizCard key={index} {...quiz} />
+      </Link>
     );
   });
 };

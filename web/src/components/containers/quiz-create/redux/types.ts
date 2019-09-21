@@ -9,6 +9,7 @@ export const SET_CORRECT_ANSWER = 'SET_CORRECT_ANSWER';
 export const CHANGE_NAME = 'CHANGE_NAME';
 export const CHANGE_QUESTION_TEXT = 'CHANGE_QUESTION_TEXT';
 export const SET_ERROR = 'SET_ERROR_QUIZ_CREATE';
+export const QUIZ_CREATED = 'QUIZ_CREATED';
 
 // TODO: Shift common interfaces into interfaces folder
 export interface IAnswerOption {
@@ -70,6 +71,11 @@ export interface IChangeQuestionTextAction {
   payload: IChangeQuestionText;
 }
 
+export interface IQuizCreatedAction {
+  type: typeof QUIZ_CREATED;
+  payload: string;
+}
+
 export type IQuizCreateActionTypes =
   | IAddQuestionAction
   | IDeleteQuestionAction
@@ -79,4 +85,5 @@ export type IQuizCreateActionTypes =
   | ISetCorrectAnswerAction
   | IChangeNameAction
   | IChangeQuestionTextAction
-  | ISetErrorAction;
+  | ISetErrorAction
+  | IQuizCreatedAction;

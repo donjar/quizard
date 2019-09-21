@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { Redirect } from 'react-router';
 import { IQuizCreateProps } from '../../../interfaces/quiz-create/index';
 import { BeigeBackground } from '../common/BeigeBackground';
 import { BodyAfterNavBarWithPadding } from '../common/BodyAfterNavBarWithPadding';
@@ -13,8 +14,13 @@ const QuizCreate: React.FC<IQuizCreateProps> = ({
   onAddQuestion,
   onChangeName,
   onCreateQuiz,
+  createdQuizId,
   children
 }) => {
+  if (createdQuizId) {
+    return (<Redirect to={`/quiz-create-summary/${createdQuizId}`} />);
+  }
+
   return (
     <BeigeBackground>
       <QuizCreateNavBar onCreateQuiz={onCreateQuiz} />

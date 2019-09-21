@@ -11,6 +11,7 @@ import {
   IChangeAnswerOption,
   IChangeQuestionText,
   IQuizCreateActionTypes,
+  QUIZ_CREATED,
   SET_CORRECT_ANSWER,
   SET_ERROR
 } from './types';
@@ -87,5 +88,12 @@ export const setError = (error: string): IQuizCreateActionTypes => {
   return {
     payload: error,
     type: SET_ERROR
+  };
+};
+
+export const quizCreated = (quizId: string): IQuizCreateActionTypes => {
+  return {
+    payload: quizId,
+    type: QUIZ_CREATED
   };
 };

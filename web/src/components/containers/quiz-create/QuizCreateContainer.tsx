@@ -14,6 +14,7 @@ import {
   changeQuestionText,
   deleteAnswerOption,
   deleteQuestion,
+  quizCreated,
   setCorrectAnswer,
   setError
 } from './redux/actions';
@@ -21,6 +22,7 @@ import {
 interface IQuizCreateContainerProps {
   questions: IQuestion[];
   name: string;
+  createdQuizId?: string;
   error?: string;
   onAddQuestion: () => void;
   onDeleteQuestion: (questionIdx: number) => void;
@@ -35,11 +37,13 @@ interface IQuizCreateContainerProps {
   onChangeName: (newName: string) => void;
   onChangeQuestionText: (questionIdx: number, newText: string) => void;
   setError: (error: string) => void;
+  quizCreated: (quizId: string) => void;
 }
 
 const QuizCreateContainer: React.FC<IQuizCreateContainerProps> = ({
   questions,
   name,
+  createdQuizId,
   error,
   onAddQuestion,
   onDeleteQuestion,
@@ -90,18 +94,19 @@ const QuizCreateContainer: React.FC<IQuizCreateContainerProps> = ({
 
     if ('error' in resp) {
       props.setError(JSON.stringify(resp.error));
-      return;
+    } else {
+      alert('Quiz created!');
+      props.quizCreated(resp.data.id);
     }
-
-    alert(`Quiz created with ID ${resp.data.id}`);
   };
 
   return (
     <QuizCreate
       name={name}
       error={error}
-      onChangeName={onChangeName}
       numQuestions={questions.length}
+      createdQuizId={createdQuizId}
+      onChangeName={onChangeName}
       onAddQuestion={onAddQuestion}
       onCreateQuiz={onCreateQuiz}
     >
@@ -113,6 +118,7 @@ const QuizCreateContainer: React.FC<IQuizCreateContainerProps> = ({
 const mapStateToProps = (state: AppState) => ({
   name: state.quizCreate.name,
   questions: state.quizCreate.questions,
+  createdQuizId: state.quizCreate.createdQuizId,
   error: state.quizCreate.error
 });
 
@@ -152,7 +158,9 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
     onChangeQuestionText: (questionIdx: number, newText: string) =>
       dispatch(changeQuestionText({ questionIdx, newText })),
     setError: (error: string) =>
-      dispatch(setError(error))
+      dispatch(setError(error)),
+    quizCreated: (quizId: string) =>
+      dispatch(quizCreated(quizId))
   };
 };
 

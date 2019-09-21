@@ -1,16 +1,24 @@
 from sanic.response import json
+from sanic.exceptions import Unauthorized
 from sanic_jwt_extended import jwt_required
 from sanic_jwt_extended.decorators import get_jwt_data_in_request_header
 
 from quizard_backend.views.urls import quiz_blueprint as blueprint
 from quizard_backend.exceptions import ExistingAnswerError
 from quizard_backend.models import Quiz, QuizQuestion, QuizAttempt, QuizAnswer
-from quizard_backend.utils.query import get_one_latest, get_many, get_one, get_count
+from quizard_backend.utils.query import (
+    get_one_latest,
+    get_many,
+    get_one,
+    get_count,
+    get_many_with_count_and_group_by,
+)
 from quizard_backend.utils.validation import (
     validate_request,
     validate_permission,
     validate_against_schema,
 )
+from quizard_backend.utils.views.quiz_question import extract_quiz_questions_from_quiz
 
 
 @validate_request(schema="quiz_read", skip_body=True)
@@ -141,17 +149,7 @@ async def quiz_route_submit_answer(request, quiz_id, question_id):
 @blueprint.route("/<quiz_id>/questions", methods=["GET"])
 @validate_permission
 async def quiz_route_get_questions(request, quiz_id, **kwargs):
-    quiz = await Quiz.get(id=quiz_id)
-    quiz_question_ids = quiz["questions"]
-
-    questions = []
-    if quiz_question_ids:
-        quiz_questions = await QuizQuestion.get(
-            in_column="id", in_values=quiz_question_ids, many=True
-        )
-        questions_dict = {question["id"]: question for question in quiz_questions}
-        questions = [questions_dict[question_id] for question_id in quiz_question_ids]
-
+    _, _, questions = await extract_quiz_questions_from_quiz(quiz_id)
     return json({"data": questions})
 
 
@@ -225,3 +223,44 @@ async def quiz_route_attempt(request, quiz_id):
 
     data = await call_funcs[request.method](request, requester, quiz_id)
     return json({"data": data})
+
+
+@blueprint.route("/<quiz_id>/summary", methods=["GET"])
+async def quiz_route_summary(request, quiz_id):
+    jwt_data = await get_jwt_data_in_request_header(request.app, request)
+    requester = jwt_data["identity"]
+
+    question_ids, questions_dict, questions = await extract_quiz_questions_from_quiz(
+        quiz_id, requester, allow_readonly=True
+    )
+    question_answer_counts = await get_many_with_count_and_group_by(
+        QuizAnswer,
+        columns=["question_id", "selected_option"],
+        group_by="question_id",
+        in_column="question_id",
+        in_values=question_ids,
+    )
+
+    # Get the count
+    stats = {}
+    for ques_ans_count in question_answer_counts:
+        question_id, _selected_option, _count = ques_ans_count
+        num_options = len(questions_dict[question_id]["options"])
+        cur_question_stats = [0] * num_options
+        stats.setdefault(question_id, {}).setdefault("count", cur_question_stats)[
+            _selected_option
+        ] = _count
+
+    # Convert count to percentage
+    for question_id, stats_value in stats.items():
+        stats_count = stats_value["count"]
+        total_count = sum(stats_count)
+        stats[question_id]["percentage"] = [
+            round(float(val) / total_count * 100, 2) for val in stats_count
+        ]
+
+    # Inject stats to `questions`
+    for question in questions:
+        question["stats"] = stats.get(question["id"], {})
+
+    return json({"data": questions})

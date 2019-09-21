@@ -1,14 +1,9 @@
 from quizard_backend.models import QuizAnswer
-from quizard_backend.tests import profile_created_from_origin, get_access_token_for_user
-
-
-def get_wrong_option(question):
-    correct_option = question["correct_option"]
-    for index in range(len(question["options"])):
-        if index != correct_option:
-            return index
-
-    return -1
+from quizard_backend.tests import (
+    profile_created_from_origin,
+    get_access_token_for_user,
+    get_wrong_option,
+)
 
 
 async def test_invalid_get_answer(client, quizzes, token_user):
@@ -304,7 +299,6 @@ async def test_create_attempt(client, questions, quizzes, token_user):
         "/quizzes/{}/attempt".format(quizzes[2]["id"]),
         headers={"Authorization": token_user},
     )
-    print("hello", await res.json())
     assert res.status == 200
 
     # Without token

@@ -70,6 +70,15 @@ def get_fake_quiz(creator_id=None):
     }
 
 
+def get_wrong_option(question):
+    correct_option = question["correct_option"]
+    for index in range(len(question["options"])):
+        if index != correct_option:
+            return index
+
+    return -1
+
+
 async def get_access_token_for_user(user, app=None):
     token = await create_access_token(identity=user, app=app)
     return "Bearer " + token

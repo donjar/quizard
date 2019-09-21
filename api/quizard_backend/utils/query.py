@@ -78,8 +78,31 @@ async def get_count(model, distinct=None, **kwargs):
     )
 
 
-async def get_num_attempts(model, **kwargs):
-    pass
+async def get_many_with_count_and_group_by(
+    model, *, columns, group_by="id", in_column=None, in_values=None, **kwargs
+):
+    # print('oi')
+    # print(db.select([*[getattr(model, column) for column in columns], db.func.count()])
+    # .where(
+    #     getattr(model, in_column).in_(in_values)
+    #     if in_column and in_values
+    #     else True
+    # )
+    # .group_by(*[getattr(model, column) for column in columns])
+    # )
+
+    return (
+        await db.select(
+            [*[getattr(model, column) for column in columns], db.func.count()]
+        )
+        .where(
+            getattr(model, in_column).in_(in_values)
+            if in_column and in_values
+            else True
+        )
+        .group_by(*[getattr(model, column) for column in columns])
+        .gino.all()
+    )
 
 
 @in_transaction

@@ -38,6 +38,7 @@ class BaseModel(db.Model):
         fields=None,
         in_column=None,
         in_values=None,
+        allow_readonly=False,
         **kwargs
     ):
         """
@@ -63,7 +64,9 @@ class BaseModel(db.Model):
         else:
             data = await get_one(cls, **kwargs)
 
-        serialized_data = serialize_to_dict(data, fields=fields)
+        serialized_data = serialize_to_dict(
+            data, fields=fields, allow_readonly=allow_readonly
+        )
 
         # Raise NotFound if no single user is found
         # Ignore if many=True, as returning an empty List is expected

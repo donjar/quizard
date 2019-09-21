@@ -4,7 +4,7 @@ from cerberus import Validator
 from quizard_backend.schemas import schemas
 
 
-def serialize_row(row, fields=None):
+def serialize_row(row, fields=None, allow_readonly=False):
     if not row:
         return {}
 
@@ -21,11 +21,12 @@ def serialize_row(row, fields=None):
     return {
         key: val
         for key, val in _dict.items()
-        if not _schema.get(key, {}).get("readonly", False) and key in fields
+        if key in fields
+        and (allow_readonly or not _schema.get(key, {}).get("readonly", False))
     }
 
 
-def serialize_to_dict(payload, fields=None):
+def serialize_to_dict(payload, **kwargs):
     if isinstance(payload, list):
-        return [serialize_row(item, fields) for item in payload]
-    return serialize_row(payload, fields)
+        return [serialize_row(item, **kwargs) for item in payload]
+    return serialize_row(payload, **kwargs)

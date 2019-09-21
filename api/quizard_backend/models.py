@@ -8,6 +8,7 @@ from quizard_backend import db
 from quizard_backend.exceptions import LoginFailureError
 from quizard_backend.utils.query import (
     get_one,
+    get_one_latest,
     get_many,
     create_one,
     update_one,
@@ -146,36 +147,6 @@ class QuizAnswer(BaseModel):
     )
 
 
-class QuizAttempt(BaseModel):
-    __tablename__ = "quiz_attempt"
-
-    id = db.Column(
-        db.String(length=32), nullable=False, unique=True, default=generate_uuid
-    )
-    internal_id = db.Column(db.BigInteger, primary_key=True, autoincrement=True)
-    quiz_id = db.Column(db.String(length=32), db.ForeignKey("quiz.id"), nullable=False)
-    user_id = db.Column(db.String(length=32), db.ForeignKey("user.id"), nullable=False)
-    score = db.Column(db.BigInteger, nullable=True)
-    created_at = db.Column(db.BigInteger, nullable=False, default=unix_time)
-    updated_at = db.Column(db.BigInteger, onupdate=unix_time)
-
-    # Index
-    _idx_quiz_attempt_id = db.Index("idx_quiz_attempt_id", "id")
-    _idx_quiz_attempt_quiz_id_score = db.Index(
-        "idx_quiz_attempt_quiz_id_score", "quiz_id", "score"
-    )
-
-    @classmethod
-    async def remove(cls, **kwargs):
-        if "attempt_id" not in kwargs:
-            raise KeyError("Missing key 'attempt_id' in kwargs.")
-
-        # Delete all the answers linked to the attempt
-        await delete_many(QuizAnswer, attempt_id=kwargs["attempt_id"])
-
-        return await super(QuizAttempt, cls).remove(**kwargs)
-
-
 class Quiz(BaseModel):
     __tablename__ = "quiz"
 
@@ -185,6 +156,7 @@ class Quiz(BaseModel):
     internal_id = db.Column(db.BigInteger, primary_key=True, autoincrement=True)
     title = db.Column(db.String, nullable=False)
     description = db.Column(db.String)
+    num_attempts = db.Column(db.BigInteger, default=0)
     creator_id = db.Column(
         db.String(length=32), db.ForeignKey("user.id"), nullable=False
     )
@@ -216,6 +188,52 @@ class Quiz(BaseModel):
         await delete_many(QuizQuestion, quiz_id=kwargs["id"])
 
         return await super(Quiz, cls).remove(**kwargs)
+
+
+class QuizAttempt(BaseModel):
+    __tablename__ = "quiz_attempt"
+
+    id = db.Column(
+        db.String(length=32), nullable=False, unique=True, default=generate_uuid
+    )
+    internal_id = db.Column(db.BigInteger, primary_key=True, autoincrement=True)
+    quiz_id = db.Column(db.String(length=32), db.ForeignKey("quiz.id"), nullable=False)
+    user_id = db.Column(db.String(length=32), db.ForeignKey("user.id"), nullable=False)
+    score = db.Column(db.BigInteger, nullable=True)
+    created_at = db.Column(db.BigInteger, nullable=False, default=unix_time)
+    updated_at = db.Column(db.BigInteger, onupdate=unix_time)
+
+    # Index
+    _idx_quiz_attempt_id = db.Index("idx_quiz_attempt_id", "id")
+    _idx_quiz_attempt_quiz_id_score = db.Index(
+        "idx_quiz_attempt_quiz_id_score", "quiz_id", "score"
+    )
+
+    @classmethod
+    async def get_latest_or_add(cls, **kwargs):
+        created_attempt = await get_one_latest(QuizAttempt, **kwargs)
+
+        # Update the number of attempts in Quiz, if no previous attempts of the user are found
+        if not created_attempt:
+            current_num_attempts = (
+                await get_one(Quiz, id=kwargs["quiz_id"])
+            ).num_attempts
+            await Quiz.modify(
+                {"id": kwargs["quiz_id"]}, {"num_attempts": current_num_attempts + 1}
+            )
+            data = await create_one(cls, **kwargs)
+            return serialize_to_dict(data)
+
+        return serialize_to_dict(created_attempt)
+
+    @classmethod
+    async def remove(cls, **kwargs):
+        if "attempt_id" not in kwargs:
+            raise KeyError("Missing key 'attempt_id' in kwargs.")
+
+        # Delete all the answers linked to the attempt
+        await delete_many(QuizAnswer, attempt_id=kwargs["attempt_id"])
+        return await super(QuizAttempt, cls).remove(**kwargs)
 
 
 class User(BaseModel):

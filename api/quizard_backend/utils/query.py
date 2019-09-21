@@ -70,6 +70,18 @@ async def get_one_latest(model, **kwargs):
     )
 
 
+async def get_count(model, distinct=None, **kwargs):
+    return (
+        await db.select([db.func.count(getattr(model, distinct) if distinct else None)])
+        .where(and_(*dict_to_filter_args(model, **kwargs)))
+        .gino.scalar()
+    )
+
+
+async def get_num_attempts(model, **kwargs):
+    pass
+
+
 @in_transaction
 async def create_one(model, **kwargs):
     return await model(**kwargs).create()

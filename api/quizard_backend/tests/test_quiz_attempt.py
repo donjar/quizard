@@ -1,5 +1,5 @@
 from quizard_backend.models import QuizAnswer
-from quizard_backend.tests import profile_created_from_origin
+from quizard_backend.tests import profile_created_from_origin, get_access_token_for_user
 
 
 def get_wrong_option(question):
@@ -177,6 +177,79 @@ async def test_answer_attempt_from_answers(client, questions, quizzes, token_use
         "continue_from": questions[quiz_index][4]["id"],
     }
 
+    # Check if `num_attempts` in `Quiz` is 1
+    # As there is only 1 user to answer the quiz
+    res = await client.get(
+        "/quizzes/{}".format(quizzes[quiz_index]["id"]),
+        headers={"Authorization": token_user},
+    )
+    assert res.status == 200
+    body = await res.json()
+    assert body["data"]["num_attempts"] == 1
+
+
+async def test_create_attempt_for_2_users(client, users, questions, quizzes, app):
+    token_1 = await get_access_token_for_user(users[5], app=app)
+    token_2 = await get_access_token_for_user(users[10], app=app)
+    quiz_index = 5
+
+    # Create 2 answers using token_1
+    question_index = 3
+    res = await client.post(
+        "/quizzes/{}/questions/{}/answers".format(
+            quizzes[quiz_index]["id"], questions[quiz_index][question_index]["id"]
+        ),
+        json={
+            "selected_option": get_wrong_option(questions[quiz_index][question_index])
+        },
+        headers={"Authorization": token_1},
+    )
+    assert res.status == 200
+
+    question_index = 2
+    res = await client.post(
+        "/quizzes/{}/questions/{}/answers".format(
+            quizzes[quiz_index]["id"], questions[quiz_index][question_index]["id"]
+        ),
+        json={
+            "selected_option": questions[quiz_index][question_index]["correct_option"]
+        },
+        headers={"Authorization": token_1},
+    )
+    assert res.status == 200
+
+    # Check if `num_attempts` in `Quiz` is 1
+    # As there is only 1 user to answer the quiz
+    res = await client.get(
+        "/quizzes/{}".format(quizzes[quiz_index]["id"]),
+        headers={"Authorization": token_2},
+    )
+    assert res.status == 200
+    body = await res.json()
+    assert body["data"]["num_attempts"] == 1
+
+    # Create another answer using token_2
+    question_index = 3
+    res = await client.post(
+        "/quizzes/{}/questions/{}/answers".format(
+            quizzes[quiz_index]["id"], questions[quiz_index][question_index]["id"]
+        ),
+        json={
+            "selected_option": get_wrong_option(questions[quiz_index][question_index])
+        },
+        headers={"Authorization": token_2},
+    )
+    assert res.status == 200
+
+    # Check if `num_attempts` in `Quiz` has increased to 2
+    res = await client.get(
+        "/quizzes/{}".format(quizzes[quiz_index]["id"]),
+        headers={"Authorization": token_1},
+    )
+    assert res.status == 200
+    body = await res.json()
+    assert body["data"]["num_attempts"] == 2
+
 
 async def test_get_attempt_with_fully_answered_questions(
     client, questions, quizzes, token_user
@@ -214,6 +287,16 @@ async def test_get_attempt_with_fully_answered_questions(
         "answers": {question_id: option for question_id, option in user_answers},
         "score": correct_answers,
     }
+
+    # Check if `num_attempts` in `Quiz` is 1
+    # As there is only 1 user to answer the quiz
+    res = await client.get(
+        "/quizzes/{}".format(quizzes[quiz_index]["id"]),
+        headers={"Authorization": token_user},
+    )
+    assert res.status == 200
+    body = await res.json()
+    assert body["data"]["num_attempts"] == 1
 
 
 async def test_create_attempt(client, questions, quizzes, token_user):
@@ -261,3 +344,13 @@ async def test_create_answer_attempt_from_answers_with_invalid_args(
         headers={"Authorization": token_user},
     )
     assert res.status == 404
+
+    # Check if `num_attempts` in `Quiz` is 1
+    # As there is only 1 user to answer the quiz
+    res = await client.get(
+        "/quizzes/{}".format(quizzes[quiz_index]["id"]),
+        headers={"Authorization": token_user},
+    )
+    assert res.status == 200
+    body = await res.json()
+    assert body["data"]["num_attempts"] == 1

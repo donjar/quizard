@@ -3,6 +3,7 @@ from string import ascii_lowercase, digits
 
 from faker import Faker
 from faker.providers import python as py_provider, profile as profile_provider, lorem
+from sanic_jwt_extended import create_access_token
 
 from quizard_backend.models import generate_uuid
 
@@ -67,6 +68,11 @@ def get_fake_quiz(creator_id=None):
         "creator_id": creator_id,
         "title": fake.sentence(nb_words=8),
     }
+
+
+async def get_access_token_for_user(user, app=None):
+    token = await create_access_token(identity=user, app=app)
+    return "Bearer " + token
 
 
 # Helper functions

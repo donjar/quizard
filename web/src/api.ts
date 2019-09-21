@@ -24,3 +24,29 @@ export const createQuiz = async (values: IQuizCreateApi) => {
 
   return await res.json();
 };
+
+export const getQuizById = async (quizId: string) => {
+  const token = localStorage.getItem('accessToken');
+
+  const res = await fetch(`${apiUrl}/quizzes/${quizId}`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+
+  return await res.json();
+};
+
+export const getQuestionsByQuizId = async (quizId: string) => {
+  const token = localStorage.getItem('accessToken');
+
+  const res = await fetch(`${apiUrl}/quizzes/${quizId}/questions`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+
+  return await res.json();
+};

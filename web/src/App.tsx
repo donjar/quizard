@@ -8,6 +8,7 @@ const QuizCreateContainer = lazy(() => import('./components/containers/quiz-crea
 const QuizCreateSummaryContainer = lazy(() => import('./components/containers/quiz-create-summary/QuizCreateSummaryContainer'));
 const QuizQuestionContainer = lazy(() => import('./components/containers/quiz-question/QuizQuestionContainer'));
 const QuizStartContainer = lazy(() => import('./components/containers/quiz-start/QuizStartContainer'));
+const RegisterContainer = lazy(() => import('./components/containers/register/RegisterContainer'));
 
 const App: React.FC = () => {
   return (
@@ -17,6 +18,7 @@ const App: React.FC = () => {
           <Route path="/" exact={true} component={LoginContainer} />
           <Route path="/home" component={HomeContainer} />
           <Route path="/login" component={LoginContainer} />
+          <Route path="/register" component={RegisterContainer} />
           <Route path="/quiz" component={QuizQuestionContainer} />
           <Route path="/quiz-create" component={QuizCreateContainer} />
           <Route

@@ -8,7 +8,7 @@ export const CHANGE_ANSWER_OPTION = 'CHANGE_ANSWER_OPTION';
 export const SET_CORRECT_ANSWER = 'SET_CORRECT_ANSWER';
 export const CHANGE_NAME = 'CHANGE_NAME';
 export const CHANGE_QUESTION_TEXT = 'CHANGE_QUESTION_TEXT';
-export const SET_ERROR = 'SET_ERROR';
+export const SET_ERROR = 'SET_ERROR_QUIZ_CREATE';
 
 // TODO: Shift common interfaces into interfaces folder
 export interface IAnswerOption {

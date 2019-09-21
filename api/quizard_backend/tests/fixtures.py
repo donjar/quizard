@@ -15,7 +15,12 @@ from quizard_backend.tests import (
 
 
 users = [get_fake_user() for _ in range(number_of_users)]
-users += [{"full_name": "Quizard", "email": "quizard", "password": "cs3216a3"}]
+users += [
+    {"full_name": "Quizard", "email": "quizard", "password": "cs3216a3"},
+    {"full_name": "User 1", "email": "user1", "password": "cs3216a3"},
+    {"full_name": "User 2", "email": "user2", "password": "cs3216a3"},
+    {"full_name": "User 3", "email": "user3", "password": "cs3216a3"},
+]
 quizzes = [get_fake_quiz(users[index]["id"]) for index in range(number_of_quizzes)]
 questions_list = [get_fake_questions_for_quiz(quiz["id"]) for quiz in quizzes]
 

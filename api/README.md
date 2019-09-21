@@ -460,3 +460,16 @@ GET /quizzes/<quiz_id>/summary
   ...
 ]
 ```
+
+### 7. Users' Quizzes
+
+Get an user's created and attempted quizzes.
+
+Query parameters: *To be used to reduce the response's payload (Optional)*
+- *created* (`bool`): If `True`, the response includes the created quizzes of the user. Default: `True`.
+- *attempted* (`bool`): If `True`, the response includes the attemped quizzes of the user. Default: `True`.
+
+
+```
+GET /users/<user_id>/quizzes
+```

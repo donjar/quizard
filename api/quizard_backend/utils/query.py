@@ -37,7 +37,15 @@ async def get_one(model, **kwargs):
 
 
 async def get_many(
-    model, last_id=None, limit=15, in_column=None, in_values=None, **kwargs
+    model,
+    columns=None,
+    distinct=False,
+    last_id=None,
+    limit=15,
+    in_column=None,
+    in_values=None,
+    order_by="internal_id",
+    **kwargs,
 ):
     # Get the `internal_id` value from the starting row
     # And use it to query the next page of results
@@ -46,20 +54,25 @@ async def get_many(
         row_of_last_id = await model.query.where(model.id == last_id).gino.first()
         last_internal_id = row_of_last_id.internal_id
 
-    return (
-        await model.query.where(
-            and_(
-                *dict_to_filter_args(model, **kwargs),
-                model.internal_id > last_internal_id,
-                getattr(model, in_column).in_(in_values)
-                if in_column and in_values
-                else True,
-            )
+    # Get certain columns only
+    if columns:
+        query = db.select([*(getattr(model, column) for column in columns)])
+    else:
+        query = model.query
+
+    query = query.where(
+        and_(
+            *dict_to_filter_args(model, **kwargs),
+            model.internal_id > last_internal_id,
+            getattr(model, in_column).in_(in_values)
+            if in_column and in_values
+            else True,
         )
-        .order_by(model.internal_id)
-        .limit(limit)
-        .gino.all()
     )
+    if distinct:
+        query = query.distinct()
+
+    return await query.order_by(getattr(model, order_by)).limit(limit).gino.all()
 
 
 async def get_one_latest(model, **kwargs):
@@ -81,16 +94,6 @@ async def get_count(model, distinct=None, **kwargs):
 async def get_many_with_count_and_group_by(
     model, *, columns, group_by="id", in_column=None, in_values=None, **kwargs
 ):
-    # print('oi')
-    # print(db.select([*[getattr(model, column) for column in columns], db.func.count()])
-    # .where(
-    #     getattr(model, in_column).in_(in_values)
-    #     if in_column and in_values
-    #     else True
-    # )
-    # .group_by(*[getattr(model, column) for column in columns])
-    # )
-
     return (
         await db.select(
             [*[getattr(model, column) for column in columns], db.func.count()]

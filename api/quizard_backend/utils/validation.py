@@ -22,7 +22,13 @@ def validate_against_schema(document, schema_name, update=False):
 
 
 def validate_request(
-    func=None, schema=None, update=False, skip_body=False, skip_args=False, **kargs
+    func=None,
+    schema=None,
+    update=False,
+    skip_body=False,
+    skip_args=False,
+    *args,
+    **kargs,
 ):
     """
     Validate the request data and args to ensure private fields are protected.
@@ -51,6 +57,7 @@ def validate_request(
             update=update,
             skip_body=skip_body,
             skip_args=skip_args,
+            *args,
             **kargs,
         )
 
@@ -60,12 +67,6 @@ def validate_request(
         After validating the request's body and args,
         pass them to the function to avoid re-parsing.
         """
-        # Pass if there are no schema given
-        if not schema or schema not in schemas:
-            return await func(request, req_args={}, req_body={}, *args, **kwargs)
-
-        # _validator = Validator()
-        _schema = schemas[schema]
         req_body = request.json or {}
         req_args = (
             req_args_to_dict(request.get_args(keep_blank_values=True))
@@ -73,11 +74,18 @@ def validate_request(
             else {}
         )
 
+        # Pass if there are no schema given
+        if not schema or schema not in schemas:
+            return await func(
+                request, req_args=req_args, req_body=req_body, *args, **kwargs
+            )
+
         # For views getting a single resource,
         # The id is passed from kwargs, rather than `req_args`
         if "id" in kwargs and "id" not in req_args:
             req_args["id"] = kwargs["id"]
 
+        _schema = schemas[schema]
         if not skip_body:
             # if not _validator.validate(req_body, _schema, update=update):
             #     raise SchemaValidationError(_validator.errors)

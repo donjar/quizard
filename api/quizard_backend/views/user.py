@@ -2,7 +2,9 @@ from sanic.response import json
 from sanic_jwt_extended import jwt_required
 
 from quizard_backend.views.urls import user_blueprint as blueprint
-from quizard_backend.models import User
+from quizard_backend.models import User, Quiz, QuizAttempt
+from quizard_backend.schemas import to_boolean
+from quizard_backend.utils.query import get_many
 from quizard_backend.utils.validation import validate_request, validate_permission
 
 
@@ -55,3 +57,39 @@ async def quiz_route(request, user_id):
         request, req_args=None, req_body=None, id=user_id, many=False
     )
     return json({"data": data})
+
+
+## GET Personal quizzes
+@blueprint.route("/<user_id>/quizzes", methods=["GET"])
+@validate_request
+async def quiz_route(request, user_id, *, req_args=None, **kwargs):
+    user_id = user_id.strip()
+    attempted = to_boolean(req_args.get("attempted", "true"))
+    created = to_boolean(req_args.get("created", "true"))
+
+    return_quizzes = {}
+    if attempted:
+        unique_quiz_attempts = await get_many(
+            QuizAttempt,
+            user_id=user_id,
+            columns=["quiz_id", "user_id", "created_at"],
+            distinct=True,
+            order_by="created_at",
+        )
+        quiz_ids = (attempt.quiz_id for attempt in unique_quiz_attempts)
+        unordered_attempted_quizzes = await Quiz.get(
+            in_column="id", in_values=quiz_ids, many=True
+        )
+        attempted_quizzes_as_dict = {
+            quiz["id"]: quiz for quiz in unordered_attempted_quizzes
+        }
+        return_quizzes.update(
+            {"attempt": [attempted_quizzes_as_dict[quiz_id] for quiz_id in quiz_ids]}
+        )
+
+    if created:
+        return_quizzes.update(
+            {"created": await Quiz.get(creator_id=user_id, many=True)}
+        )
+
+    return json({"data": return_quizzes})

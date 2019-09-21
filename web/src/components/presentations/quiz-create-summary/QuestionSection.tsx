@@ -15,22 +15,22 @@ const QuestionSection: React.FC<IQuestionSectionProps> = ({
   options,
   correctOption
 }) => {
-  const optionsDiv = options.map((op, optionIdx) => {
+  const optionsLi = options.map((op, optionIdx) => {
     return (
-      <ul>
-        <li>{op}{optionIdx === correctOption ? ' (correct)' : ''}</li>
-      </ul>
+      <li key={optionIdx}>{op}{optionIdx === correctOption ? ' (correct)' : ''}</li>
     );
   });
 
   return (
-    <StyledQuestionSection>
+    <StyledQuestionSection key={questionNumber}>
       <div>
         <h3>Question {questionNumber}</h3>
         <p>{text}</p>
       </div>
       <div>
-        {optionsDiv}
+        <ul>
+          {optionsLi}
+        </ul>
       </div>
     </StyledQuestionSection>
   );

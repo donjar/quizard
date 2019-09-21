@@ -5,7 +5,7 @@ from sanic_jwt_extended.decorators import get_jwt_data_in_request_header
 from quizard_backend.views.urls import quiz_blueprint as blueprint
 from quizard_backend.exceptions import ExistingAnswerError
 from quizard_backend.models import Quiz, QuizQuestion, QuizAttempt, QuizAnswer
-from quizard_backend.utils.query import get_one_latest, get_many, get_one
+from quizard_backend.utils.query import get_one_latest, get_many, get_one, get_count
 from quizard_backend.utils.validation import (
     validate_request,
     validate_permission,
@@ -39,7 +39,7 @@ async def quiz_create(req, req_args, req_body, *args, **kwargs):
 
     # Update the questions' order in quiz
     # using the IDs of created questions
-    if not questions:
+    if questions:
         return await Quiz.modify({"id": result["id"]}, {"questions": questions})
     return result
 
@@ -95,15 +95,10 @@ async def quiz_route_submit_answer(request, quiz_id, question_id):
     await Quiz.get(id=quiz_id)
 
     # Get the latest attempt
-    latest_attempt = await get_one_latest(
-        QuizAttempt, user_id=requester["id"], quiz_id=quiz_id
+    latest_attempt = await QuizAttempt.get_latest_or_add(
+        quiz_id=quiz_id, user_id=requester["id"]
     )
-
-    if not latest_attempt:
-        latest_attempt = await QuizAttempt.add(quiz_id=quiz_id, user_id=requester["id"])
-        attempt_id = latest_attempt["id"]
-    else:
-        attempt_id = latest_attempt.id
+    attempt_id = latest_attempt["id"]
 
     # Request's body validation
     req_body = request.json or {}
@@ -174,23 +169,20 @@ async def calculate_score(question_ids, answers):
 async def quiz_route_get_attempt(request, requester, quiz_id):
     quiz = await Quiz.get(id=quiz_id)
     quiz_question_ids = quiz["questions"]
-
-    # Get the latest attempt
-    latest_attempt = await get_one_latest(
-        QuizAttempt, user_id=requester["id"], quiz_id=quiz_id
-    )
     is_finished = False
     first_unanswered_question = quiz_question_ids[0]
-    requester_answers = []
 
-    if not latest_attempt:
-        latest_attempt = await QuizAttempt.add(quiz_id=quiz_id, user_id=requester["id"])
-
-    # If the user has at least 1 answer in this quiz
-    requester_answers = await get_many(
-        QuizAnswer, attempt_id=latest_attempt.id, user_id=requester["id"]
+    # Get the latest attempt
+    latest_attempt = await QuizAttempt.get_latest_or_add(
+        quiz_id=quiz_id, user_id=requester["id"]
     )
 
+    # by checking if the user has at least 1 answer in this quiz
+    requester_answers = await get_many(
+        QuizAnswer, attempt_id=latest_attempt["id"], user_id=requester["id"]
+    )
+
+    # Validate if the quiz has been fully answered
     first_unanswered_question = None
     if len(quiz_question_ids) > len(requester_answers):
         answered_question_ids = {answer.question_id for answer in requester_answers}
@@ -204,7 +196,7 @@ async def quiz_route_get_attempt(request, requester, quiz_id):
         answer.question_id: answer.selected_option for answer in requester_answers
     }
     if is_finished:
-        score = latest_attempt.score
+        score = latest_attempt["score"]
         if score is None:
             score = await calculate_score(quiz_question_ids, answers)
 

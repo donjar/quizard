@@ -5,6 +5,7 @@ from sanic_jwt_extended import create_access_token
 
 from quizard_backend import app as _app, db
 from quizard_backend.tests.setup_dev_db import setup_db
+from quizard_backend.tests import get_access_token_for_user
 from quizard_backend.tests.fixtures import (
     users as _users,
     quizzes as _quizzes,
@@ -60,7 +61,4 @@ def questions():
 
 @pytest.fixture
 async def token_user(app):
-    # identity = {key: val for key, val in _users[0].items()}
-    # identity["id"] = identity.pop("uuid")
-    token = await create_access_token(identity=_users[0], app=app)
-    return "Bearer " + token
+    return await get_access_token_for_user(_users[0], app=app)

@@ -22,6 +22,7 @@ async def test_get_one_quiz(client, quizzes, token_user):
     assert "data" in body
     assert isinstance(body["data"], dict)
     assert profile_created_from_origin(quizzes[2], body["data"])
+    assert body["data"]["num_attempts"] == 0
 
     # quiz doesnt exist
     res = await client.get(
@@ -46,7 +47,7 @@ async def test_get_all_quizzes(client, quizzes, token_user):
     assert isinstance(body["data"], list)
     assert len(body["data"]) == 15  # Default offset for quiz is 15
     assert all(
-        profile_created_from_origin(origin, created)
+        profile_created_from_origin(origin, created) and created["num_attempts"] == 0
         for origin, created in zip(quizzes, body["data"])
     )
 

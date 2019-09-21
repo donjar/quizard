@@ -1,4 +1,4 @@
-import { IQuestion } from '../../../../interfaces/home';
+import { IQuiz } from '../../../../interfaces/home';
 import {
   IHomeActionTypes,
   SET_ATTEMPTED_QUIZZES_TYPE,
@@ -11,12 +11,12 @@ export const toggleQuizType = (quizTypeSelected: string): IHomeActionTypes => ({
   type: TOGGLE_QUIZ_TYPE
 });
 
-export const setCreatedQuizzes = (questions: IQuestion[]): IHomeActionTypes => ({
+export const setCreatedQuizzes = (questions: IQuiz[]): IHomeActionTypes => ({
   payload: questions,
   type: SET_CREATED_QUIZZES_TYPE
 });
 
-export const setAttemptedQuizzes = (questions: IQuestion[]): IHomeActionTypes => ({
+export const setAttemptedQuizzes = (questions: IQuiz[]): IHomeActionTypes => ({
   payload: questions,
   type: SET_ATTEMPTED_QUIZZES_TYPE
 });

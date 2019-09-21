@@ -4,7 +4,7 @@ import { Redirect } from 'react-router';
 import { Dispatch } from 'redux';
 import { getAllQuizzes } from '../../../api';
 import { IHomeContainerProps } from '../../../interfaces/home';
-import { IQuestion } from '../../../interfaces/home';
+import { IQuiz } from '../../../interfaces/home';
 import { AppState } from '../../../store/store';
 import { isLoggedIn } from '../../../utils/auth';
 import HomeContent from '../../presentations/home/HomeContent';
@@ -20,6 +20,7 @@ class HomeContainer extends React.Component<IHomeContainerProps> {
 
     const apiQuizzes = await getAllQuizzes();
     const quizzes = apiQuizzes.data.map((quiz: any) => ({
+      id: quiz.id,
       title: quiz.title,
       description: quiz.description || 'No description',
       numAttempted: quiz.num_attempts,
@@ -66,10 +67,10 @@ const mapStateToProps = (state: AppState) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
-    setCreatedQuizzes: (questions: IQuestion[]) => {
+    setCreatedQuizzes: (questions: IQuiz[]) => {
       dispatch(setCreatedQuizzes(questions));
     },
-    setAttemptedQuizzes: (questions: IQuestion[]) => {
+    setAttemptedQuizzes: (questions: IQuiz[]) => {
       dispatch(setAttemptedQuizzes(questions));
     },
   };

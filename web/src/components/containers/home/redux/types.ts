@@ -1,4 +1,4 @@
-import { IQuestion } from '../../../../interfaces/home';
+import { IQuiz } from '../../../../interfaces/home';
 
 export const CREATED_QUIZZES_SELECTED = 'CREATED_QUIZZES_SELECTED';
 export const ATTEMPTED_QUIZZES_SELECTED = 'ATTEMPTED_QUIZZES_SELECTED';
@@ -12,12 +12,12 @@ export interface IToggleQuizTypePayload {
 
 export interface ISetCreatedQuizzesAction {
   type: typeof SET_CREATED_QUIZZES_TYPE;
-  payload: IQuestion[];
+  payload: IQuiz[];
 }
 
 export interface ISetAttemptedQuizzesAction {
   type: typeof SET_ATTEMPTED_QUIZZES_TYPE;
-  payload: IQuestion[];
+  payload: IQuiz[];
 }
 
 export interface IToggleQuizTypeAction {

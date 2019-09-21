@@ -2,6 +2,18 @@ import { IQuizCreateApi } from './interfaces/quiz-create/index';
 
 const apiUrl = 'http://165.22.54.169';
 
+export const renewTokenOnExpire = async (res: Response) => {
+  if (res.status === 401) {
+    const data = (await res.json()).msg;
+    if (data === 'Token has expired') {
+      const token = (await refresh()).access_token;
+      localStorage.setItem('accessToken', token);
+      return true;
+    }
+  }
+  return false;
+};
+
 export const login = async (email: string, password: string) => {
   const res = await fetch(`${apiUrl}/login`, {
     method: 'POST',
@@ -20,7 +32,20 @@ export const register = async (fullName: string, email: string, password: string
   return await res.json();
 };
 
-export const createQuiz = async (values: IQuizCreateApi) => {
+export const refresh = async () => {
+  const refreshToken = localStorage.getItem('refreshToken');
+
+  const res = await fetch(`${apiUrl}/refresh`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${refreshToken}`
+    }
+  });
+
+  return await res.json();
+};
+
+export const createQuiz = async (values: IQuizCreateApi): Promise<any> => {
   const token = localStorage.getItem('accessToken');
 
   const res = await fetch(`${apiUrl}/quizzes`, {
@@ -31,10 +56,14 @@ export const createQuiz = async (values: IQuizCreateApi) => {
     }
   });
 
+  if (await renewTokenOnExpire(res)) {
+    return createQuiz(values);
+  }
+
   return await res.json();
 };
 
-export const getAllQuizzes = async () => {
+export const getAllQuizzes = async (): Promise<any> => {
   const token = localStorage.getItem('accessToken');
 
   const res = await fetch(`${apiUrl}/quizzes`, {
@@ -44,10 +73,14 @@ export const getAllQuizzes = async () => {
     }
   });
 
+  if (await renewTokenOnExpire(res)) {
+    return getAllQuizzes();
+  }
+
   return await res.json();
 };
 
-export const getQuizById = async (quizId: string) => {
+export const getQuizById = async (quizId: string): Promise<any> => {
   const token = localStorage.getItem('accessToken');
 
   const res = await fetch(`${apiUrl}/quizzes/${quizId}`, {
@@ -57,10 +90,14 @@ export const getQuizById = async (quizId: string) => {
     }
   });
 
+  if (await renewTokenOnExpire(res)) {
+    return getQuizById(quizId);
+  }
+
   return await res.json();
 };
 
-export const getQuestionsByQuizId = async (quizId: string) => {
+export const getQuestionsByQuizId = async (quizId: string): Promise<any> => {
   const token = localStorage.getItem('accessToken');
 
   const res = await fetch(`${apiUrl}/quizzes/${quizId}/questions`, {
@@ -69,6 +106,10 @@ export const getQuestionsByQuizId = async (quizId: string) => {
       Authorization: `Bearer ${token}`
     }
   });
+
+  if (await renewTokenOnExpire(res)) {
+    return getQuestionsByQuizId(quizId);
+  }
 
   return await res.json();
 };

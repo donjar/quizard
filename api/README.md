@@ -405,3 +405,58 @@ body = {
   }
 }
 ```
+
+### 6. Quiz Summary (Statistics)
+
+Return the questions in the quiz, along with fields `correct_option` and `stats` for each question.
+
+For questions that have no answers, the default value for `stats` is an empty object `{}`.
+
+> *stats* has 2 fields: `count` and `percentage`.
+- `count` is an array showing how many chosen options for each option in the question.
+
+
+```
+GET /quizzes/<quiz_id>/summary
+```
+
+*Example Response*
+
+```
+[{'correct_option': 3,
+  'created_at': 1569058960,
+  'id': '0f641b160ac84e5293fce9b7ae999281',
+  'options': ['Charge power computer effort accept move do job push serve.',
+              'And present nice recently benefit itself network American.',
+              'Talk technology the challenge current might discover send pick '
+              'town success rather add.',
+              'Four listen election person realize language think.'],
+  'quiz_id': '5619ee7eed2c4c1f8380476bc6b070cd',
+  'stats': {'count': [1, 0, 0, 0], 'percentage': [100.0, 0.0, 0.0, 0.0]},
+  'text': 'Pattern leave rise environmental describe long share beat.',
+  'updated_at': None},
+ {'correct_option': 3,
+  'created_at': 1569058960,
+  'id': '75e8f20e7bcd4a62b75a5df2e6c93b32',
+  'options': ['Health sell best room list help street guy success down.',
+              'Behavior pass discover safe wide simple too always player.',
+              'Listen voice against billion clear attack father college try why.',
+              'Firm throughout fund work individual share president plant.'],
+  'quiz_id': '5619ee7eed2c4c1f8380476bc6b070cd',
+  'stats': {'count': [0, 1, 1, 0], 'percentage': [0.0, 50.0, 50.0, 0.0]},
+  'text': 'Participant pull toward hundred hold society.',
+  'updated_at': None},
+ {'correct_option': 3,
+  'created_at': 1569058960,
+  'id': '39445d02b1694be8a2ff66faada624e5',
+  'options': ['Yes home table arm society safe plant form will item though.',
+              'Order pull help others phone enough cost right smile industry,',
+              'Article radio help factor small run improve tree they our beat',
+              'Budget PM marriage country special prepare.'],
+  'quiz_id': '5619ee7eed2c4c1f8380476bc6b070cd',
+  'stats': {},
+  'text': 'Show peace community throughout fund cold.',
+  'updated_at': None},
+  ...
+]
+```

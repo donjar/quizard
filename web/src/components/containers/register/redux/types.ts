@@ -1,10 +1,16 @@
-export const SET_ERROR = 'SET_ERROR_LOGIN';
+export const SET_ERROR = 'SET_ERROR_REGISTER';
+export const CHANGE_FULL_NAME = 'CHANGE_FULL_NAME';
 export const CHANGE_EMAIL = 'CHANGE_EMAIL';
 export const CHANGE_PASSWORD = 'CHANGE_PASSWORD';
-export const PERFORM_LOGIN = 'PERFORM_LOGIN';
+export const PERFORM_REGISTER = 'PERFORM_REGISTER';
 
 export interface ISetErrorAction {
   type: typeof SET_ERROR;
+  payload: string;
+}
+
+export interface IChangeFullNameAction {
+  type: typeof CHANGE_FULL_NAME;
   payload: string;
 }
 
@@ -18,12 +24,13 @@ export interface IChangePasswordAction {
   payload: string;
 }
 
-export interface IPerformLoginAction {
-  type: typeof PERFORM_LOGIN;
+export interface IPerformRegisterAction {
+  type: typeof PERFORM_REGISTER;
 }
 
-export type ILoginActionTypes =
+export type IRegisterActionTypes =
   | ISetErrorAction
+  | IChangeFullNameAction
   | IChangeEmailAction
   | IChangePasswordAction
-  | IPerformLoginAction;
+  | IPerformRegisterAction;

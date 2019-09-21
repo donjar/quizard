@@ -1,8 +1,7 @@
 import React from 'react';
 import { Redirect } from 'react-router';
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { ILoginProps } from '../../../interfaces/login/index';
+import { IRegisterProps } from '../../../interfaces/register';
 import { ReactComponent as Quizard } from '../../../svg/quizard.svg';
 import DarkButton from '../common/buttons/DarkButton';
 import { CenteredDiv } from '../common/CenteredDiv';
@@ -41,24 +40,26 @@ const LoginForm = styled.form`
   }
 `;
 
-const Login: React.FC<ILoginProps> = ({
+const Register: React.FC<IRegisterProps> = ({
+  fullName,
   email,
   password,
-  loggedIn,
   error,
+  registered,
+  onChangeFullName,
   onChangeEmail,
   onChangePassword,
-  onLogin
+  onRegister
 }) => {
-  if (loggedIn) {
+  if (registered) {
     return (
-      <Redirect to="/home" />
+      <Redirect to="/" />
     );
   }
 
-  const onLoginFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const onRegisterFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    onLogin();
+    onRegister();
   };
 
   return (
@@ -72,7 +73,13 @@ const Login: React.FC<ILoginProps> = ({
           />
           <Quizard />
         </CenteredDiv>
-        <LoginForm onSubmit={onLoginFormSubmit}>
+        <LoginForm onSubmit={onRegisterFormSubmit}>
+          <InputField
+            type="text"
+            placeholder="Full name"
+            value={fullName}
+            onChange={(event) => onChangeFullName(event.target.value)}
+          />
           <InputField
             type="text"
             placeholder="Email"
@@ -85,18 +92,12 @@ const Login: React.FC<ILoginProps> = ({
             value={password}
             onChange={(event) => onChangePassword(event.target.value)}
           />
-          <DarkButton type="submit">Login</DarkButton>
+          <DarkButton type="submit">Register</DarkButton>
         </LoginForm>
-        <CenteredDiv>
-          <p style={{ fontSize: '18px' }}>Don't have an account?</p>
-          <Link to="/register" style={{ fontSize: '18px' }}>
-            Sign up now!
-          </Link>
-        </CenteredDiv>
         {error && (<div>Error: {error}</div>)}
       </StyledLoginCard>
     </StyledLogin>
   );
 };
 
-export default Login;
+export default Register;

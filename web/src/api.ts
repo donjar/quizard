@@ -11,6 +11,15 @@ export const login = async (email: string, password: string) => {
   return await res.json();
 };
 
+export const register = async (fullName: string, email: string, password: string) => {
+  const res = await fetch(`${apiUrl}/users`, {
+    method: 'POST',
+    body: JSON.stringify({email, password, full_name: fullName})
+  });
+
+  return await res.json();
+};
+
 export const createQuiz = async (values: IQuizCreateApi) => {
   const token = localStorage.getItem('accessToken');
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { IInputFieldProps } from '../../../interfaces/login';
+import { IInputFieldProps } from '../../../interfaces/common';
 import { smMax } from '../../../utils/media';
 
 const StyledInputField = styled.div`

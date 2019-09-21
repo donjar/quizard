@@ -1,5 +1,13 @@
 import React from 'react';
+import styled from 'styled-components';
 import { IQuestionSectionProps } from '../../../interfaces/quiz-create-summary';
+
+const StyledQuestionSection = styled.section`
+  background-color: #fff;
+  padding: 10px;
+  border: 1px solid #000;
+  margin: 10px 0;
+`;
 
 const QuestionSection: React.FC<IQuestionSectionProps> = ({
   questionNumber,
@@ -16,7 +24,7 @@ const QuestionSection: React.FC<IQuestionSectionProps> = ({
   });
 
   return (
-    <section>
+    <StyledQuestionSection>
       <div>
         <h3>Question {questionNumber}</h3>
         <p>{text}</p>
@@ -24,7 +32,7 @@ const QuestionSection: React.FC<IQuestionSectionProps> = ({
       <div>
         {optionsDiv}
       </div>
-    </section>
+    </StyledQuestionSection>
   );
 };
 

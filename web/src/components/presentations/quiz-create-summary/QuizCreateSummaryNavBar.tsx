@@ -11,6 +11,7 @@ export const QuizCreateSummaryNavBar: React.FC = () => {
         <ChevronLeft />
       </Link>
       <Quizard />
+      <div></div>
     </NavBar>
   );
 };

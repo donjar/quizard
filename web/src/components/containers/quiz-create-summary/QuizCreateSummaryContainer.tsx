@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
-import { getQuizById } from '../../../api';
+import { getQuestionsByQuizId, getQuizById } from '../../../api';
 import { IQuestion, IQuiz } from '../../../interfaces/quiz-create-summary';
 import { AppState } from '../../../store/store';
 import QuizCreateSummary from '../../presentations/quiz-create-summary/index';
@@ -16,33 +16,41 @@ interface IQuizCreateContainerProps {
   setQuiz: (quiz: IQuiz) => void;
 }
 
-const QuizCreateContainer: React.FC<IQuizCreateContainerProps> = ({
-  quizId,
-  name,
-  description,
-  numAttempts,
-  questions,
-  ...props
-}) => {
-  getQuizById(quizId)
-    .then((apiResult) => {
-      props.setQuiz({
-        name: apiResult.data.title,
-        description: 'Description', // apiResult.description,
-        numAttempts: 3, // apiResult.num_attempts,
-        questions: apiResult.data.questions,
+class QuizCreateContainer extends React.Component<IQuizCreateContainerProps> {
+  public componentDidMount() {
+    const { quizId, ...props } = this.props;
+    Promise.all([getQuizById(quizId), getQuestionsByQuizId(quizId)])
+      .then((apiResults) => {
+        const quiz = apiResults[0].data;
+        const questions = apiResults[1].data;
+        props.setQuiz({
+          name: quiz.title,
+          description: quiz.description || 'No description',
+          numAttempts: quiz.num_attempts,
+          questions: questions.map((qn: any, idx: any) => {
+            return {
+              questionNumber: idx + 1,
+              text: qn.text,
+              options: qn.options,
+              correctOption: 0
+            };
+          })
+        });
       });
-    });
+  }
 
-  return (
-    <QuizCreateSummary
-      name={name}
-      description={description}
-      numAttempts={numAttempts}
-      questions={questions}
-    />
-  );
-};
+  public render() {
+    const { name, description, numAttempts, questions } = this.props;
+    return (
+      <QuizCreateSummary
+        name={name}
+        description={description}
+        numAttempts={numAttempts}
+        questions={questions}
+      />
+    );
+  }
+}
 
 const mapStateToProps = (state: AppState) => ({
   name: state.quizCreateSummary.name,

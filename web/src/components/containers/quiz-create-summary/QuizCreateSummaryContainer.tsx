@@ -17,26 +17,23 @@ interface IQuizCreateContainerProps {
 }
 
 class QuizCreateContainer extends React.Component<IQuizCreateContainerProps> {
-  public componentDidMount() {
+  public async componentDidMount() {
     const { quizId, ...props } = this.props;
-    Promise.all([getQuizById(quizId), getQuestionsByQuizId(quizId)])
-      .then((apiResults) => {
-        const quiz = apiResults[0].data;
-        const questions = apiResults[1].data;
-        props.setQuiz({
-          name: quiz.title,
-          description: quiz.description || 'No description',
-          numAttempts: quiz.num_attempts,
-          questions: questions.map((qn: any, idx: any) => {
-            return {
-              questionNumber: idx + 1,
-              text: qn.text,
-              options: qn.options,
-              correctOption: 0
-            };
-          })
-        });
-      });
+    const quiz = (await getQuizById(quizId)).data;
+    const questions = (await getQuestionsByQuizId(quizId)).data;
+    props.setQuiz({
+      name: quiz.title,
+      description: quiz.description || 'No description',
+      numAttempts: quiz.num_attempts,
+      questions: questions.map((qn: any, idx: any) => {
+        return {
+          questionNumber: idx + 1,
+          text: qn.text,
+          options: qn.options,
+          correctOption: 0
+        };
+      })
+    });
   }
 
   public render() {

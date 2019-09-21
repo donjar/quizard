@@ -33,9 +33,10 @@ const QuizCard: React.FC<IQuizCard> = ({
   dateCreated,
   children
 }) => {
+  const daysAgo = Math.floor((Date.now() - (dateCreated * 1000)) / (1000 * 60 * 60 * 24));
   return (
     <StyledQuizCard>
-      <QuizDateCreatedDiv> Created {dateCreated} days ago</QuizDateCreatedDiv>
+      <QuizDateCreatedDiv> Created {daysAgo} days ago</QuizDateCreatedDiv>
       <QuizCardContents>
         <div>
           <QuizTitle>{title}</QuizTitle>

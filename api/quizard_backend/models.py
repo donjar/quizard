@@ -156,7 +156,7 @@ class Quiz(BaseModel):
     internal_id = db.Column(db.BigInteger, primary_key=True, autoincrement=True)
     title = db.Column(db.String, nullable=False)
     description = db.Column(db.String)
-    num_attempts = db.Column(db.BigInteger, default=0)
+    num_attempts = db.Column(db.BigInteger, nullable=False, default=0)
     creator_id = db.Column(
         db.String(length=32), db.ForeignKey("user.id"), nullable=False
     )

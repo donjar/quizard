@@ -39,7 +39,7 @@ async def quiz_create(req, req_args, req_body, *args, **kwargs):
 
     # Update the questions' order in quiz
     # using the IDs of created questions
-    if not questions:
+    if questions:
         return await Quiz.modify({"id": result["id"]}, {"questions": questions})
     return result
 

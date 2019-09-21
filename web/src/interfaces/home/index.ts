@@ -1,13 +1,16 @@
+export interface IQuestion {
+  title: string;
+  description: string;
+  numAttempted: number;
+  dateCreated: number;
+}
+
 export interface IHomeContentProps {
   quizTypeSelected: string;
   quizList: IQuizCard[];
 }
 
-export interface IQuizCard {
-  title: string;
-  description: string;
-  numAttempted: number;
-  dateCreated: number;
+export interface IQuizCard extends IQuestion {
 }
 
 export interface IHomeState {
@@ -16,10 +19,9 @@ export interface IHomeState {
   attemptedQuizList: IQuizCard[];
 }
 
-export interface IHomeContainerProps {
-  quizTypeSelected: string;
-  createdQuizList: IQuizCard[];
-  attemptedQuizList: IQuizCard[];
+export interface IHomeContainerProps extends IHomeState {
+  setCreatedQuizzes: (questions: IQuestion[]) => void;
+  setAttemptedQuizzes: (questions: IQuestion[]) => void;
 }
 
 export interface IRowRendererProps {

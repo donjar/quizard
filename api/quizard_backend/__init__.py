@@ -13,7 +13,6 @@ app = Sanic(__name__)
 app.config.update(SANIC_CONFIG)
 app.config["JWT_SECRET_KEY"] = "oi123n1k231kloiqwescqklwn"  # Remove later
 app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(minutes=15)
-
 app.config["CORS_AUTOMATIC_OPTIONS"] = True
 
 # Note: Gino doesn't auto-generate any new changes in the schema

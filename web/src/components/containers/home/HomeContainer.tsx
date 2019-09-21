@@ -1,10 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router';
 import { Dispatch } from 'redux';
 import { getAllQuizzes } from '../../../api';
 import { IHomeContainerProps } from '../../../interfaces/home';
 import { IQuestion } from '../../../interfaces/home';
 import { AppState } from '../../../store/store';
+import { isLoggedIn } from '../../../utils/auth';
 import HomeContent from '../../presentations/home/HomeContent';
 import Home from '../../presentations/home/index';
 import { setAttemptedQuizzes, setCreatedQuizzes } from './redux/actions';
@@ -12,6 +14,10 @@ import { CREATED_QUIZZES_SELECTED } from './redux/types';
 
 class HomeContainer extends React.Component<IHomeContainerProps> {
   public async componentDidMount() {
+    if (!isLoggedIn()) {
+      return;
+    }
+
     const apiQuizzes = await getAllQuizzes();
     const quizzes = apiQuizzes.data.map((quiz: any) => ({
       title: quiz.title,
@@ -24,9 +30,21 @@ class HomeContainer extends React.Component<IHomeContainerProps> {
   }
 
   public render() {
+    if (!isLoggedIn()) {
+      return (
+        <Redirect to="/" />
+      );
+    }
+
+    const onLogout = () => {
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
+      window.location.reload();
+    };
+
     const { createdQuizList, attemptedQuizList, quizTypeSelected } = this.props;
     return (
-      <Home>
+      <Home onLogout={onLogout}>
         <HomeContent
           quizList={
             quizTypeSelected === CREATED_QUIZZES_SELECTED

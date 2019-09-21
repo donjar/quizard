@@ -29,3 +29,10 @@ export interface IRowRendererProps {
   index: number;
   style: any;
 }
+
+export interface IHomeNavBarProps {
+  onLogout: () => void;
+}
+
+export interface IHomeProps extends IHomeNavBarProps {
+}

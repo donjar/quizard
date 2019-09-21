@@ -4,6 +4,7 @@ from sanic_jwt_extended import create_access_token, create_refresh_token
 
 from quizard_backend.models import User
 from quizard_backend.views.urls import root_blueprint as blueprint
+from quizard_backend.utils.request import unpack_request
 from quizard_backend.utils.validation import validate_request, validate_token
 
 
@@ -13,8 +14,9 @@ async def root(request):
 
 
 @blueprint.route("/login", methods=["POST"])
+@unpack_request
 @validate_request(schema="user_login", skip_args=True)
-async def login(request, req_args, req_body):
+async def login(request, *, req_args, req_body):
     """
     Return an access token and refresh token to user,
     if the login credentials of email and password are correct.

@@ -83,16 +83,8 @@ async def get_one_latest(model, **kwargs):
     )
 
 
-async def get_count(model, distinct=None, **kwargs):
-    return (
-        await db.select([db.func.count(getattr(model, distinct) if distinct else None)])
-        .where(and_(*dict_to_filter_args(model, **kwargs)))
-        .gino.scalar()
-    )
-
-
 async def get_many_with_count_and_group_by(
-    model, *, columns, group_by="id", in_column=None, in_values=None, **kwargs
+    model, *, columns, in_column=None, in_values=None
 ):
     return (
         await db.select(

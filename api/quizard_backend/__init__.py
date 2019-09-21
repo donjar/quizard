@@ -2,7 +2,6 @@ from datetime import timedelta
 
 from gino.ext.sanic import Gino
 from sanic import Blueprint, Sanic
-from sanic.response import json
 from sanic_jwt_extended import JWTManager
 from sanic_cors import CORS
 

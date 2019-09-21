@@ -1,6 +1,4 @@
 from hashlib import sha512
-from random import choices
-from string import ascii_lowercase, digits
 
 from sanic.exceptions import InvalidUsage
 

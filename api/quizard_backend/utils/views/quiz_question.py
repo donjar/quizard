@@ -1,5 +1,18 @@
 from sanic.exceptions import Unauthorized
+
 from quizard_backend.models import Quiz, QuizQuestion
+from quizard_backend.utils.query import get_many
+
+
+async def calculate_score(question_ids, answers):
+    score = 0
+    questions = await get_many(QuizQuestion, in_column="id", in_values=question_ids)
+
+    for question in questions:
+        if question.correct_option == answers[question.id]:
+            score += 1
+
+    return score
 
 
 async def extract_quiz_questions_from_quiz(

@@ -1,6 +1,6 @@
 from functools import partial, wraps
 from cerberus import Validator
-from sanic.exceptions import Unauthorized, InvalidUsage
+from sanic.exceptions import Unauthorized
 from sanic_jwt_extended.decorators import (
     get_jwt_data_in_request_header,
     verify_jwt_data_type,
@@ -10,7 +10,6 @@ from quizard_backend import app
 from quizard_backend.exceptions import SchemaValidationError
 from quizard_backend.models import Quiz
 from quizard_backend.schemas import schemas
-from quizard_backend.utils.request import req_args_to_dict
 
 
 def validate_against_schema(document, schema_name, update=False):
@@ -62,17 +61,13 @@ def validate_request(
         )
 
     @wraps(func)
-    async def inner(request, *args, **kwargs):
+    async def inner(request, *args, req_args=None, req_body=None, **kwargs):
         """
         After validating the request's body and args,
         pass them to the function to avoid re-parsing.
         """
-        req_body = request.json or {}
-        req_args = (
-            req_args_to_dict(request.get_args(keep_blank_values=True))
-            if request.method != "POST"
-            else {}
-        )
+        req_body = req_body or {}
+        req_args = req_args or {}
 
         # Pass if there are no schema given
         if not schema or schema not in schemas:
@@ -80,16 +75,8 @@ def validate_request(
                 request, req_args=req_args, req_body=req_body, *args, **kwargs
             )
 
-        # For views getting a single resource,
-        # The id is passed from kwargs, rather than `req_args`
-        if "id" in kwargs and "id" not in req_args:
-            req_args["id"] = kwargs["id"]
-
         _schema = schemas[schema]
         if not skip_body:
-            # if not _validator.validate(req_body, _schema, update=update):
-            #     raise SchemaValidationError(_validator.errors)
-            # req_body = _validator.document
             req_body = validate_against_schema(req_body, schema, update=update)
 
         if not skip_args:
@@ -97,16 +84,7 @@ def validate_request(
             # use READ schema
             model_name = schema.split("_")[0]
             _schema = model_name + "_read"
-
-            # if not _validator.validate(req_args, _schema):
-            #     raise SchemaValidationError(_validator.errors)
-            # req_args = _validator.document
             req_args = validate_against_schema(req_args, _schema)
-
-        # Avoid duplication of assigning `req_args` and `req_args`
-        # to functions
-        kwargs.pop("req_args", None)
-        kwargs.pop("req_body", None)
 
         return await func(
             request, req_args=req_args, req_body=req_body, *args, **kwargs
@@ -126,7 +104,7 @@ def validate_permission(func=None, model=None, token_type="access"):
         return partial(validate_permission, model=model, token_type=token_type)
 
     @wraps(func)
-    async def inner(request, *args, req_args: dict = None, **kwargs):
+    async def inner(request, *args, req_args=None, **kwargs):
         # Validate the token before checking permission
         jwt_token_data = await validate_token(request)
 

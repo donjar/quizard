@@ -12,10 +12,8 @@ app = Sanic(__name__)
 
 app.config.update(SANIC_CONFIG)
 app.config["JWT_SECRET_KEY"] = "oi123n1k231kloiqwescqklwn"  # Remove later
-app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(minutes=15)
-
+app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(minutes=60 * 48)  # 2 days
 app.config["CORS_AUTOMATIC_OPTIONS"] = True
-CORS(app)
 
 # Note: Gino doesn't auto-generate any new changes in the schema
 # Use alembic to apply new changes to the db
@@ -26,6 +24,7 @@ db = Gino()
 # to avoid circular importing
 db.init_app(app)
 JWTManager(app)
+CORS(app)
 
 
 async def create_tables(app, loop):

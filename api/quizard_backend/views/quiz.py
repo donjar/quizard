@@ -95,6 +95,9 @@ async def quiz_route_quiz_id(request, quiz_id):
 
 @blueprint.route("/<quiz_id>/questions/<question_id>/answers", methods=["POST"])
 async def quiz_route_submit_answer(request, quiz_id, question_id):
+    """
+    Validate if a submitted answer from user is correct or wrong.
+    """
     requester = await get_jwt_token_requester(request)
     # Check if the quiz exists, before further processing
     await Quiz.get(id=quiz_id)
@@ -137,7 +140,8 @@ async def quiz_route_submit_answer(request, quiz_id, question_id):
         {
             "data": {
                 "is_correct": question.correct_option
-                == quiz_answer_data.get("selected_option", -1)
+                == quiz_answer_data.get("selected_option", -1),
+                "correct_option": question.correct_option,
             }
         }
     )

@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router';
 import { AnyAction } from 'redux';
 import { ThunkDispatch } from 'redux-thunk';
 import { IQuestion } from '../../../interfaces/quiz-question';
@@ -15,12 +16,10 @@ import {
 interface IQuizQuestionContainerProps {
   match: any;
   question: IQuestion;
-  questionId: string;
   numQuestions: number;
   questionNumber: number;
   disableSelection: boolean;
   showNext: boolean;
-  showDone: boolean;
   onSelectOption: (
     quizId: string,
     questionId: string,
@@ -34,12 +33,10 @@ interface IQuizQuestionContainerProps {
 const QuizQuestionContainer: React.FC<IQuizQuestionContainerProps> = ({
   match,
   question,
-  questionId,
   numQuestions,
   questionNumber,
   disableSelection,
   showNext,
-  showDone,
   onSelectOption,
   onClickNext,
   getQuestions
@@ -49,8 +46,12 @@ const QuizQuestionContainer: React.FC<IQuizQuestionContainerProps> = ({
     getQuestions(quizId);
   }, []);
 
+  if (questionNumber > numQuestions) {
+    return (<Redirect to="/quiz-complete" />);
+  }
+
   const handleSelectedOption = async (optionIdx: number) => {
-    onSelectOption(quizId, questionId, questionNumber - 1, optionIdx);
+    onSelectOption(quizId, question.questionId, questionNumber - 1, optionIdx);
   };
 
   const handleLeaveQuiz = () => {
@@ -67,7 +68,6 @@ const QuizQuestionContainer: React.FC<IQuizQuestionContainerProps> = ({
       options={question.options}
       disableSelection={disableSelection}
       showNext={showNext}
-      showDone={showDone}
       onSelectOption={handleSelectedOption}
       onCloseQuiz={handleLeaveQuiz}
       onClickNext={onClickNext}
@@ -81,13 +81,12 @@ const mapStateToProps = (state: AppState) => {
     numQuestions: questions.length,
     questionNumber: currQuestionIdx + 1,
     question: questions[currQuestionIdx],
-    questionId: questions[currQuestionIdx].questionId,
     disableSelection,
     showNext
   };
 };
 
-const mapDispatchToProps = (dispatch: ThunkDispatch<any, any, AnyAction>) => {
+const mapDispatchToProps = (dispatch: ThunkDispatch<any, any, AnyAction>, ownProps: any) => {
   return {
     onSelectOption: (
       quizId: string,
@@ -105,7 +104,7 @@ const mapDispatchToProps = (dispatch: ThunkDispatch<any, any, AnyAction>) => {
       ));
     },
     onClickNext: () => {
-      dispatch(gotoNextQuestion());
+      dispatch(gotoNextQuestion(ownProps));
     },
     getQuestions: (quizId: string) => {
       fetchQuestions(quizId).then(({ payload }) => (

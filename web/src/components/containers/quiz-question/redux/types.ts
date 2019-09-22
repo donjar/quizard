@@ -1,4 +1,4 @@
-import { IAnswerOptionPayload, IIncorrectAnswerOptionPayload, IQuestionsPayload } from '../../../../interfaces/quiz-question';
+import { IAnswerOptionPayload, IHistoryPayload, IIncorrectAnswerOptionPayload, IQuestionsPayload } from '../../../../interfaces/quiz-question';
 
 export const SELECT_QUESTION_OPTION = 'SELECT_QUESTION_OPTION';
 export const SELECT_CORRECT_QUESTION_OPTION = 'SELECT_CORRECT_QUESTION_OPTION';
@@ -23,6 +23,7 @@ export interface ISelectIncorrectOptionAction {
 
 export interface IGotoNextQuestionAction {
   type: typeof GOTO_NEXT_QUESTION;
+  payload: IHistoryPayload;
 }
 
 export interface IFetchQuestionsAction {

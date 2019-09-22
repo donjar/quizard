@@ -46,7 +46,7 @@ export default function quizQuestionReducer(
       return produce(state, (draft) => {
         draft.currQuestionIdx++;
         if (draft.currQuestionIdx >= draft.questions.length) {
-          draft.showDone = true;
+          action.payload.history.push(`/quiz-complete`);
         }
         draft.disableSelection = false;
         draft.showNext = false;

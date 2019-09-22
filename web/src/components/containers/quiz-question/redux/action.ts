@@ -84,9 +84,14 @@ export const selectIncorrectOption = (
   };
 };
 
-export const gotoNextQuestion = (): IGotoNextQuestionAction => {
+export const gotoNextQuestion = (
+  ownProps: any
+): IGotoNextQuestionAction => {
   return {
-    type: GOTO_NEXT_QUESTION
+    type: GOTO_NEXT_QUESTION,
+    payload: {
+      history: ownProps.history
+    }
   };
 };
 

@@ -64,7 +64,6 @@ interface IQuizQuestionContentProps {
   options: IQuestionOption[];
   disableSelection: boolean;
   showNext: boolean;
-  showDone: boolean;
   onSelectOption: (optionIdx: number) => void;
   onClickNext: () => void;
 }
@@ -74,7 +73,6 @@ const QuizQuestionContent: React.FC<IQuizQuestionContentProps> = ({
   options,
   disableSelection,
   showNext,
-  showDone,
   onSelectOption,
   onClickNext
 }) => {
@@ -95,9 +93,6 @@ const QuizQuestionContent: React.FC<IQuizQuestionContentProps> = ({
         <OptionList>{optionsArray}</OptionList>
       </QuizArea>
       <HidableButton show={showNext} onClick={onClickNext}>Next</HidableButton>
-      <Link to="/quiz-complete">
-        <HidableButton show={showDone}>Done</HidableButton>
-      </Link>
     </StyledQuizQuestionContent>
   );
 };

@@ -15,7 +15,7 @@ echo "Setting up the test DB..."
 docker exec -it test_postgres_cs3216_a3 psql -U postgres -c "DROP SCHEMA public CASCADE; CREATE SCHEMA public; GRANT ALL ON SCHEMA public TO postgres; GRANT ALL ON SCHEMA public TO public;"
 
 # Run the actual tests
-pipenv run pytest --loop uvloop
+pipenv run pytest --loop uvloop quizard_backend/tests/test_login.py
 # pipenv run pytest --loop uvloop quizard_backend/tests/test_user.py::test_get_one_user
 
 # Stop the container after running

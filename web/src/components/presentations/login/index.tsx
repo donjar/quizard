@@ -1,5 +1,4 @@
 import React from 'react';
-import { Redirect } from 'react-router';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { ILoginProps } from '../../../interfaces/login/index';
@@ -50,12 +49,6 @@ const Login: React.FC<ILoginProps> = ({
   onChangePassword,
   onLogin
 }) => {
-  if (loggedIn) {
-    return (
-      <Redirect to="/home" />
-    );
-  }
-
   const onLoginFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     onLogin();

@@ -1,23 +1,19 @@
 import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
 
-interface IPrivateRouteProps {
-  component: any;
-}
-
 export const PrivateRoute = ({
+  path,
   component: Component,
   ...rest
-}: IPrivateRouteProps) => (
-  <Route
+}: any) => (
+  <Route path={path}
     {...rest}
     render={(props) =>
-      // need to change login to be stored in localstorage instead
-      localStorage.getItem('user') ? (
+      localStorage.getItem('accessToken') ? (
         <Component {...props} />
       ) : (
-        <Redirect to={{ pathname: '/login' }} />
+        <Redirect to={{ pathname: '/login', state: { prevLocation: path } }} />
       )
     }
   />
-);
+  );

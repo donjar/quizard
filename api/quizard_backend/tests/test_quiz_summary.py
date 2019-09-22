@@ -111,6 +111,7 @@ async def test_get_summary_of_quiz(app, client, users, questions, quizzes):
     assert "data" in body
     assert isinstance(body["data"], list)
     for question in body["data"]:
-        assert answers_stats.get(question["id"], []) == question["stats"].get(
-            "count", []
+        assert (
+            answers_stats.get(question["id"], [0, 0, 0, 0])
+            == question["stats"]["count"]
         )

@@ -1,5 +1,5 @@
 import React, { lazy, Suspense } from 'react';
-import { Router, Switch, Redirect } from 'react-router';
+import { Redirect, Router, Switch } from 'react-router';
 import { Route } from 'react-router-dom';
 import { history } from './utils/history';
 import { PrivateRoute } from './utils/PrivateRoute';

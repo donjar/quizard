@@ -1,9 +1,9 @@
 import React, { lazy, Suspense } from 'react';
 import { Redirect, Router, Switch } from 'react-router';
 import { Route } from 'react-router-dom';
+import Loading from './components/presentations/common/Loading';
 import { history } from './utils/history';
 import { PrivateRoute } from './utils/PrivateRoute';
-import Loading from './components/presentations/common/Loading';
 
 const HomeContainer = lazy(() =>
   import('./components/containers/home/HomeContainer')

@@ -46,14 +46,12 @@ const App: React.FC = () => {
           <PrivateRoute path="/quiz-create" component={QuizCreateContainer} />
           <PrivateRoute
             path="/quiz-create-summary/:id"
-            render={(routeProps: any) => (
-              <QuizCreateSummaryContainer quizId={routeProps.match.params.id} />
-            )}
+            component={QuizCreateSummaryContainer}
           />
           <Route path="/quiz-complete" component={QuizCompleteContainer} />
-          <Route
+          <PrivateRoute
             path="/quiz-start/:id"
-            render={(routeProps) => (<QuizStartContainer quizId={routeProps.match.params.id} />)}
+            component={QuizStartContainer}
           />
         </Suspense>
       </Router>

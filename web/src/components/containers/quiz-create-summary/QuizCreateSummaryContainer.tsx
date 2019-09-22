@@ -8,7 +8,7 @@ import QuizCreateSummary from '../../presentations/quiz-create-summary/index';
 import { setQuiz } from './redux/actions';
 
 interface IQuizCreateSummaryContainerProps {
-  quizId: string;
+  match: any;
   name: string;
   description: string;
   numAttempts: number;
@@ -18,7 +18,7 @@ interface IQuizCreateSummaryContainerProps {
 
 class QuizCreateSummaryContainer extends React.Component<IQuizCreateSummaryContainerProps> {
   public async componentDidMount() {
-    const { quizId, ...props } = this.props;
+    const { match: { params: { id: quizId = '' } = {} } = {} , ...props } = this.props;
     const quiz = (await getQuizById(quizId)).data;
     const questions = (await getQuestionsByQuizId(quizId)).data;
     props.setQuiz({

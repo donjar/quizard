@@ -8,7 +8,7 @@ import QuizStart from '../../presentations/quiz-start/index';
 import { setQuiz } from './redux/actions';
 
 interface IQuizStartContainerProps {
-  quizId: string;
+  match: any;
   name: string;
   description: string;
   setQuiz: (quiz: IQuiz) => void;
@@ -16,7 +16,7 @@ interface IQuizStartContainerProps {
 
 class QuizStartContainer extends React.Component<IQuizStartContainerProps> {
   public async componentDidMount() {
-    const { quizId, ...props } = this.props;
+    const { match: { params: { id: quizId = '' } = {} } = {} , ...props } = this.props;
     const quiz = (await getQuizById(quizId)).data;
     props.setQuiz({
       name: quiz.title,

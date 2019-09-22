@@ -211,7 +211,7 @@ async def test_update_one_user(client, users, token_user):
         json=new_changes,
         headers={"Authorization": token_user},
     )
-    assert res.status == 401
+    assert res.status == 403
 
     # With id
     res = await client.patch(

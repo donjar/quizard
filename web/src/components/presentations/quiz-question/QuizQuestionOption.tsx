@@ -20,11 +20,13 @@ const StyledQuestionOption = styled.div`
 interface IQuizQuestionOptionProps {
   displayState: QuestionOptionState;
   onClick: () => void;
+  disableSelection: boolean;
 }
 
 const QuizQuestionOption: React.FC<IQuizQuestionOptionProps> = ({
   displayState,
   onClick,
+  disableSelection,
   children
 }) => {
   let OptionButton;
@@ -42,7 +44,7 @@ const QuizQuestionOption: React.FC<IQuizQuestionOptionProps> = ({
 
   return (
     <StyledQuestionOption>
-      <OptionButton onClick={onClick}>{children}</OptionButton>
+      <OptionButton disabled={disableSelection} onClick={onClick}>{children}</OptionButton>
     </StyledQuestionOption>
   );
 };

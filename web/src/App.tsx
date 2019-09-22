@@ -41,7 +41,10 @@ const App: React.FC = () => {
             <PrivateRoute path="/home" component={HomeContainer} />
             <Route path="/login" component={LoginContainer} />
             <Route path="/register" component={RegisterContainer} />
-            <PrivateRoute path="/quiz" component={QuizQuestionContainer} />
+            <PrivateRoute
+              path="/quiz/:id"
+              component={QuizQuestionContainer}
+            />
             <PrivateRoute path="/quiz-create" component={QuizCreateContainer} />
             <PrivateRoute
               path="/quiz-create-summary/:id"

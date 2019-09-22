@@ -117,3 +117,18 @@ export const getQuestionsByQuizId = async (quizId: string): Promise<any> => {
 
   return await res.json();
 };
+
+export const checkQuizQuestionAnswer = async (
+  quizId: string,
+  questionId: string,
+  optionIdx: number
+): Promise<any> => {
+  const res = await fetchWithAuth(`${apiUrl}/quizzes/${quizId}/questions/${questionId}/answers`, {
+    method: 'POST',
+    body: JSON.stringify({
+      selected_option: optionIdx
+    })
+  });
+
+  return await res.json();
+};

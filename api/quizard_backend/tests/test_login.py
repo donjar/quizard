@@ -1,3 +1,6 @@
+from quizard_backend.tests import profile_created_from_origin
+
+
 async def test_login_user(client, users):
     for user in users[-1:-4]:
         res = await client.post(
@@ -7,8 +10,10 @@ async def test_login_user(client, users):
 
         body = await res.json()
         assert "data" in body
-        assert isinstance(body["data"], dict)
+        assert isinstance(body, dict)
         assert "access_token" in body and "refresh_token" in body
+        assert "user" in body
+        assert profile_created_from_origin(user, body["user"])
 
     # Login with wrong password
     user = users[-1]

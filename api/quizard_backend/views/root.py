@@ -34,7 +34,9 @@ async def login(request, *, req_args, req_body):
     # Identity can be any data that is json serializable
     access_token = await create_access_token(identity=user, app=request.app)
     refresh_token = await create_refresh_token(identity=str(uuid4()), app=request.app)
-    return json({"access_token": access_token, "refresh_token": refresh_token})
+    return json(
+        {"user": user, "access_token": access_token, "refresh_token": refresh_token}
+    )
 
 
 @blueprint.route("/refresh", methods=["POST"])

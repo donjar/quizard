@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { login } from '../../../api';
 import { AppState } from '../../../store/store';
+import { history } from '../../../utils/history';
 import Login from '../../presentations/login/index';
 import {
   changeEmail,
@@ -22,6 +23,21 @@ interface ILoginContainerProps {
   performLogin: () => void;
 }
 
+const onLogin = async (props: any, email: any, password: any) => {
+  const data = await login(email, password);
+  const { location: { state: { prevLocation = '/' } = {} } = {} } = props;
+
+  if ('error' in data) {
+    props.setError(JSON.stringify(data.error));
+  } else {
+    props.performLogin();
+    localStorage.setItem('accessToken', data.access_token);
+    localStorage.setItem('refreshToken', data.refresh_token);
+  }
+
+  history.push(prevLocation);
+};
+
 const LoginContainer: React.FC<ILoginContainerProps> = ({
   email,
   password,
@@ -31,17 +47,6 @@ const LoginContainer: React.FC<ILoginContainerProps> = ({
   onChangePassword,
   ...props
 }) => {
-  const onLogin = async () => {
-    const data = await login(email, password);
-    if ('error' in data) {
-      props.setError(JSON.stringify(data.error));
-    } else {
-      props.performLogin();
-      localStorage.setItem('accessToken', data.access_token);
-      localStorage.setItem('refreshToken', data.refresh_token);
-    }
-  };
-
   return (
     <Login
       email={email}
@@ -50,7 +55,7 @@ const LoginContainer: React.FC<ILoginContainerProps> = ({
       error={error}
       onChangeEmail={onChangeEmail}
       onChangePassword={onChangePassword}
-      onLogin={onLogin}
+      onLogin={() => onLogin(props, email, password)}
     />
   );
 };

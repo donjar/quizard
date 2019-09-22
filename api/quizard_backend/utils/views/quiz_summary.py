@@ -39,6 +39,12 @@ async def extract_stats_from_quiz(quiz_id, requester):
 
     # Inject stats to `questions`
     for question in questions:
+        # Store default values of 0, instead of leaving `stats` to be empty
+        if question["id"] not in stats:
+            zero_list = [0] * len(question["options"])
+            question["stats"] = {"count": zero_list, "percentage": zero_list}
+            continue
+
         question["stats"] = stats.get(question["id"], {})
 
     return questions

@@ -4,8 +4,9 @@ from sanic_jwt_extended import create_access_token, create_refresh_token
 
 from quizard_backend.models import User
 from quizard_backend.views.urls import root_blueprint as blueprint
+from quizard_backend.utils.authentication import validate_token
 from quizard_backend.utils.request import unpack_request
-from quizard_backend.utils.validation import validate_request, validate_token
+from quizard_backend.utils.validation import validate_request
 
 
 @blueprint.route("/")

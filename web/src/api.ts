@@ -14,6 +14,40 @@ export const renewTokenOnExpire = async (res: Response) => {
   return false;
 };
 
+export const addAuthHeader = (options: any, token: string) => {
+  if (options) {
+    if (options.headers) {
+      options.headers.Authorization = `Bearer ${token}`;
+    } else {
+      options.headers = {
+        Authorization: `Bearer ${token}`
+      };
+    }
+  } else {
+    options = {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    };
+  }
+
+  return options;
+};
+
+export const fetchWithAuth = async (url: string, options?: any) => {
+  let res;
+  do {
+    const token = localStorage.getItem('accessToken');
+    if (token) {
+      options = addAuthHeader(options, token);
+    }
+
+    res = await fetch(url, options);
+  } while (await renewTokenOnExpire(res));
+
+  return res;
+};
+
 export const login = async (email: string, password: string) => {
   const res = await fetch(`${apiUrl}/login`, {
     method: 'POST',
@@ -46,104 +80,40 @@ export const refresh = async () => {
 };
 
 export const createQuiz = async (values: IQuizCreateApi): Promise<any> => {
-  const token = localStorage.getItem('accessToken');
-
-  const res = await fetch(`${apiUrl}/quizzes`, {
+  const res = await fetchWithAuth(`${apiUrl}/quizzes`, {
     method: 'POST',
     body: JSON.stringify(values),
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
   });
-
-  if (await renewTokenOnExpire(res)) {
-    return createQuiz(values);
-  }
 
   return await res.json();
 };
 
 export const getAllQuizzes = async (): Promise<any> => {
-  const token = localStorage.getItem('accessToken');
-
-  const res = await fetch(`${apiUrl}/quizzes`, {
-    method: 'GET',
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  });
-
-  if (await renewTokenOnExpire(res)) {
-    return getAllQuizzes();
-  }
+  const res = await fetchWithAuth(`${apiUrl}/quizzes`);
 
   return await res.json();
 };
 
 export const getQuizById = async (quizId: string): Promise<any> => {
-  const token = localStorage.getItem('accessToken');
-
-  const res = await fetch(`${apiUrl}/quizzes/${quizId}`, {
-    method: 'GET',
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  });
-
-  if (await renewTokenOnExpire(res)) {
-    return getQuizById(quizId);
-  }
+  const res = await fetchWithAuth(`${apiUrl}/quizzes/${quizId}`);
 
   return await res.json();
 };
 
 export const getUserCreatedQuizzes = async (userId: string): Promise<any> => {
-  const token = localStorage.getItem('accessToken');
-
-  const res = await fetch(`${apiUrl}/users/${userId}/quizzes?created=True&attempted=False`, {
-    method: 'GET',
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  });
-
-  if (await renewTokenOnExpire(res)) {
-    return getUserCreatedQuizzes(userId);
-  }
+  const res = await fetchWithAuth(`${apiUrl}/users/${userId}/quizzes?created=True&attempted=False`);
 
   return await res.json();
 };
 
 export const getUserAttemptedQuizzes = async (userId: string): Promise<any> => {
-  const token = localStorage.getItem('accessToken');
-
-  const res = await fetch(`${apiUrl}/users/${userId}/quizzes?created=False&attempted=True`, {
-    method: 'GET',
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  });
-
-  if (await renewTokenOnExpire(res)) {
-    return getUserAttemptedQuizzes(userId);
-  }
+  const res = await fetchWithAuth(`${apiUrl}/users/${userId}/quizzes?created=False&attempted=True`);
 
   return await res.json();
 };
 
 export const getQuestionsByQuizId = async (quizId: string): Promise<any> => {
-  const token = localStorage.getItem('accessToken');
-
-  const res = await fetch(`${apiUrl}/quizzes/${quizId}/questions`, {
-    method: 'GET',
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  });
-
-  if (await renewTokenOnExpire(res)) {
-    return getQuestionsByQuizId(quizId);
-  }
+  const res = await fetchWithAuth(`${apiUrl}/quizzes/${quizId}/questions`);
 
   return await res.json();
 };

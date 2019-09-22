@@ -99,7 +99,7 @@ async def test_get_summary_of_quiz(app, client, users, questions, quizzes):
         "/quizzes/{}/summary".format(quizzes[quiz_index]["id"]),
         headers={"Authorization": non_creator_token},
     )
-    assert res.status == 401
+    assert res.status == 403
 
     # Valid user
     res = await client.get(

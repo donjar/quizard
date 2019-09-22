@@ -1,12 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router';
 import { Dispatch } from 'redux';
 import { getUserAttemptedQuizzes, getUserCreatedQuizzes } from '../../../api';
 import { IHomeContainerProps } from '../../../interfaces/home';
 import { IQuiz } from '../../../interfaces/home';
 import { AppState } from '../../../store/store';
-import { getUser, isLoggedIn } from '../../../utils/auth';
+import { getUser } from '../../../utils/auth';
 import HomeContent from '../../presentations/home/HomeContent';
 import Home from '../../presentations/home/index';
 import { setAttemptedQuizzes, setCreatedQuizzes } from './redux/actions';

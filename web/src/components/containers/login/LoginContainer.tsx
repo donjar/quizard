@@ -2,8 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { login } from '../../../api';
-import { history } from '../../../App';
 import { AppState } from '../../../store/store';
+import { history } from '../../../utils/history';
 import Login from '../../presentations/login/index';
 import {
   changeEmail,

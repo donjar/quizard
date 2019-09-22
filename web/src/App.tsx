@@ -1,7 +1,7 @@
-import { createBrowserHistory } from 'history';
 import React, { lazy, Suspense } from 'react';
 import { Router } from 'react-router';
 import { Route } from 'react-router-dom';
+import { history } from './utils/history';
 import { PrivateRoute } from './utils/PrivateRoute';
 
 const HomeContainer = lazy(() =>
@@ -30,8 +30,6 @@ const QuizStartContainer = lazy(() =>
 const RegisterContainer = lazy(() =>
   import('./components/containers/register/RegisterContainer')
 );
-
-export const history = createBrowserHistory();
 
 const App: React.FC = () => {
   return (

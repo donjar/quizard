@@ -4,6 +4,7 @@ import { Dispatch } from 'redux';
 import { getQuizById } from '../../../api';
 import { IQuiz } from '../../../interfaces/quiz-start';
 import { AppState } from '../../../store/store';
+import { history } from '../../../utils/history';
 import QuizStart from '../../presentations/quiz-start/index';
 import { setQuiz } from './redux/actions';
 
@@ -18,10 +19,15 @@ class QuizStartContainer extends React.Component<IQuizStartContainerProps> {
   public async componentDidMount() {
     const { match: { params: { id: quizId = '' } = {} } = {} , ...props } = this.props;
     const quiz = (await getQuizById(quizId)).data;
-    props.setQuiz({
-      name: quiz.title,
-      description: quiz.description || 'No description',
-    });
+
+    if (quiz === undefined) {
+      history.push('/');
+    } else {
+      props.setQuiz({
+        name: quiz.title,
+        description: quiz.description || 'No description'
+      });
+    }
   }
 
   public render() {

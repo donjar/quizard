@@ -97,6 +97,40 @@ export const getQuizById = async (quizId: string): Promise<any> => {
   return await res.json();
 };
 
+export const getUserCreatedQuizzes = async (userId: string): Promise<any> => {
+  const token = localStorage.getItem('accessToken');
+
+  const res = await fetch(`${apiUrl}/users/${userId}/quizzes?created=True&attempted=False`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+
+  if (await renewTokenOnExpire(res)) {
+    return getUserCreatedQuizzes(userId);
+  }
+
+  return await res.json();
+};
+
+export const getUserAttemptedQuizzes = async (userId: string): Promise<any> => {
+  const token = localStorage.getItem('accessToken');
+
+  const res = await fetch(`${apiUrl}/users/${userId}/quizzes?created=False&attempted=True`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+
+  if (await renewTokenOnExpire(res)) {
+    return getUserAttemptedQuizzes(userId);
+  }
+
+  return await res.json();
+};
+
 export const getQuestionsByQuizId = async (quizId: string): Promise<any> => {
   const token = localStorage.getItem('accessToken');
 

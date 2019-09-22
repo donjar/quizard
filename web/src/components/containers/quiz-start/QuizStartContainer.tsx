@@ -1,24 +1,53 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { IQuiz, IQuizStartProps } from '../../../interfaces/quiz-start';
+import { Dispatch } from 'redux';
+import { getQuizById } from '../../../api';
+import { IQuiz } from '../../../interfaces/quiz-start';
 import { AppState } from '../../../store/store';
 import QuizStart from '../../presentations/quiz-start/index';
+import { setQuiz } from './redux/actions';
 
-const QuizStartContainer: React.FC<IQuizStartProps> = (props) => {
-  return <QuizStart quiz={props.quiz} />;
-};
+interface IQuizStartContainerProps {
+  quizId: string;
+  name: string;
+  description: string;
+  setQuiz: (quiz: IQuiz) => void;
+}
 
-// temp prop
-const tempQuiz: IQuiz = {
-  description: 'Quiz description something or rather',
-  dueDate: 124567,
-  name: 'Quiz Name Here',
-  type: 1
-};
+class QuizStartContainer extends React.Component<IQuizStartContainerProps> {
+  public async componentDidMount() {
+    const { quizId, ...props } = this.props;
+    const quiz = (await getQuizById(quizId)).data;
+    props.setQuiz({
+      name: quiz.title,
+      description: quiz.description || 'No description',
+    });
+  }
+
+  public render() {
+    const quiz = {
+      name: this.props.name,
+      description: this.props.description
+    };
+    return (
+      <QuizStart
+        quiz={quiz}
+      />
+    );
+  }
+}
 
 const mapStateToProps = (state: AppState) => ({
-  home: state.home,
-  quiz: tempQuiz
+  name: state.quizStart.name,
+  description: state.quizStart.description
 });
 
-export default connect(mapStateToProps)(QuizStartContainer);
+const mapDispatchToProps = (dispatch: Dispatch) => {
+  return {
+    setQuiz: (quiz: IQuiz) => {
+      dispatch(setQuiz(quiz));
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(QuizStartContainer);

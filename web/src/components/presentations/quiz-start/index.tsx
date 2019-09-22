@@ -8,16 +8,14 @@ import { CenteredDiv } from '../common/CenteredDiv';
 import { QuizStartNavBar } from './QuizStartNavBar';
 
 const QuizStart: React.FC<IQuizStartProps> = ({ quiz }) => {
-  const { name, dueDate, description, type } = quiz;
+  const { name, description } = quiz;
 
   return (
     <BeigeBackground>
       <QuizStartNavBar />
       <BodyAfterNavBarWithPadding>
         <div>{name}</div>
-        <div>{dueDate}</div>
         <div>{description}</div>
-        <div>{type}</div>
         <CenteredDiv>
           <StartButton />
         </CenteredDiv>

@@ -7,7 +7,7 @@ import { AppState } from '../../../store/store';
 import QuizCreateSummary from '../../presentations/quiz-create-summary/index';
 import { setQuiz } from './redux/actions';
 
-interface IQuizCreateContainerProps {
+interface IQuizCreateSummaryContainerProps {
   quizId: string;
   name: string;
   description: string;
@@ -16,7 +16,7 @@ interface IQuizCreateContainerProps {
   setQuiz: (quiz: IQuiz) => void;
 }
 
-class QuizCreateContainer extends React.Component<IQuizCreateContainerProps> {
+class QuizCreateSummaryContainer extends React.Component<IQuizCreateSummaryContainerProps> {
   public async componentDidMount() {
     const { quizId, ...props } = this.props;
     const quiz = (await getQuizById(quizId)).data;
@@ -67,4 +67,4 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(QuizCreateContainer);
+)(QuizCreateSummaryContainer);

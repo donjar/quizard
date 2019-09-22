@@ -26,7 +26,10 @@ const App: React.FC = () => {
             render={(routeProps) => (<QuizCreateSummaryContainer quizId={routeProps.match.params.id} />)}
           />
           <Route path="/quiz-complete" component={QuizCompleteContainer} />
-          <Route path="/quiz-start" component={QuizStartContainer} />
+          <Route
+            path="/quiz-start/:id"
+            render={(routeProps) => (<QuizStartContainer quizId={routeProps.match.params.id} />)}
+          />
         </Suspense>
       </Router>
     </>

@@ -1,6 +1,6 @@
 from functools import partial, wraps
 from cerberus import Validator
-from sanic.exceptions import Unauthorized
+from sanic.exceptions import Forbidden
 from sanic_jwt_extended.decorators import (
     get_jwt_data_in_request_header,
     verify_jwt_data_type,
@@ -10,6 +10,7 @@ from quizard_backend import app
 from quizard_backend.exceptions import SchemaValidationError
 from quizard_backend.models import Quiz
 from quizard_backend.schemas import schemas
+from quizard_backend.utils.authentication import get_jwt_token_requester, validate_token
 
 
 def validate_against_schema(document, schema_name, update=False):
@@ -93,12 +94,6 @@ def validate_request(
     return inner
 
 
-async def validate_token(request, token_type="access"):
-    jwt_token_data = await get_jwt_data_in_request_header(app, request)
-    await verify_jwt_data_type(jwt_token_data, token_type)
-    return jwt_token_data
-
-
 def validate_permission(func=None, model=None, token_type="access"):
     if func is None:
         return partial(validate_permission, model=model, token_type=token_type)
@@ -106,10 +101,9 @@ def validate_permission(func=None, model=None, token_type="access"):
     @wraps(func)
     async def inner(request, *args, req_args=None, **kwargs):
         # Validate the token before checking permission
-        jwt_token_data = await validate_token(request)
+        requester = await get_jwt_token_requester(request)
 
         if model and request.method in ("PUT", "PATCH"):
-            requester = jwt_token_data["identity"]
             # Get the resource, to check if the requester
             # is modifying a resource he/she owns
             resource = await model.get(**req_args)
@@ -125,7 +119,7 @@ def validate_permission(func=None, model=None, token_type="access"):
                 resource_owner_id = quiz_parent["creator_id"]
 
             if requester["id"] != resource_owner_id:
-                raise Unauthorized("You are not allowed to perform this action")
+                raise Forbidden("You are not allowed to perform this action")
 
         return await func(request, req_args=req_args, *args, **kwargs)
 

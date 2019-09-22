@@ -4,6 +4,7 @@ from sanic_jwt_extended.decorators import get_jwt_data_in_request_header
 from quizard_backend.views.urls import quiz_blueprint as blueprint
 from quizard_backend.exceptions import ExistingAnswerError
 from quizard_backend.models import Quiz, QuizQuestion, QuizAttempt, QuizAnswer
+from quizard_backend.utils.authentication import get_jwt_token_requester
 from quizard_backend.utils.query import get_many, get_one
 from quizard_backend.utils.request import unpack_request
 from quizard_backend.utils.validation import (
@@ -94,9 +95,7 @@ async def quiz_route_quiz_id(request, quiz_id):
 
 @blueprint.route("/<quiz_id>/questions/<question_id>/answers", methods=["POST"])
 async def quiz_route_submit_answer(request, quiz_id, question_id):
-    jwt_data = await get_jwt_data_in_request_header(request.app, request)
-    requester = jwt_data["identity"]
-
+    requester = await get_jwt_token_requester(request)
     # Check if the quiz exists, before further processing
     await Quiz.get(id=quiz_id)
 
@@ -204,8 +203,7 @@ async def quiz_route_create_attempt(request, requester, quiz_id):
 
 @blueprint.route("/<quiz_id>/attempt", methods=["GET", "POST"])
 async def quiz_route_attempt(request, quiz_id):
-    jwt_data = await get_jwt_data_in_request_header(request.app, request)
-    requester = jwt_data["identity"]
+    requester = await get_jwt_token_requester(request)
 
     call_funcs = {"GET": quiz_route_get_attempt, "POST": quiz_route_create_attempt}
 
@@ -215,8 +213,7 @@ async def quiz_route_attempt(request, quiz_id):
 
 @blueprint.route("/<quiz_id>/summary", methods=["GET"])
 async def quiz_route_summary(request, quiz_id):
-    jwt_data = await get_jwt_data_in_request_header(request.app, request)
-    requester = jwt_data["identity"]
+    requester = await get_jwt_token_requester(request)
     questions = await extract_stats_from_quiz(quiz_id, requester)
 
     return json({"data": questions})

@@ -1,4 +1,4 @@
-from sanic.exceptions import Unauthorized
+from sanic.exceptions import Forbidden
 
 from quizard_backend.models import Quiz, QuizQuestion
 from quizard_backend.utils.query import get_many
@@ -23,7 +23,7 @@ async def extract_quiz_questions_from_quiz(
 
     # Check if the requester is the Quiz's owner
     if requester and requester["id"] != quiz["creator_id"]:
-        raise Unauthorized("You are not allowed to perform this action")
+        raise Forbidden("You are not allowed to perform this action")
 
     questions = []
     if quiz_question_ids:

@@ -142,9 +142,10 @@ A refresh token is a long-life token used to generate new access tokens. In this
 - `401`:
     - Login: Invalid `email` or `password`.
     - The access token has expired, invalid or missing.
+- `403`: The request failed for an authenticated user, who does not have authorization to access the requested resource.
 - `404`: Resource is not found.
 - `405`: HTTP method is not allowed for the endpoint.
-- `422`: The token is invalid.
+- `422`: The token is in wrong format.
 
 ## Endpoints
 

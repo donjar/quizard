@@ -1,5 +1,5 @@
 import React, { lazy, Suspense } from 'react';
-import { Router } from 'react-router';
+import { Router, Switch, Redirect } from 'react-router';
 import { Route } from 'react-router-dom';
 import { history } from './utils/history';
 import { PrivateRoute } from './utils/PrivateRoute';
@@ -36,21 +36,25 @@ const App: React.FC = () => {
     <>
       <Router history={history}>
         <Suspense fallback={<div>Loading...</div>}>
-          <PrivateRoute path="/" exact={true} component={HomeContainer} />
-          <PrivateRoute path="/home" component={HomeContainer} />
-          <Route path="/login" component={LoginContainer} />
-          <Route path="/register" component={RegisterContainer} />
-          <PrivateRoute path="/quiz" component={QuizQuestionContainer} />
-          <PrivateRoute path="/quiz-create" component={QuizCreateContainer} />
-          <PrivateRoute
-            path="/quiz-create-summary/:id"
-            component={QuizCreateSummaryContainer}
-          />
-          <Route path="/quiz-complete" component={QuizCompleteContainer} />
-          <PrivateRoute
-            path="/quiz-start/:id"
-            component={QuizStartContainer}
-          />
+          <Switch>
+            <PrivateRoute path="/" exact={true} component={HomeContainer} />
+            <PrivateRoute path="/home" component={HomeContainer} />
+            <Route path="/login" component={LoginContainer} />
+            <Route path="/register" component={RegisterContainer} />
+            <PrivateRoute path="/quiz" component={QuizQuestionContainer} />
+            <PrivateRoute path="/quiz-create" component={QuizCreateContainer} />
+            <PrivateRoute
+              path="/quiz-create-summary/:id"
+              component={QuizCreateSummaryContainer}
+            />
+            <Route path="/quiz-complete" component={QuizCompleteContainer} />
+            <PrivateRoute
+              path="/quiz-start/:id"
+              component={QuizStartContainer}
+            />
+            {/* Catch for invalid paths */}
+            <Route render={() => <Redirect to={{ pathname: '/' }} />} />
+          </Switch>
         </Suspense>
       </Router>
     </>

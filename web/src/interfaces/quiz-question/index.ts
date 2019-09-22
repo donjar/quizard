@@ -19,6 +19,7 @@ export interface IQuizState {
   questions: IQuestion[];
   disableSelection: boolean;
   showNext: boolean;
+  showDone: boolean;
 }
 
 export interface IAnswerOptionPayload {

@@ -28,6 +28,7 @@ const initialState: IQuizState = {
   currQuestionIdx: 0,
   disableSelection: false,
   showNext: false,
+  showDone: false,
 };
 
 export default initialState;

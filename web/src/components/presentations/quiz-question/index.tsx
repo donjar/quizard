@@ -30,6 +30,7 @@ export interface IQuizQuestionProps {
   options: IQuestionOption[];
   disableSelection: boolean;
   showNext: boolean;
+  showDone: boolean;
   onSelectOption: (idx: number) => void;
   onCloseQuiz: () => void;
   onClickNext: () => void;
@@ -42,6 +43,7 @@ const QuizQuestion: React.FC<IQuizQuestionProps> = ({
    options,
    disableSelection,
    showNext,
+   showDone,
    onSelectOption,
    onCloseQuiz,
    onClickNext
@@ -61,6 +63,7 @@ const QuizQuestion: React.FC<IQuizQuestionProps> = ({
           options={options}
           disableSelection={disableSelection}
           showNext={showNext}
+          showDone={showDone}
           onSelectOption={onSelectOption}
           onClickNext={onClickNext}
         />

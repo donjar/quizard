@@ -20,6 +20,7 @@ interface IQuizQuestionContainerProps {
   questionNumber: number;
   disableSelection: boolean;
   showNext: boolean;
+  showDone: boolean;
   onSelectOption: (
     quizId: string,
     questionId: string,
@@ -38,6 +39,7 @@ const QuizQuestionContainer: React.FC<IQuizQuestionContainerProps> = ({
   questionNumber,
   disableSelection,
   showNext,
+  showDone,
   onSelectOption,
   onClickNext,
   getQuestions
@@ -65,6 +67,7 @@ const QuizQuestionContainer: React.FC<IQuizQuestionContainerProps> = ({
       options={question.options}
       disableSelection={disableSelection}
       showNext={showNext}
+      showDone={showDone}
       onSelectOption={handleSelectedOption}
       onCloseQuiz={handleLeaveQuiz}
       onClickNext={onClickNext}

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { IQuestionOption } from '../../../interfaces/quiz-question';
 import { mdMax } from '../../../utils/media';
@@ -44,13 +45,13 @@ const OptionList = styled.div`
   }
 `;
 
-interface IGreenButtonProps {
+interface IHiddenButtonProps {
   show: boolean;
 }
 
-const StyledGreenButton = styled(GreenButton)`
+const HidableButton = styled(GreenButton)`
   align-self: flex-end;
-  display: ${({ show }: IGreenButtonProps) => show ? `block` : `none`};
+  display: ${({ show }: IHiddenButtonProps) => show ? `block` : `none`};
   margin: 5px 10px;
 
   @media screen and (max-width: ${mdMax}) {
@@ -63,6 +64,7 @@ interface IQuizQuestionContentProps {
   options: IQuestionOption[];
   disableSelection: boolean;
   showNext: boolean;
+  showDone: boolean;
   onSelectOption: (optionIdx: number) => void;
   onClickNext: () => void;
 }
@@ -72,6 +74,7 @@ const QuizQuestionContent: React.FC<IQuizQuestionContentProps> = ({
   options,
   disableSelection,
   showNext,
+  showDone,
   onSelectOption,
   onClickNext
 }) => {
@@ -91,7 +94,10 @@ const QuizQuestionContent: React.FC<IQuizQuestionContentProps> = ({
         <QuizQuestionText>{question}</QuizQuestionText>
         <OptionList>{optionsArray}</OptionList>
       </QuizArea>
-      <StyledGreenButton show={showNext} onClick={onClickNext}>Next</StyledGreenButton>
+      <HidableButton show={showNext} onClick={onClickNext}>Next</HidableButton>
+      <Link to="/quiz-complete">
+        <HidableButton show={showDone}>Done</HidableButton>
+      </Link>
     </StyledQuizQuestionContent>
   );
 };

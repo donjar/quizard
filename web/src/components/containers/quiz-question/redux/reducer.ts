@@ -45,6 +45,9 @@ export default function quizQuestionReducer(
     case GOTO_NEXT_QUESTION:
       return produce(state, (draft) => {
         draft.currQuestionIdx++;
+        if (draft.currQuestionIdx >= draft.questions.length) {
+          draft.showDone = true;
+        }
         draft.disableSelection = false;
         draft.showNext = false;
       });

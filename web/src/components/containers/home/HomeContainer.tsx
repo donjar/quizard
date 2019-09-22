@@ -2,11 +2,11 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
 import { Dispatch } from 'redux';
-import { getAllQuizzes } from '../../../api';
+import { getUserAttemptedQuizzes, getUserCreatedQuizzes } from '../../../api';
 import { IHomeContainerProps } from '../../../interfaces/home';
 import { IQuiz } from '../../../interfaces/home';
 import { AppState } from '../../../store/store';
-import { isLoggedIn } from '../../../utils/auth';
+import { getUser, isLoggedIn } from '../../../utils/auth';
 import HomeContent from '../../presentations/home/HomeContent';
 import Home from '../../presentations/home/index';
 import { setAttemptedQuizzes, setCreatedQuizzes } from './redux/actions';
@@ -18,16 +18,27 @@ class HomeContainer extends React.Component<IHomeContainerProps> {
       return;
     }
 
-    const apiQuizzes = await getAllQuizzes();
-    const quizzes = apiQuizzes.data.map((quiz: any) => ({
+    const userId = getUser().id;
+
+    const apiAttemptedQuizzes = await getUserAttemptedQuizzes(userId);
+    const attemptedQuizzes = apiAttemptedQuizzes.data.attempt.map((quiz: any) => ({
       id: quiz.id,
       title: quiz.title,
       description: quiz.description || 'No description',
       numAttempted: quiz.num_attempts,
       dateCreated: quiz.created_at
     }));
-    this.props.setAttemptedQuizzes(quizzes);
-    this.props.setCreatedQuizzes(quizzes);
+    this.props.setAttemptedQuizzes(attemptedQuizzes);
+
+    const apiCreatedQuizzes = await getUserCreatedQuizzes(userId);
+    const createdQuizzes = apiCreatedQuizzes.data.created.map((quiz: any) => ({
+      id: quiz.id,
+      title: quiz.title,
+      description: quiz.description || 'No description',
+      numAttempted: quiz.num_attempts,
+      dateCreated: quiz.created_at
+    }));
+    this.props.setCreatedQuizzes(createdQuizzes);
   }
 
   public render() {

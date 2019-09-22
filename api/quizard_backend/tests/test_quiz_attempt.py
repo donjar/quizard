@@ -59,7 +59,10 @@ async def test_answer_attempt_from_answers(client, questions, quizzes, token_use
     body = await res.json()
     assert "data" in body
     assert isinstance(body["data"], dict)
-    assert body["data"] == {"is_correct": False}
+    assert body["data"] == {
+        "is_correct": False,
+        "correct_option": questions[quiz_index][question_index]["correct_option"],
+    }
     assert len(await QuizAnswer.query.gino.all()) == 1
 
     # Check if getting an attempt still point to first question
@@ -92,7 +95,10 @@ async def test_answer_attempt_from_answers(client, questions, quizzes, token_use
     body = await res.json()
     assert "data" in body
     assert isinstance(body["data"], dict)
-    assert body["data"] == {"is_correct": True}
+    assert body["data"] == {
+        "is_correct": True,
+        "correct_option": questions[quiz_index][question_index]["correct_option"],
+    }
     assert len(await QuizAnswer.query.gino.all()) == 2
 
     ## CREAT AN ANSWER FOR QUESTION 0
@@ -110,7 +116,10 @@ async def test_answer_attempt_from_answers(client, questions, quizzes, token_use
     body = await res.json()
     assert "data" in body
     assert isinstance(body["data"], dict)
-    assert body["data"] == {"is_correct": False}
+    assert body["data"] == {
+        "is_correct": False,
+        "correct_option": questions[quiz_index][question_index]["correct_option"],
+    }
     assert len(await QuizAnswer.query.gino.all()) == 3
 
     # Retrieve the newest attempt, and check if `continue_from` point to question with index 1
@@ -149,7 +158,10 @@ async def test_answer_attempt_from_answers(client, questions, quizzes, token_use
     body = await res.json()
     assert "data" in body
     assert isinstance(body["data"], dict)
-    assert body["data"] == {"is_correct": True}
+    assert body["data"] == {
+        "is_correct": True,
+        "correct_option": questions[quiz_index][question_index]["correct_option"],
+    }
     assert len(await QuizAnswer.query.gino.all()) == 4
 
     # Retrieve the newest attempt, and check if `continue_from` point to question with index 4

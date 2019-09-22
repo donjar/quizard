@@ -1,3 +1,8 @@
+export interface IOptionSummary {
+  option: string;
+  percentage: number;
+}
+
 export interface IQuestion {
   questionNumber: number;
   text: string;

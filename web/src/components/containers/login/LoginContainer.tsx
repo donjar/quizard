@@ -34,7 +34,7 @@ const onLogin = async (props: any, email: any, password: any) => {
     localStorage.setItem('accessToken', data.access_token);
     localStorage.setItem('refreshToken', data.refresh_token);
   }
-  
+
   history.push(prevLocation);
 };
 

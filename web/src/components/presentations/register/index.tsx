@@ -2,12 +2,12 @@ import React from 'react';
 import { Redirect } from 'react-router';
 import styled from 'styled-components';
 import { IRegisterProps } from '../../../interfaces/register';
+import { ReactComponent as Owl } from '../../../svg/owl.svg';
 import { ReactComponent as Quizard } from '../../../svg/quizard.svg';
 import DarkButton from '../common/buttons/DarkButton';
 import { CenteredDiv } from '../common/CenteredDiv';
 import InputField from '../common/InputField';
 import WholeScreenCard from '../common/WholeScreenCard';
-import { ReactComponent as Owl } from '../../../svg/owl.svg';
 
 const StyledLogin = styled.div`
   display: flex;

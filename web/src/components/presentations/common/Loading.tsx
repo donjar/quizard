@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactLoading from 'react-loading';
 import styled from 'styled-components';
-import { BeigeBackground } from './BeigeBackground';
 import { ReactComponent as Owl } from '../../../svg/owl.svg';
+import { BeigeBackground } from './BeigeBackground';
 
 const LoadingDiv = styled.div`
   height: 100vh;

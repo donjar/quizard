@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
+import { ReactComponent as Owl } from '../../../svg/owl.svg';
 import BigDarkButton from '../common/buttons/BigDarkButton';
 import WholeScreenCard from '../common/WholeScreenCard';
-import { ReactComponent as Owl } from '../../../svg/owl.svg';
 
 const StyledQuizCompleteCard = styled(WholeScreenCard)`
   width: 500px;

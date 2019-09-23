@@ -1,12 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
-import { getQuestionsByQuizId, getQuizById, getLatestQuizAttempt } from '../../../api';
+import { getLatestQuizAttempt, getQuestionsByQuizId, getQuizById } from '../../../api';
 import { IAttemptedQuestion, IAttemptedQuiz } from '../../../interfaces/quiz-create-summary';
 import { AppState } from '../../../store/store';
 import { history } from '../../../utils/history';
-import { setQuiz } from './redux/actions';
 import QuizAttemptReview from '../../presentations/quiz-summaries/QuizAttemptReview';
+import { setQuiz } from './redux/actions';
 
 interface IQuizAttemptReviewContainerProps {
   match: any;

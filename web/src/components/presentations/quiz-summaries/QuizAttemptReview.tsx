@@ -3,8 +3,8 @@ import React from 'react';
 import { IQuizAttemptReviewProps } from '../../../interfaces/quiz-create-summary/index';
 import { BeigeBackground } from '../common/BeigeBackground';
 import { BodyAfterNavBarWithPadding } from '../common/BodyAfterNavBarWithPadding';
-import QuestionSection from './QuestionSection';
 import { NavBarWithBack } from '../common/NavBarWithBack';
+import QuestionSection from './QuestionSection';
 
 const QuizAttemptReview: React.FC<IQuizAttemptReviewProps> = ({
   name,

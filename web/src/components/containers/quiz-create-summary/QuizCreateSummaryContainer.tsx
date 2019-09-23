@@ -3,11 +3,11 @@ import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { getQuestionsByQuizId, getQuizById } from '../../../api';
 import { IQuiz } from '../../../interfaces/quiz-create-summary';
+import { IQuizCreateSummaryContainerProps } from '../../../interfaces/quiz-create-summary';
 import { AppState } from '../../../store/store';
 import { history } from '../../../utils/history';
 import QuizCreateSummary from '../../presentations/quiz-summaries/QuizCreateSummary';
 import { setQuizCreateSummary } from './redux/actions';
-import { IQuizCreateSummaryContainerProps } from '../../../interfaces/quiz-create-summary';
 
 class QuizCreateSummaryContainer extends React.Component<IQuizCreateSummaryContainerProps> {
   public async componentDidMount() {

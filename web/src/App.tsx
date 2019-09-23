@@ -22,6 +22,11 @@ const QuizCreateSummaryContainer = lazy(() =>
     './components/containers/quiz-create-summary/QuizCreateSummaryContainer'
   )
 );
+const QuizAttemptReviewContainer = lazy(() =>
+  import(
+    './components/containers/quiz-attempt-review/QuizAttemptReviewContainer'
+  )
+);
 const QuizQuestionContainer = lazy(() =>
   import('./components/containers/quiz-question/QuizQuestionContainer')
 );
@@ -46,6 +51,10 @@ const App: React.FC = () => {
             <PrivateRoute
               path="/quiz-create-summary/:id"
               component={QuizCreateSummaryContainer}
+            />
+            <PrivateRoute
+              path="/quiz-review/:id"
+              component={QuizAttemptReviewContainer}
             />
             <PrivateRoute path="/quiz-complete" component={QuizCompleteContainer} />
             <PrivateRoute

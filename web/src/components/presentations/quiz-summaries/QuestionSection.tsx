@@ -13,11 +13,16 @@ const QuestionSection: React.FC<IQuestionSectionProps> = ({
   questionNumber,
   text,
   options,
-  correctOption
+  correctOption,
+  selectedOption
 }) => {
   const optionsLi = options.map((op, optionIdx) => {
     return (
-      <li key={optionIdx}>{op}{optionIdx === correctOption ? ' (correct)' : ''}</li>
+      <li key={optionIdx}>{op}{
+        optionIdx === correctOption ? ' (correct)' : ''
+      }{
+        optionIdx === selectedOption ? ' (selected)' : ''
+      }</li>
     );
   });
 

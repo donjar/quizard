@@ -7,10 +7,10 @@ import { IQuiz } from '../../../interfaces/quiz-start';
 import { AppState } from '../../../store/store';
 import { history } from '../../../utils/history';
 import QuizStart from '../../presentations/quiz-start/index';
+import QuizCompleteContainer from '../quiz-complete/QuizCompleteContainer';
 import QuizQuestionContainer from '../quiz-question/QuizQuestionContainer';
 import { startQuiz } from '../quiz-question/redux/action';
 import { setQuiz } from './redux/actions';
-import QuizCompleteContainer from '../quiz-complete/QuizCompleteContainer';
 
 interface IQuizStartContainerProps {
   match: any;
@@ -39,7 +39,8 @@ class QuizStartContainer extends React.Component<IQuizStartContainerProps> {
         description: quiz.description || 'No description',
         isFinished: attempt.is_finished,
         continueFrom,
-        userQuizAnswers: attempt.answers
+        userQuizAnswers: attempt.answers,
+        score: attempt.score
       });
     }
   }
@@ -51,6 +52,7 @@ class QuizStartContainer extends React.Component<IQuizStartContainerProps> {
       isFinished: false,
       continueFrom: -1,
       userQuizAnswers: {}
+      score: undefined
     };
 
     if (this.props.isFinished) {
@@ -76,7 +78,8 @@ const mapStateToProps = (state: AppState) => ({
   isFinished: state.quizStart.isFinished,
   continueFrom: state.quizStart.continueFrom,
   userQuizAnswers: state.quizStart.userQuizAnswers,
-  currQuestionIdx: state.quizQuestion.currQuestionIdx
+  currQuestionIdx: state.quizQuestion.currQuestionIdx,
+  score: state.quizStart.score
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => {

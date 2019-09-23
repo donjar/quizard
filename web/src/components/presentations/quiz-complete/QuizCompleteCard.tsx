@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { ReactComponent as Owl } from '../../../svg/owl.svg';
 import BigDarkButton from '../common/buttons/BigDarkButton';
@@ -18,15 +19,20 @@ const QuizCompleteCard: React.FC<IQuizCompleteCardProps> = ({ score, maxScore, q
     <>
       <StyledOwl />
       <button>X button</button>
-      <h1>You have scored {score}/{maxScore} for {quizName}!</h1>
+      <h1>
+        You have scored {score}/{maxScore} for {quizName}!
+      </h1>
       <p>
-        Your quiz results have been saved and you can review your quiz answers anytime.
+        Your quiz results have been saved and you can review your quiz answers
+        anytime.
       </p>
       <BigDarkButton>Try Again</BigDarkButton>
       <BigDarkButton>Review Quiz Results</BigDarkButton>
-      <div style={{ fontSize: '18px', textDecoration: 'underline' }}>
-        Back to Home
-      </div>
+      <Link to="/">
+        <div style={{ fontSize: '18px', textDecoration: 'underline' }}>
+          Back to Home
+        </div>
+      </Link>
     </>
   );
 };

@@ -4,6 +4,7 @@ export interface IQuiz {
   isFinished: boolean;
   continueFrom: number;
   userQuizAnswers: object;
+  score: any;
 }
 
 export interface IQuizStartProps {

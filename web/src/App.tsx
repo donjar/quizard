@@ -11,9 +11,6 @@ const HomeContainer = lazy(() =>
 const LoginContainer = lazy(() =>
   import('./components/containers/login/LoginContainer')
 );
-const QuizCompleteContainer = lazy(() =>
-  import('./components/containers/quiz-complete/QuizCompleteContainer')
-);
 const QuizCreateContainer = lazy(() =>
   import('./components/containers/quiz-create/QuizCreateContainer')
 );

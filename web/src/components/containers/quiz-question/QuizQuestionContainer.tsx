@@ -104,7 +104,7 @@ const mapDispatchToProps = (dispatch: ThunkDispatch<any, any, AnyAction>, ownPro
       ));
     },
     onClickNext: () => {
-      dispatch(gotoNextQuestion(ownProps));
+      dispatch(gotoNextQuestion());
     },
     getQuestions: (quizId: string) => {
       fetchQuestions(quizId).then(({ payload }) => (

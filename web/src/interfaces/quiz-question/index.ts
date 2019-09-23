@@ -39,10 +39,6 @@ export interface IQuestionsPayload {
   questions: IQuestion[];
 }
 
-export interface IHistoryPayload {
-  history: any;
-}
-
 export interface IQuestionData {
   id: string;
   text: string;

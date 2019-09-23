@@ -46,9 +46,6 @@ export default function quizQuestionReducer(
     case GOTO_NEXT_QUESTION:
       return produce(state, (draft) => {
         draft.currQuestionIdx++;
-        if (draft.currQuestionIdx >= draft.questions.length) {
-          action.payload.history.push(`/quiz-complete`);
-        }
         draft.disableSelection = false;
         draft.showNext = false;
       });

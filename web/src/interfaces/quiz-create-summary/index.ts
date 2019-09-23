@@ -19,6 +19,11 @@ export interface IQuiz extends IQuizBase {
   numAttempts: number;
 }
 
+export interface IQuizCreateSummaryContainerProps extends IQuiz {
+  match: any;
+  setQuiz: (quiz: IQuiz) => void;
+}
+
 export interface IAttemptedQuiz extends IQuizBase {
   score: number;
   questions: IAttemptedQuestion[];

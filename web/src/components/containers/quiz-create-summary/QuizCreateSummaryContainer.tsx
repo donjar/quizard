@@ -2,20 +2,12 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { getQuestionsByQuizId, getQuizById } from '../../../api';
-import { IQuestion, IQuiz } from '../../../interfaces/quiz-create-summary';
+import { IQuiz } from '../../../interfaces/quiz-create-summary';
+import { IQuizCreateSummaryContainerProps } from '../../../interfaces/quiz-create-summary';
 import { AppState } from '../../../store/store';
 import { history } from '../../../utils/history';
 import QuizCreateSummary from '../../presentations/quiz-summaries/QuizCreateSummary';
-import { setQuiz } from './redux/actions';
-
-interface IQuizCreateSummaryContainerProps {
-  match: any;
-  name: string;
-  description: string;
-  numAttempts: number;
-  questions: IQuestion[];
-  setQuiz: (quiz: IQuiz) => void;
-}
+import { setQuizCreateSummary } from './redux/actions';
 
 class QuizCreateSummaryContainer extends React.Component<IQuizCreateSummaryContainerProps> {
   public async componentDidMount() {
@@ -65,7 +57,7 @@ const mapStateToProps = (state: AppState) => ({
 const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
     setQuiz: (quiz: IQuiz) => {
-      dispatch(setQuiz(quiz));
+      dispatch(setQuizCreateSummary(quiz));
     },
   };
 };

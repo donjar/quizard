@@ -28,11 +28,11 @@ class QuizStartContainer extends React.Component<IQuizStartContainerProps> {
     const { match: { params: { id: quizId = '' } = {} } = {} , ...props } = this.props;
     const quiz = (await getQuizById(quizId)).data;
     const attempt = (await getQuizAttemptStatus(quizId)).data;
-    const continueFrom = quiz.questions.indexOf(attempt.continue_from);
 
     if (quiz === undefined) {
       history.push('/');
     } else {
+      const continueFrom = quiz.questions.indexOf(attempt.continue_from);
       props.setQuiz({
         name: quiz.title,
         description: quiz.description || 'No description',

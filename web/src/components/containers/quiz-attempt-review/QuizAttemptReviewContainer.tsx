@@ -1,41 +1,43 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
-import { getQuestionsByQuizId, getQuizById } from '../../../api';
-import { IQuestion, IQuiz } from '../../../interfaces/quiz-create-summary';
+import { getQuestionsByQuizId, getQuizById, getLatestQuizAttempt } from '../../../api';
+import { IAttemptedQuestion, IAttemptedQuiz } from '../../../interfaces/quiz-create-summary';
 import { AppState } from '../../../store/store';
 import { history } from '../../../utils/history';
-import QuizCreateSummary from '../../presentations/quiz-summaries/QuizCreateSummary';
 import { setQuiz } from './redux/actions';
+import QuizAttemptReview from '../../presentations/quiz-summaries/QuizAttemptReview';
 
-interface IQuizCreateSummaryContainerProps {
+interface IQuizAttemptReviewContainerProps {
   match: any;
   name: string;
   description: string;
-  numAttempts: number;
-  questions: IQuestion[];
-  setQuiz: (quiz: IQuiz) => void;
+  score: number;
+  questions: IAttemptedQuestion[];
+  setQuiz: (quiz: IAttemptedQuiz) => void;
 }
 
-class QuizCreateSummaryContainer extends React.Component<IQuizCreateSummaryContainerProps> {
+class QuizAttemptReviewContainer extends React.Component<IQuizAttemptReviewContainerProps> {
   public async componentDidMount() {
     const { match: { params: { id: quizId = '' } = {} } = {} , ...props } = this.props;
     const quiz = (await getQuizById(quizId)).data;
     const questions = (await getQuestionsByQuizId(quizId)).data;
+    const attempt = (await getLatestQuizAttempt(quizId)).data;
 
-    if (quiz === undefined) {
+    if (quiz === undefined || !attempt.is_finished) {
       history.push('/');
     } else {
       props.setQuiz({
         name: quiz.title,
         description: quiz.description || 'No description',
-        numAttempts: quiz.num_attempts,
+        score: attempt.score,
         questions: questions.map((qn: any, idx: any) => {
           return {
             questionNumber: idx + 1,
             text: qn.text,
             options: qn.options,
-            correctOption: 0
+            correctOption: 0,
+            selectedOption: attempt.answers[qn.id],
           };
         })
       });
@@ -43,28 +45,25 @@ class QuizCreateSummaryContainer extends React.Component<IQuizCreateSummaryConta
   }
 
   public render() {
-    const { name, description, numAttempts, questions } = this.props;
+    const { name, description, score, questions } = this.props;
     return (
-      <QuizCreateSummary
+      <QuizAttemptReview
         name={name}
         description={description}
-        numAttempts={numAttempts}
+        score={score}
         questions={questions}
       />
     );
   }
 }
 
-const mapStateToProps = (state: AppState) => ({
-  name: state.quizCreateSummary.name,
-  description: state.quizCreateSummary.description,
-  numAttempts: state.quizCreateSummary.numAttempts,
-  questions: state.quizCreateSummary.questions,
-});
+const mapStateToProps = (state: AppState) => {
+  return state.quizAttemptReview;
+};
 
 const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
-    setQuiz: (quiz: IQuiz) => {
+    setQuiz: (quiz: IAttemptedQuiz) => {
       dispatch(setQuiz(quiz));
     },
   };
@@ -73,4 +72,4 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(QuizCreateSummaryContainer);
+)(QuizAttemptReviewContainer);

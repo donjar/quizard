@@ -124,6 +124,12 @@ export const getQuestionsByQuizId = async (quizId: string): Promise<any> => {
   return await res.json();
 };
 
+export const getLatestQuizAttempt = async (quizId: string): Promise<any> => {
+  const res = await fetchWithAuth(`${apiUrl}/quizzes/${quizId}/attempt`);
+
+  return await res.json();
+};
+
 export const checkQuizQuestionAnswer = async (
   quizId: string,
   questionId: string,

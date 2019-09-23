@@ -18,11 +18,11 @@ import {
   ISelectIncorrectOptionAction,
   ISelectOptionAction,
   ISetQuestionsAction,
+  IStartQuizAction,
   SELECT_CORRECT_QUESTION_OPTION,
   SELECT_INCORRECT_QUESTION_OPTION,
   SELECT_QUESTION_OPTION,
   SET_QUESTIONS,
-  IStartQuizAction,
   START_QUIZ
 } from './types';
 

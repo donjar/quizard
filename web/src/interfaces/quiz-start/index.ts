@@ -13,5 +13,5 @@ export interface IQuizStartProps {
 }
 
 export interface IQuizStartState extends IQuiz {
-  
+
 }

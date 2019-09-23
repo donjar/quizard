@@ -1,4 +1,10 @@
-import { IAnswerOptionPayload, IHistoryPayload, IIncorrectAnswerOptionPayload, IQuestionsPayload, IStartQuizPayload } from '../../../../interfaces/quiz-question';
+import {
+  IAnswerOptionPayload,
+  IHistoryPayload,
+  IIncorrectAnswerOptionPayload,
+  IQuestionsPayload,
+  IStartQuizPayload
+} from '../../../../interfaces/quiz-question';
 
 export const SELECT_QUESTION_OPTION = 'SELECT_QUESTION_OPTION';
 export const SELECT_CORRECT_QUESTION_OPTION = 'SELECT_CORRECT_QUESTION_OPTION';

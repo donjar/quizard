@@ -1,15 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router';
 import { Dispatch } from 'redux';
-import { getQuizById, getQuizAttemptStatus } from '../../../api';
+import { getQuizAttemptStatus, getQuizById } from '../../../api';
 import { IQuiz } from '../../../interfaces/quiz-start';
 import { AppState } from '../../../store/store';
 import { history } from '../../../utils/history';
 import QuizStart from '../../presentations/quiz-start/index';
-import { setQuiz } from './redux/actions';
-import { Redirect } from 'react-router';
-import { startQuiz } from '../quiz-question/redux/action';
 import QuizQuestionContainer from '../quiz-question/QuizQuestionContainer';
+import { startQuiz } from '../quiz-question/redux/action';
+import { setQuiz } from './redux/actions';
 
 interface IQuizStartContainerProps {
   match: any;

@@ -2,7 +2,7 @@ import { IQuizStartState } from '../../../../interfaces/quiz-start';
 import initialState from './initialState';
 import {
   IQuizStartActionTypes,
-  SET_QUIZ
+  SET_QUIZ_START_STATE
 } from './types';
 
 export default function quizStartReducer(
@@ -10,7 +10,7 @@ export default function quizStartReducer(
   action: IQuizStartActionTypes
 ): IQuizStartState {
   switch (action.type) {
-    case SET_QUIZ:
+    case SET_QUIZ_START_STATE:
       return { ...state, ...action.payload };
 
     default:

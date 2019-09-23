@@ -2,7 +2,7 @@ import { IQuizCreateSummaryState } from '../../../../interfaces/quiz-create-summ
 import initialState from './initialState';
 import {
   IQuizCreateSummaryActionTypes,
-  SET_QUIZ
+  SET_QUIZ_CREATE_SUMMARY
 } from './types';
 
 export default function quizCreateSummaryReducer(
@@ -10,7 +10,7 @@ export default function quizCreateSummaryReducer(
   action: IQuizCreateSummaryActionTypes
 ): IQuizCreateSummaryState {
   switch (action.type) {
-    case SET_QUIZ:
+    case SET_QUIZ_CREATE_SUMMARY:
       return action.payload;
 
     default:

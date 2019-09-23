@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { IQuestionOption } from '../../../interfaces/quiz-question';
 import { mdMax } from '../../../utils/media';

@@ -1,9 +1,9 @@
 export interface IQuiz {
   name: string;
   description: string;
-  isFinished: any;
-  continueFrom: any;
-  userQuizAnswers: any;
+  isFinished: boolean;
+  continueFrom: number;
+  userQuizAnswers: object;
 }
 
 export interface IQuizStartProps {

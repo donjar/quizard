@@ -7,6 +7,7 @@ import DarkButton from '../common/buttons/DarkButton';
 import { CenteredDiv } from '../common/CenteredDiv';
 import InputField from '../common/InputField';
 import WholeScreenCard from '../common/WholeScreenCard';
+import { ReactComponent as Owl } from '../../../svg/owl.svg';
 
 const StyledLogin = styled.div`
   display: flex;
@@ -40,6 +41,10 @@ const LoginForm = styled.form`
   }
 `;
 
+const StyledOwl = styled(Owl)`
+  height: 170px;
+`;
+
 const Register: React.FC<IRegisterProps> = ({
   fullName,
   email,
@@ -66,11 +71,7 @@ const Register: React.FC<IRegisterProps> = ({
     <StyledLogin>
       <StyledLoginCard>
         <CenteredDiv>
-          <img
-            src={'./owl.png'}
-            style={{ width: '195px', height: '170px' }}
-            alt={'Quizard logo'}
-          />
+          <StyledOwl />
           <Quizard />
         </CenteredDiv>
         <LoginForm onSubmit={onRegisterFormSubmit}>

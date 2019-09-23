@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import BigDarkButton from '../common/buttons/BigDarkButton';
 import WholeScreenCard from '../common/WholeScreenCard';
+import { ReactComponent as Owl } from '../../../svg/owl.svg';
 
 const StyledQuizCompleteCard = styled(WholeScreenCard)`
   width: 500px;
@@ -19,6 +20,10 @@ const StyledQuizCompleteCard = styled(WholeScreenCard)`
   }
 `;
 
+const StyledOwl = styled(Owl)`
+  height: 170px;
+`;
+
 export interface IQuizCompleteCardProps {
   score: number;
   maxScore: number;
@@ -28,9 +33,7 @@ export interface IQuizCompleteCardProps {
 const QuizCompleteCard: React.FC<IQuizCompleteCardProps> = ({ score, maxScore, quizName }) => {
   return (
     <StyledQuizCompleteCard>
-      <div>
-        <img src={'./owl.png'} style={{ width: '195px', height: '170px' }} alt={'Quizard logo'} />
-      </div>
+      <StyledOwl />
       <button>X button</button>
       <h1>You have scored {score}/{maxScore} for {quizName}!</h1>
       <p>

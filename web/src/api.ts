@@ -88,6 +88,14 @@ export const createQuiz = async (values: IQuizCreateApi): Promise<any> => {
   return await res.json();
 };
 
+export const redoQuiz = async (quizId: string): Promise<any> => {
+  const res = await fetchWithAuth(`${apiUrl}/quizzes/${quizId}/attempt`, {
+    method: 'POST',
+  });
+
+  return await res.json();
+};
+
 export const getAllQuizzes = async (): Promise<any> => {
   const res = await fetchWithAuth(`${apiUrl}/quizzes`);
 

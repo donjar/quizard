@@ -77,11 +77,11 @@ async def quiz_route(request, user_id, *, req_args, req_body, **kwargs):
         unique_quiz_attempts = await get_many(
             QuizAttempt,
             user_id=user_id,
-            columns=["quiz_id", "user_id", "created_at"],
+            columns=["quiz_id", "user_id", "created_at", "internal_id"],
             distinct=True,
-            order_by="created_at",
+            order_by="internal_id",
         )
-        quiz_ids = (attempt.quiz_id for attempt in unique_quiz_attempts)
+        quiz_ids = [attempt.quiz_id for attempt in unique_quiz_attempts]
         unordered_attempted_quizzes = await Quiz.get(
             in_column="id", in_values=quiz_ids, many=True
         )
@@ -89,7 +89,7 @@ async def quiz_route(request, user_id, *, req_args, req_body, **kwargs):
             quiz["id"]: quiz for quiz in unordered_attempted_quizzes
         }
         return_quizzes.update(
-            {"attempt": [attempted_quizzes_as_dict[quiz_id] for quiz_id in quiz_ids]}
+            {"attempted": [attempted_quizzes_as_dict[quiz_id] for quiz_id in quiz_ids]}
         )
 
     if created:

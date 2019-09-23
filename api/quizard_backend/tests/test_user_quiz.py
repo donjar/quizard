@@ -7,7 +7,9 @@ from quizard_backend.tests import (
 )
 
 
-async def test_get_own_created_quiz(app, client, users, questions, quizzes):
+async def test_get_own_created_and_attempted_quiz(
+    app, client, users, questions, quizzes
+):
     # Create a fresh user
     new_user = get_fake_user()
     new_user.pop("id")
@@ -60,7 +62,7 @@ async def test_get_own_created_quiz(app, client, users, questions, quizzes):
     body = await res.json()
     assert "data" in body
     assert isinstance(body["data"], dict)
-    assert "created" in body["data"] and "attempt" in body["data"]
+    assert "created" in body["data"] and "attempted" in body["data"]
 
     # Created
     for created, retrieve in zip(created_quizzes, body["data"]["created"]):
@@ -69,9 +71,7 @@ async def test_get_own_created_quiz(app, client, users, questions, quizzes):
         )
 
     # Attempted
-    for index in range(3, 7):
+    for expected_quiz, actual_quiz in zip(attempted_quizzes, body["data"]["attempted"]):
         assert profile_created_from_origin(
-            attempted_quizzes[index - 3],
-            quizzes[index],
-            ignore={"questions", "updated_at"},
+            expected_quiz, actual_quiz, ignore={"questions", "updated_at"}
         )

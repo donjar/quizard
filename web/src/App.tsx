@@ -56,7 +56,6 @@ const App: React.FC = () => {
               path="/quiz-review/:id"
               component={QuizAttemptReviewContainer}
             />
-            <PrivateRoute path="/quiz-complete" component={QuizCompleteContainer} />
             <PrivateRoute
               path="/quiz/:id"
               component={QuizStartContainer}

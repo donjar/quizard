@@ -10,6 +10,7 @@ import QuizStart from '../../presentations/quiz-start/index';
 import QuizQuestionContainer from '../quiz-question/QuizQuestionContainer';
 import { startQuiz } from '../quiz-question/redux/action';
 import { setQuiz } from './redux/actions';
+import QuizCompleteContainer from '../quiz-complete/QuizCompleteContainer';
 
 interface IQuizStartContainerProps {
   match: any;
@@ -53,7 +54,8 @@ class QuizStartContainer extends React.Component<IQuizStartContainerProps> {
     };
 
     if (this.props.isFinished) {
-      return <Redirect to={`/quiz-complete/${this.props.match.params.id}`} />;
+      // return <Redirect to={`/quiz-complete/${this.props.match.params.id}`} />;
+      return <QuizCompleteContainer {...this.props} />;
     } else if (this.props.currQuestionIdx < 0) {
       return (
         <QuizStart

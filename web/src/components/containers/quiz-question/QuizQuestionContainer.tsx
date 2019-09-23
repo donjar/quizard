@@ -46,10 +46,6 @@ const QuizQuestionContainer: React.FC<IQuizQuestionContainerProps> = ({
     getQuestions(quizId);
   }, []);
 
-  if (questionNumber > numQuestions) {
-    return (<Redirect to="/quiz-complete" />);
-  }
-
   const handleSelectedOption = async (optionIdx: number) => {
     onSelectOption(quizId, question.questionId, questionNumber - 1, optionIdx);
   };

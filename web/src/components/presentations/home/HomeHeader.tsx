@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { ReactComponent as Owl } from '../../../svg/owl.svg';
 import { HideOnMedium } from '../../../utils/media';
 import { CreateQuizButton } from '../common/buttons/CreateQuizButton';
 
@@ -51,7 +52,7 @@ const HomeHeader: React.FC = () => {
         </StyledHomeWriteupBox>
         <HideOnMedium>
           <StyledQuizardLogo>
-            <img src={'./owl.png'} alt={'Quizard logo'} />
+            <Owl />
           </StyledQuizardLogo>
         </HideOnMedium>
       </StyledHomeHeader>

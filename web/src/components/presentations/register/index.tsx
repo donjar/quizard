@@ -2,6 +2,7 @@ import React from 'react';
 import { Redirect } from 'react-router';
 import styled from 'styled-components';
 import { IRegisterProps } from '../../../interfaces/register';
+import { ReactComponent as Owl } from '../../../svg/owl.svg';
 import { ReactComponent as Quizard } from '../../../svg/quizard.svg';
 import DarkButton from '../common/buttons/DarkButton';
 import { CenteredDiv } from '../common/CenteredDiv';
@@ -40,6 +41,10 @@ const LoginForm = styled.form`
   }
 `;
 
+const StyledOwl = styled(Owl)`
+  height: 170px;
+`;
+
 const Register: React.FC<IRegisterProps> = ({
   fullName,
   email,
@@ -66,11 +71,7 @@ const Register: React.FC<IRegisterProps> = ({
     <StyledLogin>
       <StyledLoginCard>
         <CenteredDiv>
-          <img
-            src={'./owl.png'}
-            style={{ width: '195px', height: '170px' }}
-            alt={'Quizard logo'}
-          />
+          <StyledOwl />
           <Quizard />
         </CenteredDiv>
         <LoginForm onSubmit={onRegisterFormSubmit}>

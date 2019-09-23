@@ -42,10 +42,6 @@ const App: React.FC = () => {
             <PrivateRoute path="/home" component={HomeContainer} />
             <Route path="/login" component={LoginContainer} />
             <Route path="/register" component={RegisterContainer} />
-            <PrivateRoute
-              path="/quiz/:id"
-              component={QuizQuestionContainer}
-            />
             <PrivateRoute path="/quiz-create" component={QuizCreateContainer} />
             <PrivateRoute
               path="/quiz-create-summary/:id"
@@ -53,7 +49,7 @@ const App: React.FC = () => {
             />
             <PrivateRoute path="/quiz-complete" component={QuizCompleteContainer} />
             <PrivateRoute
-              path="/quiz-start/:id"
+              path="/quiz/:id"
               component={QuizStartContainer}
             />
             {/* Catch for invalid paths */}

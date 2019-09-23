@@ -53,3 +53,7 @@ export interface ICheckAnswerData {
   is_correct: boolean;
   correct_option?: number;
 }
+
+export interface IStartQuizPayload {
+  currentQuestionIdx: number;
+}

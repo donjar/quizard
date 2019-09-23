@@ -7,7 +7,8 @@ import {
   SELECT_CORRECT_QUESTION_OPTION,
   SELECT_INCORRECT_QUESTION_OPTION,
   SELECT_QUESTION_OPTION,
-  SET_QUESTIONS
+  SET_QUESTIONS,
+  START_QUIZ
 } from './types';
 
 export default function quizQuestionReducer(
@@ -56,6 +57,9 @@ export default function quizQuestionReducer(
       return produce(state, (draft) => {
         draft.questions = action.payload.questions;
       });
+
+    case START_QUIZ:
+      return { ...state, currQuestionIdx: action.payload.currentQuestionIdx };
 
     default:
       return state;

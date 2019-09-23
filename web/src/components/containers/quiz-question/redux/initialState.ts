@@ -25,7 +25,7 @@ for (let i = 0; i < 10; i++) {
 
 const initialState: IQuizState = {
   questions: questionArray,
-  currQuestionIdx: 0,
+  currQuestionIdx: -1,
   disableSelection: false,
   showNext: false,
   showDone: false,

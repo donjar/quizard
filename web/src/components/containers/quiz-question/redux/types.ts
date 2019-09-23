@@ -1,4 +1,10 @@
-import { IAnswerOptionPayload, IHistoryPayload, IIncorrectAnswerOptionPayload, IQuestionsPayload } from '../../../../interfaces/quiz-question';
+import {
+  IAnswerOptionPayload,
+  IHistoryPayload,
+  IIncorrectAnswerOptionPayload,
+  IQuestionsPayload,
+  IStartQuizPayload
+} from '../../../../interfaces/quiz-question';
 
 export const SELECT_QUESTION_OPTION = 'SELECT_QUESTION_OPTION';
 export const SELECT_CORRECT_QUESTION_OPTION = 'SELECT_CORRECT_QUESTION_OPTION';
@@ -6,6 +12,7 @@ export const SELECT_INCORRECT_QUESTION_OPTION = 'SELECT_INCORRECT_QUESTION_OPTIO
 export const GOTO_NEXT_QUESTION = 'GOTO_NEXT_QUESTION';
 export const FETCH_QUESTIONS = 'FETCH_QUESTIONS';
 export const SET_QUESTIONS = 'SET_QUESTIONS';
+export const START_QUIZ = 'START_QUIZ';
 
 export interface ISelectOptionAction {
   type: typeof SELECT_QUESTION_OPTION;
@@ -36,10 +43,16 @@ export interface ISetQuestionsAction {
   payload: IQuestionsPayload;
 }
 
+export interface IStartQuizAction {
+  type: typeof START_QUIZ;
+  payload: IStartQuizPayload;
+}
+
 export type IQuizQuestionActionTypes =
   | ISelectOptionAction
   | ISelectCorrectOptionAction
   | ISelectIncorrectOptionAction
   | IGotoNextQuestionAction
   | IFetchQuestionsAction
-  | ISetQuestionsAction;
+  | ISetQuestionsAction
+  | IStartQuizAction;

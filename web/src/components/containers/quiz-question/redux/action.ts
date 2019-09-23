@@ -18,10 +18,12 @@ import {
   ISelectIncorrectOptionAction,
   ISelectOptionAction,
   ISetQuestionsAction,
+  IStartQuizAction,
   SELECT_CORRECT_QUESTION_OPTION,
   SELECT_INCORRECT_QUESTION_OPTION,
   SELECT_QUESTION_OPTION,
-  SET_QUESTIONS
+  SET_QUESTIONS,
+  START_QUIZ
 } from './types';
 
 export const checkSelectedOption: ActionCreator<
@@ -124,5 +126,12 @@ export const fetchQuestions = async (
     payload: {
       questions
     }
+  };
+};
+
+export const startQuiz = (newQuestionIdx: number): IStartQuizAction => {
+  return {
+    type: START_QUIZ,
+    payload: { currentQuestionIdx: newQuestionIdx }
   };
 };

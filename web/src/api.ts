@@ -100,6 +100,12 @@ export const getQuizById = async (quizId: string): Promise<any> => {
   return await res.json();
 };
 
+export const getQuizAttemptStatus = async (quizId: string): Promise<any> => {
+  const res = await fetchWithAuth(`${apiUrl}/quizzes/${quizId}/attempt`);
+
+  return await res.json();
+};
+
 export const getUserCreatedQuizzes = async (userId: string): Promise<any> => {
   const res = await fetchWithAuth(`${apiUrl}/users/${userId}/quizzes?created=True&attempted=False`);
 

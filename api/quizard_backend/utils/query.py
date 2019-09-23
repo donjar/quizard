@@ -40,7 +40,7 @@ async def get_many(
     model,
     columns=None,
     distinct=False,
-    last_id=None,
+    after_id=None,
     limit=15,
     in_column=None,
     in_values=None,
@@ -50,9 +50,9 @@ async def get_many(
     # Get the `internal_id` value from the starting row
     # And use it to query the next page of results
     last_internal_id = 0
-    if last_id:
-        row_of_last_id = await model.query.where(model.id == last_id).gino.first()
-        last_internal_id = row_of_last_id.internal_id
+    if after_id:
+        row_of_after_id = await model.query.where(model.id == after_id).gino.first()
+        last_internal_id = row_of_after_id.internal_id
 
     # Get certain columns only
     if columns:

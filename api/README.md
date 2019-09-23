@@ -134,7 +134,7 @@ A refresh token is a long-life token used to generate new access tokens. In this
 
 ### 1. GET
 - limit (`int`): the maximum number of rows to return(Min=0, Max=100). Default: 15.
-- last_id (`int`): The returned rows will have their IDs starting from `last_id` (exclusive) (Keyset pagination). Default: 0.
+- after_id (`int`): The returned rows will have their IDs starting from `after_id` (exclusive) (Keyset pagination). Default: 0.
 
 
 ## Common HTTP codes of responses
@@ -164,7 +164,7 @@ GET /users/<uuid>
 
 # Multiple users
 GET /users
-GET /users?limit=5&last_id=<uuid>
+GET /users?limit=5&after_id=<uuid>
 ```
 
 #### Create
@@ -253,7 +253,7 @@ GET /quizzes/<uuid>
 
 # Multiple quizzes
 GET /quizzes
-GET /quizzes?limit=5&last_id=<uuid>
+GET /quizzes?limit=5&after_id=<uuid>
 ```
 
 #### Create

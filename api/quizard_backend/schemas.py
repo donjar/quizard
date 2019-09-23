@@ -168,7 +168,7 @@ USER_LOGIN_SCHEMA = {
 # INJECTED SCHEMAS
 
 GLOBAL_SCHEMA = {"internal_id": {"readonly": True}}
-QUERY_PARAM_READ_SCHEMA = {"last_id": is_uuid, "limit": is_unsigned_integer_with_max}
+QUERY_PARAM_READ_SCHEMA = {"after_id": is_uuid, "limit": is_unsigned_integer_with_max}
 
 ## INJECT FIELDS TO SCHEMAS
 variables = locals()

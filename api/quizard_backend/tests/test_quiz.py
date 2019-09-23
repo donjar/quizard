@@ -102,10 +102,10 @@ async def test_get_all_quizzes(client, quizzes, token_user):
     assert res.status == 400
 
 
-async def test_get_quizzes_with_last_id(client, quizzes, token_user):
-    # Use last_id in query parameter.
+async def test_get_quizzes_with_after_id(client, quizzes, token_user):
+    # Use after_id in query parameter.
     res = await client.get(
-        "/quizzes?last_id={}".format(quizzes[2]["id"]),
+        "/quizzes?after_id={}".format(quizzes[2]["id"]),
         headers={"Authorization": token_user},
     )
     assert res.status == 200
@@ -121,11 +121,11 @@ async def test_get_quizzes_with_last_id(client, quizzes, token_user):
         for origin, created in zip(quizzes[3:20], body["data"])
     )
 
-    # Invalid last_id
-    res = await client.get("/quizzes?last_id=3", headers={"Authorization": token_user})
+    # Invalid after_id
+    res = await client.get("/quizzes?after_id=3", headers={"Authorization": token_user})
     assert res.status == 400
 
-    res = await client.get("/quizzes?last_id=", headers={"Authorization": token_user})
+    res = await client.get("/quizzes?after_id=", headers={"Authorization": token_user})
     assert res.status == 400
 
 

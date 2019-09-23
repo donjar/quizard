@@ -1,5 +1,5 @@
 <svg width="205" height="61" viewBox="0 0 205 61" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g filter="url(#filter0_d)">
+<g filter="url(#logo_drop_shadow_filter)">
 <mask id="path-1-outside-1" maskUnits="userSpaceOnUse" x="0.922485" y="0.356934" width="196" height="52" fill="black">
 <rect fill="white" x="0.922485" y="0.356934" width="196" height="52"/>
 <path d="M70.519 12.6084C73.592 12.4804 74.6215 10.0487 74.5194 7.61911C74.4191 5.23451 72.0726 3.25901 69.6323 3.36069C67.2371 3.46049 65.234 5.3468 65.4002 8.22443C65.6098 11.0552 67.4008 12.7383 70.519 12.6084Z"/>
@@ -35,7 +35,7 @@
 <path d="M186.009 49.1355C182.546 48.957 180.74 46.9099 180.803 43.7568C180.919 40.5562 183.332 38.6764 185.992 38.8135C188.702 38.9532 191.092 41.3811 190.954 44.0295C190.814 46.7277 189.421 49.3114 186.009 49.1355Z" stroke="white" stroke-width="6" mask="url(#path-1-outside-1)"/>
 </g>
 <defs>
-<filter id="filter0_d" x="0.922852" y="0.357178" width="203.562" height="59.7868" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<filter id="logo_drop_shadow_filter" x="0.922852" y="0.357178" width="203.562" height="59.7868" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
 <feFlood flood-opacity="0" result="BackgroundImageFix"/>
 <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"/>
 <feOffset dx="4" dy="4"/>

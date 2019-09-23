@@ -16,7 +16,7 @@ class HomeContainer extends React.Component<IHomeContainerProps> {
     const userId = getUser().id;
 
     const apiAttemptedQuizzes = await getUserAttemptedQuizzes(userId);
-    const attemptedQuizzes = apiAttemptedQuizzes.data.attempt.map((quiz: any) => ({
+    const attemptedQuizzes = apiAttemptedQuizzes.data.attempted.map((quiz: any) => ({
       id: quiz.id,
       title: quiz.title,
       description: quiz.description || 'No description',

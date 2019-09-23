@@ -29,7 +29,7 @@ export interface ISelectIncorrectOptionAction {
 
 export interface IGotoNextQuestionAction {
   type: typeof GOTO_NEXT_QUESTION;
-  payload: any;
+  payload: {};
 }
 
 export interface IFetchQuestionsAction {

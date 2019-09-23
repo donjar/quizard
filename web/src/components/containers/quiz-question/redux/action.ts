@@ -86,14 +86,10 @@ export const selectIncorrectOption = (
   };
 };
 
-export const gotoNextQuestion = (
-  ownProps: any
-): IGotoNextQuestionAction => {
+export const gotoNextQuestion = (): IGotoNextQuestionAction => {
   return {
     type: GOTO_NEXT_QUESTION,
-    payload: {
-      history: ownProps.history
-    }
+    payload: {}
   };
 };
 

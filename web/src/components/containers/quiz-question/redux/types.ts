@@ -1,6 +1,5 @@
 import {
   IAnswerOptionPayload,
-  IHistoryPayload,
   IIncorrectAnswerOptionPayload,
   IQuestionsPayload,
   IStartQuizPayload
@@ -30,7 +29,7 @@ export interface ISelectIncorrectOptionAction {
 
 export interface IGotoNextQuestionAction {
   type: typeof GOTO_NEXT_QUESTION;
-  payload: IHistoryPayload;
+  payload: {};
 }
 
 export interface IFetchQuestionsAction {

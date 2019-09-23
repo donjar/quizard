@@ -17,7 +17,7 @@ interface IQuizStartContainerProps {
   description: string;
   isFinished: boolean;
   continueFrom: number;
-  userQuizAnswers: [];
+  userQuizAnswers: {};
   currQuestionIdx: number;
   setQuiz: (quiz: IQuiz) => void;
   changeCurrQuestionIdx: (newQuestionIdx: number) => void;
@@ -47,9 +47,9 @@ class QuizStartContainer extends React.Component<IQuizStartContainerProps> {
     const quiz = {
       name: this.props.name,
       description: this.props.description,
-      isFinished: '',
-      continueFrom: '',
-      userQuizAnswers: ''
+      isFinished: false,
+      continueFrom: -1,
+      userQuizAnswers: {}
     };
 
     if (this.props.isFinished) {
@@ -58,7 +58,7 @@ class QuizStartContainer extends React.Component<IQuizStartContainerProps> {
       return (
         <QuizStart
           quiz={quiz}
-          isNewQuiz={this.props.userQuizAnswers.length < 1}
+          isNewQuiz={Object.keys(this.props.userQuizAnswers).length < 1}
           onStartClick={() => this.props.changeCurrQuestionIdx(this.props.continueFrom)}
         />
       );

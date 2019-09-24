@@ -3,3 +3,5 @@
 Repo structure:
 - `web`: front-end
 - `api`: back-end
+
+![Quizard!](quizard_cover.png)

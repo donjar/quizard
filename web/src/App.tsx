@@ -27,8 +27,8 @@ const QuizAttemptReviewContainer = lazy(() =>
     './components/containers/quiz-attempt-review/QuizAttemptReviewContainer'
   )
 );
-const QuizQuestionContainer = lazy(() =>
-  import('./components/containers/quiz-question/QuizQuestionContainer')
+const QuizClosedContainer = lazy(() =>
+  import('./components/containers/quiz-closed/QuizClosedContainer')
 );
 const QuizStartContainer = lazy(() =>
   import('./components/containers/quiz-start/QuizStartContainer')
@@ -61,6 +61,7 @@ const App: React.FC = () => {
               path="/quiz/:id"
               component={QuizStartContainer}
             />
+            <PrivateRoute path="/quiz-closed" component={QuizClosedContainer} />
             {/* Catch for invalid paths */}
             <Route render={() => <Redirect to={{ pathname: '/' }} />} />
           </Switch>

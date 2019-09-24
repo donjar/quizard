@@ -11,9 +11,6 @@ const HomeContainer = lazy(() =>
 const LoginContainer = lazy(() =>
   import('./components/containers/login/LoginContainer')
 );
-const QuizCompleteContainer = lazy(() =>
-  import('./components/containers/quiz-complete/QuizCompleteContainer')
-);
 const QuizCreateContainer = lazy(() =>
   import('./components/containers/quiz-create/QuizCreateContainer')
 );
@@ -56,7 +53,6 @@ const App: React.FC = () => {
               path="/quiz-review/:id"
               component={QuizAttemptReviewContainer}
             />
-            <PrivateRoute path="/quiz-complete" component={QuizCompleteContainer} />
             <PrivateRoute
               path="/quiz/:id"
               component={QuizStartContainer}

@@ -1,12 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router';
 import { Dispatch } from 'redux';
 import { getQuizAttemptStatus, getQuizById } from '../../../api';
 import { IQuiz } from '../../../interfaces/quiz-start';
 import { AppState } from '../../../store/store';
 import { history } from '../../../utils/history';
 import QuizStart from '../../presentations/quiz-start/index';
+import QuizCompleteContainer from '../quiz-complete/QuizCompleteContainer';
 import QuizQuestionContainer from '../quiz-question/QuizQuestionContainer';
 import { startQuiz } from '../quiz-question/redux/action';
 import { setQuiz } from './redux/actions';
@@ -19,6 +19,7 @@ interface IQuizStartContainerProps {
   continueFrom: number;
   userQuizAnswers: {};
   currQuestionIdx: number;
+  numQuestions: number;
   setQuiz: (quiz: IQuiz) => void;
   changeCurrQuestionIdx: (newQuestionIdx: number) => void;
 }
@@ -34,11 +35,13 @@ class QuizStartContainer extends React.Component<IQuizStartContainerProps> {
     } else {
       const continueFrom = quiz.questions.indexOf(attempt.continue_from);
       props.setQuiz({
+        quizId,
         name: quiz.title,
         description: quiz.description || 'No description',
         isFinished: attempt.is_finished,
         continueFrom,
-        userQuizAnswers: attempt.answers
+        userQuizAnswers: attempt.answers,
+        score: attempt.score
       });
     }
   }
@@ -52,8 +55,8 @@ class QuizStartContainer extends React.Component<IQuizStartContainerProps> {
       userQuizAnswers: {}
     };
 
-    if (this.props.isFinished) {
-      return <Redirect to={`/quiz-complete/${this.props.match.params.id}`} />;
+    if (this.props.isFinished || this.props.currQuestionIdx >= this.props.numQuestions) {
+      return <QuizCompleteContainer {...this.props} />;
     } else if (this.props.currQuestionIdx < 0) {
       return (
         <QuizStart
@@ -69,12 +72,15 @@ class QuizStartContainer extends React.Component<IQuizStartContainerProps> {
 }
 
 const mapStateToProps = (state: AppState) => ({
+  quizId: state.quizStart.quizId,
   name: state.quizStart.name,
   description: state.quizStart.description,
   isFinished: state.quizStart.isFinished,
   continueFrom: state.quizStart.continueFrom,
   userQuizAnswers: state.quizStart.userQuizAnswers,
-  currQuestionIdx: state.quizQuestion.currQuestionIdx
+  currQuestionIdx: state.quizQuestion.currQuestionIdx,
+  numQuestions: state.quizQuestion.questions.length,
+  score: state.quizStart.score
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => {

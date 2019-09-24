@@ -5,7 +5,8 @@ const initialState: IQuizStartState = {
   description: '',
   isFinished: false,
   continueFrom: -1,
-  userQuizAnswers: {}
+  userQuizAnswers: {},
+  score: 0,
 };
 
 export default initialState;

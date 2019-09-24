@@ -142,7 +142,9 @@ Responses that support getting multiple rows will have a key called `links` (apa
 
 *Example*
 
-> Note that the hostname of `127.0.0.1:8000` will be automatically changed to the hostname of the running server.
+Note that the hostname of `127.0.0.1:8000` will be automatically changed to the hostname of the running server.
+
+So you don't have to worry and could use the URL directly without issues.
 
 ```
 {

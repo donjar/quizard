@@ -136,6 +136,49 @@ A refresh token is a long-life token used to generate new access tokens. In this
 - limit (`int`): the maximum number of rows to return(Min=0, Max=100). Default: 15.
 - after_id (`int`): The returned rows will have their IDs starting from `after_id` (exclusive) (Keyset pagination). Default: 0.
 
+## Pagination
+
+Responses that support getting multiple rows will have a key called `links` (apart from `data`) for clients to directly call and retrieve the next page of rows of the resource.
+
+*Example*
+
+> Note that the hostname of `127.0.0.1:8000` will be automatically changed to the hostname of the running server.
+
+```
+{
+    "data": [
+        {
+            "created_at": 1569140236,
+            "description": null,
+            "title": "Popular song would century already professional picture.",
+            "num_attempts": 1,
+            "category_id": null,
+            "questions": [
+                "ca9c90f0441d4a2bb28d94fac3cc879a",
+                "1549cb69514b448581876047e80905d7",
+                "ecbb2138d819463591a4b99f21849797",
+                "2e2c7deffe654638b164c5b69f8a9e6f",
+                "71efe1dc670a4bd3a679071def80c550",
+                "f582a2551ce349a28666f4723749383a",
+                "e08f452cb42540b7ac0b371221af07a2",
+                "77168993561143d1a09cbd6da70656e3",
+                "a0042cedf3c64dc0aabab76f2a103053",
+                "1e3c157bd58b4b4cb1d3bf045d256cd6"
+            ],
+            "creator_id": "9539538fff894799a12bfc7bd270fe44",
+            "type_id": null,
+            "id": "abc2989dea294e9aa815462aae6fe152",
+            "updated_at": 1569222798,
+            "animation_id": null
+        },
+        ...
+    ],
+    "links": {
+        "next": "http://127.0.0.1:8000/quizzes?after_id=db4510e134b44a73afeb7e7b8da59561"
+    }
+}
+```
+
 
 ## Common HTTP codes of responses
 - `400`: Missing field `email` and/or `password` in the request's body, or incorrect format of `email` and/or `password`.

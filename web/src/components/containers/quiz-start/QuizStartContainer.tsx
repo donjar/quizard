@@ -10,6 +10,7 @@ import QuizCompleteContainer from '../quiz-complete/QuizCompleteContainer';
 import QuizQuestionContainer from '../quiz-question/QuizQuestionContainer';
 import { startQuiz } from '../quiz-question/redux/action';
 import { setQuiz } from './redux/actions';
+import QuizClosedContainer from '../quiz-closed/QuizClosedContainer';
 
 interface IQuizStartContainerProps {
   match: any;
@@ -31,7 +32,7 @@ class QuizStartContainer extends React.Component<IQuizStartContainerProps> {
     const attempt = (await getQuizAttemptStatus(quizId)).data;
 
     if (quiz === undefined) {
-      history.push('/');
+      // history.push('/');
     } else {
       const continueFrom = quiz.questions.indexOf(attempt.continue_from);
       props.setQuiz({
@@ -54,6 +55,10 @@ class QuizStartContainer extends React.Component<IQuizStartContainerProps> {
       continueFrom: -1,
       userQuizAnswers: {}
     };
+
+    if (this.props.name === "") {
+      return <QuizClosedContainer />;
+    }
 
     if (this.props.isFinished || this.props.currQuestionIdx >= this.props.numQuestions) {
       return <QuizCompleteContainer {...this.props} />;

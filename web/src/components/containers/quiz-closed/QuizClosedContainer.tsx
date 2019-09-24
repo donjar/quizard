@@ -1,8 +1,8 @@
 import React from 'react';
-import QuizCosed from '../../presentations/quiz-closed/index';
+import QuizClosed from '../../presentations/quiz-closed/index';
 
 const QuizClosedContainer: React.FC = () => {
-  return <QuizCosed />;
+  return <QuizClosed />;
 };
 
 export default QuizClosedContainer;

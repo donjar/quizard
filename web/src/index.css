@@ -79,7 +79,13 @@ form {
 }
 
 body {
-  font-size: calc(16px + 0.5vw);
+  font-size: 1.2rem;
+  font-weight: lighter;
+}
+
+h1 {
+  font-size: 1.8rem;
+  font-weight: normal;
 }
 
 code {

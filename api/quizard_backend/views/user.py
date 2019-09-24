@@ -9,8 +9,8 @@ from quizard_backend.utils.validation import validate_request, validate_permissi
 
 
 @validate_request(schema="user_read", skip_body=True)
-async def user_retrieve(req, *, req_args, req_body, many=True, **kwargs):
-    return await User.get(**req_args, many=many)
+async def user_retrieve(req, *, req_args, req_body, many=True, query_params, **kwargs):
+    return await User.get(**req_args, many=many, **query_params)
 
 
 @validate_request(schema="user_write", skip_args=True)
@@ -38,17 +38,19 @@ async def user_delete(req, *, req_args, req_body, **kwargs):
 
 @blueprint.route("/", methods=["GET", "POST"])
 @unpack_request
-async def user_route(request, *, req_args=None, req_body=None):
+async def user_route(request, *, req_args=None, req_body=None, query_params=None):
     call_funcs = {"GET": user_retrieve, "POST": user_create}
     data = await call_funcs[request.method](
-        request, req_args=req_args, req_body=req_body
+        request, req_args=req_args, req_body=req_body, query_params=query_params
     )
     return json({"data": data})
 
 
 @blueprint.route("/<user_id>", methods=["GET", "PUT", "PATCH"])
 @unpack_request
-async def user_route_single(request, user_id, req_args=None, req_body=None):
+async def user_route_single(
+    request, user_id, *, req_args=None, req_body=None, query_params
+):
     user_id = user_id.strip()
 
     call_funcs = {
@@ -59,7 +61,11 @@ async def user_route_single(request, user_id, req_args=None, req_body=None):
     }
 
     data = await call_funcs[request.method](
-        request, req_args={**req_args, "id": user_id}, req_body=req_body, many=False
+        request,
+        req_args={**req_args, "id": user_id},
+        req_body=req_body,
+        many=False,
+        query_params=query_params,
     )
     return json({"data": data})
 
@@ -67,7 +73,7 @@ async def user_route_single(request, user_id, req_args=None, req_body=None):
 ## GET Personal quizzes
 @blueprint.route("/<user_id>/quizzes", methods=["GET"])
 @unpack_request
-async def quiz_route(request, user_id, *, req_args, req_body, **kwargs):
+async def quiz_route(request, user_id, *, req_args, req_body, query_params, **kwargs):
     user_id = user_id.strip()
     attempted = to_boolean(req_args.get("attempted", "true"))
     created = to_boolean(req_args.get("created", "true"))

@@ -16,10 +16,11 @@ async def calculate_score(question_ids, answers):
 
 
 async def extract_quiz_questions_from_quiz(
-    quiz_id, requester=None, allow_readonly=False
+    quiz_id, requester=None, allow_readonly=False, query_params=None
 ):
     quiz = await Quiz.get(id=quiz_id)
     quiz_question_ids = quiz["questions"]
+    query_params = query_params or {}
 
     # Check if the requester is the Quiz's owner
     if requester and requester["id"] != quiz["creator_id"]:
@@ -32,6 +33,7 @@ async def extract_quiz_questions_from_quiz(
             in_values=quiz_question_ids,
             many=True,
             allow_readonly=allow_readonly,
+            **query_params,
         )
         questions_dict = {question["id"]: question for question in quiz_questions}
         questions = [questions_dict[question_id] for question_id in quiz_question_ids]

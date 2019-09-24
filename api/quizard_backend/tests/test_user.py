@@ -92,9 +92,9 @@ async def test_get_all_users(client, users):
     assert res.status == 400
 
 
-async def test_get_users_with_last_id(client, users):
-    # Use last_id in query parameter.
-    res = await client.get("/users?last_id={}".format(users[2]["id"]))
+async def test_get_users_with_after_id(client, users):
+    # Use after_id in query parameter.
+    res = await client.get("/users?after_id={}".format(users[2]["id"]))
     assert res.status == 200
 
     body = await res.json()
@@ -108,11 +108,11 @@ async def test_get_users_with_last_id(client, users):
         for origin, created in zip(users[3:20], body["data"])
     )
 
-    # Invalid last_id
-    res = await client.get("/users?last_id=2")
-    assert res.status == 400
+    # Invalid after_id
+    res = await client.get("/users?after_id=2")
+    assert res.status == 404
 
-    res = await client.get("/users?last_id=")
+    res = await client.get("/users?after_id=")
     assert res.status == 400
 
 

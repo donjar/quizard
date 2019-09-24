@@ -5,8 +5,8 @@ import { smMax } from '../../../utils/media';
 
 const StyledInputField = styled.div`
   position: relative;
-  width: 461px;
-  height: 66px;
+  width: 100%;
+  height: 60px;
   display: flex;
   align-items: center;
   overflow: hidden;

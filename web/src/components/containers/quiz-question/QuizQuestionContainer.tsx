@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router';
 import { AnyAction } from 'redux';
 import { ThunkDispatch } from 'redux-thunk';
 import { IQuestion } from '../../../interfaces/quiz-question';

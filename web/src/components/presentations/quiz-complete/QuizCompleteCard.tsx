@@ -5,7 +5,6 @@ import { IQuizCompleteCardProps } from '../../../interfaces/quiz-complete';
 import { ReactComponent as Owl } from '../../../svg/owl.svg';
 import QuizRedoButtonContainer from '../../containers/quiz-complete/QuizRedoButtonContainer';
 import BigDarkButton from '../common/buttons/BigDarkButton';
-import WholeScreenCard from '../common/WholeScreenCard';
 
 const StyledOwl = styled(Owl)`
   height: 170px;

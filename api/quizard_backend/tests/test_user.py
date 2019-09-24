@@ -87,6 +87,22 @@ async def test_get_all_users(client, users):
         for origin, created in zip(users[:10], body["data"])
     )
 
+    # Get the next 10 users
+    next_page_link = body["links"]["next"]
+    # Strip the host, as it is a testing host
+    next_page_link = "/" + "/".join(next_page_link.split("/")[3:])
+    res = await client.get(next_page_link)
+    assert res.status == 200
+
+    body = await res.json()
+    assert "data" in body
+    assert isinstance(body["data"], list)
+    assert len(body["data"]) == 10
+    assert all(
+        profile_created_from_origin(origin, created)
+        for origin, created in zip(users[10:20], body["data"])
+    )
+
     # -1 users
     res = await client.get("/users?limit=-1")
     assert res.status == 400

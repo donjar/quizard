@@ -2,7 +2,7 @@ from sanic.response import json
 
 from quizard_backend.views.urls import user_blueprint as blueprint
 from quizard_backend.models import User, Quiz, QuizAttempt
-from quizard_backend.schemas import to_boolean
+from quizard_backend.utils.links import generate_pagination_links
 from quizard_backend.utils.query import get_many, get_one_latest
 from quizard_backend.utils.request import unpack_request
 from quizard_backend.utils.validation import validate_request, validate_permission
@@ -10,24 +10,27 @@ from quizard_backend.utils.validation import validate_request, validate_permissi
 
 @validate_request(schema="user_read", skip_body=True)
 async def user_retrieve(req, *, req_args, req_body, many=True, query_params, **kwargs):
-    return await User.get(**req_args, many=many, **query_params)
+    data = await User.get(**req_args, many=many, **query_params)
+    if many:
+        return {"data": data, "links": generate_pagination_links(req.url, data)}
+    return {"data": data}
 
 
 @validate_request(schema="user_write", skip_args=True)
 async def user_create(req, *, req_args, req_body, **kwargs):
-    return await User.add(**req_body)
+    return {"data": await User.add(**req_body)}
 
 
 @validate_request(schema="user_write")
 @validate_permission(model=User)
 async def user_replace(req, *, req_args, req_body, **kwargs):
-    return await User.modify(req_args, req_body)
+    return {"data": await User.modify(req_args, req_body)}
 
 
 @validate_request(schema="user_write", update=True)
 @validate_permission(model=User)
 async def user_update(req, *, req_args, req_body, **kwargs):
-    return await User.modify(req_args, req_body)
+    return {"data": await User.modify(req_args, req_body)}
 
 
 @validate_request(schema="user_read", skip_body=True)
@@ -40,10 +43,10 @@ async def user_delete(req, *, req_args, req_body, **kwargs):
 @unpack_request
 async def user_route(request, *, req_args=None, req_body=None, query_params=None):
     call_funcs = {"GET": user_retrieve, "POST": user_create}
-    data = await call_funcs[request.method](
+    response = await call_funcs[request.method](
         request, req_args=req_args, req_body=req_body, query_params=query_params
     )
-    return json({"data": data})
+    return json(response)
 
 
 @blueprint.route("/<user_id>", methods=["GET", "PUT", "PATCH"])
@@ -60,14 +63,14 @@ async def user_route_single(
         # "DELETE": user_delete,
     }
 
-    data = await call_funcs[request.method](
+    response = await call_funcs[request.method](
         request,
         req_args={**req_args, "id": user_id},
         req_body=req_body,
         many=False,
         query_params=query_params,
     )
-    return json({"data": data})
+    return json(response)
 
 
 ## GET Personal quizzes
@@ -79,7 +82,7 @@ async def user_quizzes_created_route(
 ):
     user_id = user_id.strip()
     data = await Quiz.get(creator_id=user_id, many=True, **query_params)
-    return json({"data": data})
+    return json({"data": data, "links": generate_pagination_links(request.url, data)})
 
 
 @blueprint.route("/<user_id>/quizzes/attempted", methods=["GET"])
@@ -115,4 +118,5 @@ async def user_quizzes_attempted_route(
     attempted_quizzes_as_dict = {
         quiz["id"]: quiz for quiz in unordered_attempted_quizzes
     }
-    return json({"data": [attempted_quizzes_as_dict[quiz_id] for quiz_id in quiz_ids]})
+    data = [attempted_quizzes_as_dict[quiz_id] for quiz_id in quiz_ids]
+    return json({"data": data, "links": generate_pagination_links(request.url, data)})

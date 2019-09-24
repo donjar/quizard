@@ -23,7 +23,7 @@ async def test_get_own_created_and_attempted_quizzes(
 
     # Create a few quizzes
     created_quizzes = []
-    for _ in range(8):
+    for _ in range(20):
         fake_quiz = get_fake_quiz()
         fake_quiz.pop("creator_id")
         new_quiz = {**fake_quiz, "questions": get_fake_quiz_questions(has_id=False)}
@@ -43,7 +43,7 @@ async def test_get_own_created_and_attempted_quizzes(
 
     # Attempt to do a few quizzes as well
     attempted_quizzes = []
-    for quiz_index in range(3, 7):
+    for quiz_index in range(1, 17):
         question_index = 3
         selected_option_3 = 1
         res = await client.post(
@@ -63,6 +63,7 @@ async def test_get_own_created_and_attempted_quizzes(
     body = await res.json()
     assert "data" in body
     assert isinstance(body["data"], list)
+    assert len(body["data"]) == 15
 
     # Check if the created quizzes are correct
     for created, retrieve in zip(created_quizzes, body["data"]):
@@ -76,6 +77,7 @@ async def test_get_own_created_and_attempted_quizzes(
     body = await res.json()
     assert "data" in body
     assert isinstance(body["data"], list)
+    assert len(body["data"]) == 15
 
     for expected_quiz, actual_quiz in zip(attempted_quizzes[::-1], body["data"]):
         assert profile_created_from_origin(
@@ -126,11 +128,10 @@ async def test_pagination_created_attempted_quizzes(
         )
 
     # Check second page
-    res = await client.get(
-        "/users/{}/quizzes/created?after_id={}".format(
-            new_user_id, body["data"][-1]["id"]
-        )
-    )
+    next_page_link = body["links"]["next"]
+    # Strip the host, as it is a testing host
+    next_page_link = "/" + "/".join(next_page_link.split("/")[3:])
+    res = await client.get(next_page_link)
     assert res.status == 200
     body = await res.json()
     assert "data" in body
@@ -143,11 +144,10 @@ async def test_pagination_created_attempted_quizzes(
         )
 
     # Check last page
-    res = await client.get(
-        "/users/{}/quizzes/created?after_id={}".format(
-            new_user_id, body["data"][-1]["id"]
-        )
-    )
+    next_page_link = body["links"]["next"]
+    # Strip the host, as it is a testing host
+    next_page_link = "/" + "/".join(next_page_link.split("/")[3:])
+    res = await client.get(next_page_link)
     assert res.status == 200
     body = await res.json()
     assert "data" in body
@@ -183,6 +183,8 @@ async def test_pagination_created_attempted_quizzes(
     assert "data" in body
     assert isinstance(body["data"], list)
     assert len(body["data"]) == 15
+    assert "links" in body
+    assert "next" in body["links"]
 
     for created, retrieve in zip(attempted_quizzes[:15], body["data"]):
         assert profile_created_from_origin(
@@ -190,11 +192,10 @@ async def test_pagination_created_attempted_quizzes(
         )
 
     # Check second page
-    res = await client.get(
-        "/users/{}/quizzes/attempted?after_id={}".format(
-            attempt_user_id, body["data"][-1]["id"]
-        )
-    )
+    next_page_link = body["links"]["next"]
+    # Strip the host, as it is a testing host
+    next_page_link = "/" + "/".join(next_page_link.split("/")[3:])
+    res = await client.get(next_page_link)
     assert res.status == 200
     body = await res.json()
     assert "data" in body
@@ -207,11 +208,10 @@ async def test_pagination_created_attempted_quizzes(
         )
 
     # Check last page
-    res = await client.get(
-        "/users/{}/quizzes/attempted?after_id={}".format(
-            attempt_user_id, body["data"][-1]["id"]
-        )
-    )
+    next_page_link = body["links"]["next"]
+    # Strip the host, as it is a testing host
+    next_page_link = "/" + "/".join(next_page_link.split("/")[3:])
+    res = await client.get(next_page_link)
     assert res.status == 200
     body = await res.json()
     assert "data" in body

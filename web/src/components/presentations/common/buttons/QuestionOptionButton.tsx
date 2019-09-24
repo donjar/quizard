@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import RoundedButton from './RoundedButton';
 
-export const AnswerButton = styled(RoundedButton)`
+export const QuestionOptionButton = styled(RoundedButton)`
   background: none;
   border: 2px solid var(--dark-blue);
   box-sizing: border-box;
@@ -13,14 +13,14 @@ export const AnswerButton = styled(RoundedButton)`
   font-size: 1rem;
 `;
 
-export const CorrectAnswerButton = styled(AnswerButton)`
+export const CorrectQuestionOptionButton = styled(QuestionOptionButton)`
   color: white;
   border-color: transparent;
   background: var(--green);
   box-shadow: 0px 0px 10px var(--green);
 `;
 
-export const IncorrectAnswerButton = styled(AnswerButton)`
+export const IncorrectQuestionOptionButton = styled(QuestionOptionButton)`
   color: white;
   border-color: transparent;
   background: var(--red);

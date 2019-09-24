@@ -93,6 +93,10 @@ code {
     monospace;
 }
 
+a:link {
+  text-decoration: none;
+}
+
 ::-webkit-scrollbar {
 	width: 8px;
 }

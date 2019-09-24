@@ -4,7 +4,7 @@ import { Redirect } from 'react-router';
 import { IQuizCreateProps } from '../../../interfaces/quiz-create/index';
 import { BeigeBackground } from '../common/BeigeBackground';
 import { BodyAfterNavBarWithPadding } from '../common/BodyAfterNavBarWithPadding';
-import DarkButton from '../common/buttons/DarkButton';
+import FloatingButton from '../common/buttons/FloatingButton';
 import { QuizCreateNavBar } from './QuizCreateNavBar';
 
 const QuizCreate: React.FC<IQuizCreateProps> = ({
@@ -34,7 +34,7 @@ const QuizCreate: React.FC<IQuizCreateProps> = ({
           required
         />
         <h3>Questions ({numQuestions})</h3>
-        <DarkButton onClick={onAddQuestion}>Add Question</DarkButton>
+        <FloatingButton onClick={onAddQuestion}>Add Question</FloatingButton>
         {error && (<p>Error: {error}</p>)}
         {children}
       </BodyAfterNavBarWithPadding>

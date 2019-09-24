@@ -1,11 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { IQuizCompleteCardProps } from '../../../interfaces/quiz-complete';
 import { ReactComponent as Owl } from '../../../svg/owl.svg';
+import QuizRedoButtonContainer from '../../containers/quiz-complete/QuizRedoButtonContainer';
 import BigDarkButton from '../common/buttons/BigDarkButton';
 import WholeScreenCard from '../common/WholeScreenCard';
-import { IQuizCompleteCardProps } from '../../../interfaces/quiz-complete';
-import QuizRedoButtonContainer from '../../containers/quiz-complete/QuizRedoButtonContainer';
 
 const StyledOwl = styled(Owl)`
   height: 170px;

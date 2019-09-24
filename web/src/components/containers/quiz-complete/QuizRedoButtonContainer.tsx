@@ -1,9 +1,9 @@
 import React from 'react';
-import BigDarkButton from '../../presentations/common/buttons/BigDarkButton';
-import { IQuizRedoButtonProps } from '../../../interfaces/quiz-complete';
-import { AppState } from '../../../store/store';
 import { connect } from 'react-redux';
 import { redoQuiz } from '../../../api';
+import { IQuizRedoButtonProps } from '../../../interfaces/quiz-complete';
+import { AppState } from '../../../store/store';
+import BigDarkButton from '../../presentations/common/buttons/BigDarkButton';
 
 const QuizRedoButtonContainer: React.FC<IQuizRedoButtonProps> = ({ quizId }) => {
   return (

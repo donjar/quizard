@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { IQuizCompleteProps } from '../../../interfaces/quiz-complete';
 import { AppState } from '../../../store/store';
 import QuizComplete from '../../presentations/quiz-complete/index';
-import { IQuizCompleteProps } from '../../../interfaces/quiz-complete';
 
 const QuizCompleteContainer: React.FC<IQuizCompleteProps> = ({ score, maxScore, quizName }) => {
   return <QuizComplete

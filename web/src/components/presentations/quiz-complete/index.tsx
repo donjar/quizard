@@ -1,7 +1,7 @@
 import React from 'react';
+import { IQuizCompleteProps } from '../../../interfaces/quiz-complete';
 import FullScreenModal from '../common/FullScreenModal';
 import QuizCompleteCard from './QuizCompleteCard';
-import { IQuizCompleteProps } from '../../../interfaces/quiz-complete';
 
 const QuizComplete: React.FC<IQuizCompleteProps> = ({ score, maxScore, quizName }) => {
   return (

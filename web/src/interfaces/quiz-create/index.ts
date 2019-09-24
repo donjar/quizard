@@ -23,16 +23,19 @@ export interface IQuizCreateQuestionCardProps {
 
 export interface IQuizCreateProps {
   name: string;
+  description: string;
   error?: string;
   numQuestions: number;
   createdQuizId?: string;
   onAddQuestion: () => void;
   onChangeName: (newName: string) => void;
+  onChangeDescription: (newDesc: string) => void;
   onCreateQuiz: () => void;
 }
 
 export interface IQuizCreateState {
   name: string;
+  description: string;
   questions: IQuestion[];
   error?: string;
   createdQuizId?: string;

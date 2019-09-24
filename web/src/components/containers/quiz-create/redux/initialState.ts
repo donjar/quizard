@@ -2,12 +2,12 @@ import { IQuizCreateState } from '../../../../interfaces/quiz-create';
 
 const initialState: IQuizCreateState = {
   name: '',
+  description: '',
   questions: [
-    // test data to be removed
     {
-      correctOption: 2,
-      options: ['a', 'b', 'c'],
-      text: 'Abcd'
+      correctOption: 0,
+      options: ['', ''],
+      text: ''
     }
   ]
 };

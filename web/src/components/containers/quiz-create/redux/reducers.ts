@@ -11,7 +11,8 @@ import {
   IQuizCreateActionTypes,
   QUIZ_CREATED,
   SET_CORRECT_ANSWER,
-  SET_ERROR
+  SET_ERROR,
+  CHANGE_DESCRIPTION
 } from './types';
 
 // TODO: split into smaller reducers
@@ -66,6 +67,9 @@ export default function quizCreateReducer(
 
     case CHANGE_NAME:
       return { ...state, name: action.payload };
+
+    case CHANGE_DESCRIPTION:
+        return { ...state, description: action.payload };
 
     case CHANGE_QUESTION_TEXT:
       newQuestions[action.payload.questionIdx].text =

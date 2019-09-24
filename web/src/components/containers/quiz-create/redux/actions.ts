@@ -13,7 +13,8 @@ import {
   IQuizCreateActionTypes,
   QUIZ_CREATED,
   SET_CORRECT_ANSWER,
-  SET_ERROR
+  SET_ERROR,
+  CHANGE_DESCRIPTION
 } from './types';
 
 export const addQuestion = (newQuestion: IQuestion): IQuizCreateActionTypes => {
@@ -72,6 +73,15 @@ export const changeName = (
   return {
     payload: newName,
     type: CHANGE_NAME
+  };
+};
+
+export const changeDescription = (
+  newDesc: string
+): IQuizCreateActionTypes => {
+  return {
+    payload: newDesc,
+    type: CHANGE_DESCRIPTION
   };
 };
 

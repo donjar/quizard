@@ -6,11 +6,11 @@ import { IQuiz } from '../../../interfaces/quiz-start';
 import { AppState } from '../../../store/store';
 import { history } from '../../../utils/history';
 import QuizStart from '../../presentations/quiz-start/index';
+import QuizClosedContainer from '../quiz-closed/QuizClosedContainer';
 import QuizCompleteContainer from '../quiz-complete/QuizCompleteContainer';
 import QuizQuestionContainer from '../quiz-question/QuizQuestionContainer';
 import { startQuiz } from '../quiz-question/redux/action';
 import { setQuiz } from './redux/actions';
-import QuizClosedContainer from '../quiz-closed/QuizClosedContainer';
 
 interface IQuizStartContainerProps {
   match: any;
@@ -56,7 +56,7 @@ class QuizStartContainer extends React.Component<IQuizStartContainerProps> {
       userQuizAnswers: {}
     };
 
-    if (this.props.name === "") {
+    if (this.props.name === '') {
       return <QuizClosedContainer />;
     }
 

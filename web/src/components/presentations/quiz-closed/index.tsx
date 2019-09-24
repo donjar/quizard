@@ -15,7 +15,7 @@ const handleReturnToHomeClick = () => {
 
 const QuizClosed: React.FC = () => {
   return (
-    <FullScreenModal wide={true}>
+    <FullScreenModal>
       <StyledOwl />
       <h1>Sorry, the quiz you are looking for has closed</h1>
       <p>

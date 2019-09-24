@@ -26,7 +26,7 @@ interface IQuizQuestionContainerProps {
     questionIdx: number,
     optionIdx: number
   ) => void;
-  onClickNext: () => void;
+  onClickNext: ({}) => void;
   getQuestions: (quizId: string) => void;
 }
 
@@ -66,7 +66,7 @@ const QuizQuestionContainer: React.FC<IQuizQuestionContainerProps> = ({
       showNext={showNext}
       onSelectOption={handleSelectedOption}
       onCloseQuiz={handleLeaveQuiz}
-      onClickNext={onClickNext}
+      onClickNext={() => onClickNext({ numQuestions, questionNumber })}
     />
   );
 };
@@ -82,7 +82,7 @@ const mapStateToProps = (state: AppState) => {
   };
 };
 
-const mapDispatchToProps = (dispatch: ThunkDispatch<any, any, AnyAction>, ownProps: any) => {
+const mapDispatchToProps = (dispatch: ThunkDispatch<any, any, AnyAction>) => {
   return {
     onSelectOption: (
       quizId: string,
@@ -90,22 +90,25 @@ const mapDispatchToProps = (dispatch: ThunkDispatch<any, any, AnyAction>, ownPro
       questionIdx: number,
       optionIdx: number
     ) => {
-      dispatch(checkSelectedOption(
-        questionId,
-        {
+      dispatch(
+        checkSelectedOption(questionId, {
           quizId,
           questionIdx,
           optionIdx
-        }
-      ));
+        })
+      );
     },
-    onClickNext: () => {
-      dispatch(gotoNextQuestion());
+    onClickNext: ({ questionNumber, numQuestions }: any) => {
+      if (questionNumber >= numQuestions) {
+        window.location.reload();
+      } else {
+        dispatch(gotoNextQuestion());
+      }
     },
     getQuestions: (quizId: string) => {
-      fetchQuestions(quizId).then(({ payload }) => (
+      fetchQuestions(quizId).then(({ payload }) =>
         dispatch(setQuestions(payload))
-      ));
+      );
     }
   };
 };

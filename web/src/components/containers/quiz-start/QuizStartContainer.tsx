@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router';
 import { Dispatch } from 'redux';
 import { getQuizAttemptStatus, getQuizById } from '../../../api';
 import { IQuiz } from '../../../interfaces/quiz-start';
@@ -20,6 +19,7 @@ interface IQuizStartContainerProps {
   continueFrom: number;
   userQuizAnswers: {};
   currQuestionIdx: number;
+  numQuestions: number;
   setQuiz: (quiz: IQuiz) => void;
   changeCurrQuestionIdx: (newQuestionIdx: number) => void;
 }
@@ -35,6 +35,7 @@ class QuizStartContainer extends React.Component<IQuizStartContainerProps> {
     } else {
       const continueFrom = quiz.questions.indexOf(attempt.continue_from);
       props.setQuiz({
+        quizId,
         name: quiz.title,
         description: quiz.description || 'No description',
         isFinished: attempt.is_finished,
@@ -52,11 +53,9 @@ class QuizStartContainer extends React.Component<IQuizStartContainerProps> {
       isFinished: false,
       continueFrom: -1,
       userQuizAnswers: {}
-      score: undefined
     };
 
-    if (this.props.isFinished) {
-      // return <Redirect to={`/quiz-complete/${this.props.match.params.id}`} />;
+    if (this.props.isFinished || this.props.currQuestionIdx >= this.props.numQuestions) {
       return <QuizCompleteContainer {...this.props} />;
     } else if (this.props.currQuestionIdx < 0) {
       return (
@@ -73,12 +72,14 @@ class QuizStartContainer extends React.Component<IQuizStartContainerProps> {
 }
 
 const mapStateToProps = (state: AppState) => ({
+  quizId: state.quizStart.quizId,
   name: state.quizStart.name,
   description: state.quizStart.description,
   isFinished: state.quizStart.isFinished,
   continueFrom: state.quizStart.continueFrom,
   userQuizAnswers: state.quizStart.userQuizAnswers,
   currQuestionIdx: state.quizQuestion.currQuestionIdx,
+  numQuestions: state.quizQuestion.questions.length,
   score: state.quizStart.score
 });
 

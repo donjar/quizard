@@ -3,30 +3,26 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { ReactComponent as Owl } from '../../../svg/owl.svg';
 import BigDarkButton from '../common/buttons/BigDarkButton';
+import WholeScreenCard from '../common/WholeScreenCard';
+import { IQuizCompleteCardProps } from '../../../interfaces/quiz-complete';
+import QuizRedoButtonContainer from '../../containers/quiz-complete/QuizRedoButtonContainer';
 
 const StyledOwl = styled(Owl)`
   height: 170px;
 `;
 
-export interface IQuizCompleteCardProps {
-  score: number;
-  maxScore: number;
-  quizName: string;
-}
-
 const QuizCompleteCard: React.FC<IQuizCompleteCardProps> = ({ score, maxScore, quizName }) => {
   return (
     <>
       <StyledOwl />
-      <button>X button</button>
-      <h1>
+      <h3>
         You have scored {score}/{maxScore} for {quizName}!
-      </h1>
-      <p>
+      </h3>
+      <p style={{ fontWeight: 300 }}>
         Your quiz results have been saved and you can review your quiz answers
         anytime.
       </p>
-      <BigDarkButton>Try Again</BigDarkButton>
+      <QuizRedoButtonContainer />
       <BigDarkButton>Review Quiz Results</BigDarkButton>
       <Link to="/">
         <div style={{ fontSize: '18px', textDecoration: 'underline' }}>

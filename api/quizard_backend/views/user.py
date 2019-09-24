@@ -3,7 +3,7 @@ from sanic.response import json
 from quizard_backend.views.urls import user_blueprint as blueprint
 from quizard_backend.models import User, Quiz, QuizAttempt
 from quizard_backend.schemas import to_boolean
-from quizard_backend.utils.query import get_many
+from quizard_backend.utils.query import get_many, get_one_latest
 from quizard_backend.utils.request import unpack_request
 from quizard_backend.utils.validation import validate_request, validate_permission
 
@@ -71,36 +71,48 @@ async def user_route_single(
 
 
 ## GET Personal quizzes
-@blueprint.route("/<user_id>/quizzes", methods=["GET"])
+@blueprint.route("/<user_id>/quizzes/created", methods=["GET"])
 @unpack_request
-async def quiz_route(request, user_id, *, req_args, req_body, query_params, **kwargs):
+@validate_request(schema="quiz_read")
+async def user_quizzes_created_route(
+    request, user_id, *, req_args, req_body, query_params, **kwargs
+):
     user_id = user_id.strip()
-    attempted = to_boolean(req_args.get("attempted", "true"))
-    created = to_boolean(req_args.get("created", "true"))
+    data = await Quiz.get(creator_id=user_id, many=True, **query_params)
+    return json({"data": data})
 
-    return_quizzes = {}
-    if attempted:
-        unique_quiz_attempts = await get_many(
-            QuizAttempt,
-            user_id=user_id,
-            columns=["quiz_id", "user_id", "created_at", "internal_id"],
-            distinct=True,
-            order_by="internal_id",
+
+@blueprint.route("/<user_id>/quizzes/attempted", methods=["GET"])
+@unpack_request
+@validate_request(schema="quiz_read")
+async def user_quizzes_attempted_route(
+    request, user_id, *, req_args, req_body, query_params, **kwargs
+):
+    unique_quiz_attempts = []
+    # Replace `after_id` from using Quiz ID to QuizAttempt ID
+    if "after_id" in query_params:
+        latest_attempt_of_after_quiz = await get_one_latest(
+            QuizAttempt, quiz_id=query_params["after_id"], user_id=user_id
         )
-        quiz_ids = [attempt.quiz_id for attempt in unique_quiz_attempts]
+        query_params["after_id"] = latest_attempt_of_after_quiz.id
+
+    unique_quiz_attempts = await get_many(
+        QuizAttempt,
+        user_id=user_id,
+        columns=["quiz_id", "user_id", "created_at", "internal_id"],
+        distinct=True,
+        descrease=True,
+        **query_params,
+    )
+
+    quiz_ids = [attempt.quiz_id for attempt in unique_quiz_attempts]
+    unordered_attempted_quizzes = []
+    if unique_quiz_attempts:
         unordered_attempted_quizzes = await Quiz.get(
-            in_column="id", in_values=quiz_ids, many=True
-        )
-        attempted_quizzes_as_dict = {
-            quiz["id"]: quiz for quiz in unordered_attempted_quizzes
-        }
-        return_quizzes.update(
-            {"attempted": [attempted_quizzes_as_dict[quiz_id] for quiz_id in quiz_ids]}
+            in_column="id", in_values=quiz_ids, many=True, limit=None
         )
 
-    if created:
-        return_quizzes.update(
-            {"created": await Quiz.get(creator_id=user_id, many=True)}
-        )
-
-    return json({"data": return_quizzes})
+    attempted_quizzes_as_dict = {
+        quiz["id"]: quiz for quiz in unordered_attempted_quizzes
+    }
+    return json({"data": [attempted_quizzes_as_dict[quiz_id] for quiz_id in quiz_ids]})

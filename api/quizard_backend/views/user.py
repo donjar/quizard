@@ -48,7 +48,9 @@ async def user_route(request, *, req_args=None, req_body=None, query_params=None
 
 @blueprint.route("/<user_id>", methods=["GET", "PUT", "PATCH"])
 @unpack_request
-async def user_route_single(request, user_id, *, req_args=None, req_body=None, query_params):
+async def user_route_single(
+    request, user_id, *, req_args=None, req_body=None, query_params
+):
     user_id = user_id.strip()
 
     call_funcs = {
@@ -59,7 +61,11 @@ async def user_route_single(request, user_id, *, req_args=None, req_body=None, q
     }
 
     data = await call_funcs[request.method](
-        request, req_args={**req_args, "id": user_id}, req_body=req_body, many=False, query_params=query_params,
+        request,
+        req_args={**req_args, "id": user_id},
+        req_body=req_body,
+        many=False,
+        query_params=query_params,
     )
     return json({"data": data})
 

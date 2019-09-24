@@ -21,7 +21,9 @@ from quizard_backend.utils.views.quiz_summary import extract_stats_from_quiz
 
 @validate_request(schema="quiz_read", skip_body=True)
 @validate_permission(model=Quiz)
-async def quiz_retrieve(req, *, req_args, req_body, query_params=None, many=True, **kwargs):
+async def quiz_retrieve(
+    req, *, req_args, req_body, query_params=None, many=True, **kwargs
+):
     query_params = query_params or {}
     return await Quiz.get(**req_args, many=many, **query_params)
 
@@ -152,7 +154,9 @@ async def quiz_route_submit_answer(request, quiz_id, question_id):
 @unpack_request
 @validate_permission
 async def quiz_route_get_questions(request, quiz_id, query_params, **kwargs):
-    _, _, questions = await extract_quiz_questions_from_quiz(quiz_id, query_params=query_params)
+    _, _, questions = await extract_quiz_questions_from_quiz(
+        quiz_id, query_params=query_params
+    )
     return json({"data": questions})
 
 

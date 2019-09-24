@@ -20,11 +20,20 @@ def unpack_request(func=None):
             if request.method != "POST"
             else {}
         )
-        query_params = {key: req_args.pop(key) for key in list(req_args.keys()) if key in QUERY_PARAM_READ_SCHEMA}
+        query_params = {
+            key: req_args.pop(key)
+            for key in list(req_args.keys())
+            if key in QUERY_PARAM_READ_SCHEMA
+        }
 
         req_body = request.json or {}
         return await func(
-            request, req_args=req_args, req_body=req_body, query_params=query_params, *args, **kwargs
+            request,
+            req_args=req_args,
+            req_body=req_body,
+            query_params=query_params,
+            *args,
+            **kwargs
         )
 
     return inner

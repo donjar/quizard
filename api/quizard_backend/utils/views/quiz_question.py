@@ -16,7 +16,7 @@ async def calculate_score(question_ids, answers):
 
 
 async def extract_quiz_questions_from_quiz(
-    quiz_id, requester=None, allow_readonly=False, query_params=None,
+    quiz_id, requester=None, allow_readonly=False, query_params=None
 ):
     quiz = await Quiz.get(id=quiz_id)
     quiz_question_ids = quiz["questions"]

@@ -62,7 +62,9 @@ def validate_request(
         )
 
     @wraps(func)
-    async def inner(request, *args, req_args=None, req_body=None, query_params=None, **kwargs):
+    async def inner(
+        request, *args, req_args=None, req_body=None, query_params=None, **kwargs
+    ):
         """
         After validating the request's body and args,
         pass them to the function to avoid re-parsing.
@@ -94,11 +96,18 @@ def validate_request(
         validated_query_params = {}
         if query_params:
             validated_query_params = {
-                key: req_args.pop(key) for key in list(req_args.keys()) if key in query_params
+                key: req_args.pop(key)
+                for key in list(req_args.keys())
+                if key in query_params
             }
 
         return await func(
-            request, req_args=req_args, req_body=req_body, query_params=validated_query_params, *args, **kwargs
+            request,
+            req_args=req_args,
+            req_body=req_body,
+            query_params=validated_query_params,
+            *args,
+            **kwargs,
         )
 
     return inner

@@ -6,6 +6,7 @@ from quizard_backend import db
 from quizard_backend.utils.exceptions import raise_not_found_exception
 from quizard_backend.utils.transaction import in_transaction
 
+
 def dict_to_filter_args(model, **kwargs):
     """
     Convert a dictionary to Gino/SQLAlchemy's conditions for filtering.

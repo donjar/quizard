@@ -110,7 +110,7 @@ async def test_get_users_with_after_id(client, users):
 
     # Invalid after_id
     res = await client.get("/users?after_id=2")
-    assert res.status == 400
+    assert res.status == 404
 
     res = await client.get("/users?after_id=")
     assert res.status == 400

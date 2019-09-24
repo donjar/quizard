@@ -123,7 +123,7 @@ async def test_get_quizzes_with_after_id(client, quizzes, token_user):
 
     # Invalid after_id
     res = await client.get("/quizzes?after_id=3", headers={"Authorization": token_user})
-    assert res.status == 400
+    assert res.status == 404
 
     res = await client.get("/quizzes?after_id=", headers={"Authorization": token_user})
     assert res.status == 400

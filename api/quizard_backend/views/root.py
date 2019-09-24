@@ -17,7 +17,7 @@ async def root(request):
 @blueprint.route("/login", methods=["POST"])
 @unpack_request
 @validate_request(schema="user_login", skip_args=True)
-async def login(request, *, req_args, req_body):
+async def login(request, *, req_args, req_body, **kwargs):
     """
     Return an access token and refresh token to user,
     if the login credentials of email and password are correct.

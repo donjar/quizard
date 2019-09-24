@@ -21,8 +21,9 @@ from quizard_backend.utils.views.quiz_summary import extract_stats_from_quiz
 
 @validate_request(schema="quiz_read", skip_body=True)
 @validate_permission(model=Quiz)
-async def quiz_retrieve(req, *, req_args, req_body, many=True, **kwargs):
-    return await Quiz.get(**req_args, many=many)
+async def quiz_retrieve(req, *, req_args, req_body, query_params=None, many=True, **kwargs):
+    query_params = query_params or {}
+    return await Quiz.get(**req_args, many=many, **query_params)
 
 
 @validate_request(schema="quiz_write", skip_args=True)
@@ -70,10 +71,10 @@ async def quiz_delete(req, *, req_args, req_body, **kwargs):
 
 @blueprint.route("/", methods=["GET", "POST"])
 @unpack_request
-async def quiz_route(request, *, req_args, req_body):
+async def quiz_route(request, *, req_args, req_body, **kwargs):
     call_funcs = {"GET": quiz_retrieve, "POST": quiz_create}
     data = await call_funcs[request.method](
-        request, req_args=req_args, req_body=req_body
+        request, req_args=req_args, req_body=req_body, **kwargs
     )
     return json({"data": data})
 
@@ -150,8 +151,8 @@ async def quiz_route_submit_answer(request, quiz_id, question_id):
 @blueprint.route("/<quiz_id>/questions", methods=["GET"])
 @unpack_request
 @validate_permission
-async def quiz_route_get_questions(request, quiz_id, **kwargs):
-    _, _, questions = await extract_quiz_questions_from_quiz(quiz_id)
+async def quiz_route_get_questions(request, quiz_id, query_params, **kwargs):
+    _, _, questions = await extract_quiz_questions_from_quiz(quiz_id, query_params=query_params)
     return json({"data": questions})
 
 
@@ -217,6 +218,7 @@ async def quiz_route_attempt(request, quiz_id):
 
 @blueprint.route("/<quiz_id>/summary", methods=["GET"])
 async def quiz_route_summary(request, quiz_id):
+    """For a quiz creator to get the summary of a quiz"""
     requester = await get_jwt_token_requester(request)
     questions = await extract_stats_from_quiz(quiz_id, requester)
 

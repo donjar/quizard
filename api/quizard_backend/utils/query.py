@@ -3,8 +3,8 @@ from typing import Tuple
 from sqlalchemy import and_, desc
 
 from quizard_backend import db
+from quizard_backend.utils.exceptions import raise_not_found_exception
 from quizard_backend.utils.transaction import in_transaction
-
 
 def dict_to_filter_args(model, **kwargs):
     """
@@ -52,6 +52,9 @@ async def get_many(
     last_internal_id = 0
     if after_id:
         row_of_after_id = await model.query.where(model.id == after_id).gino.first()
+        if not row_of_after_id:
+            raise_not_found_exception(model, **kwargs)
+
         last_internal_id = row_of_after_id.internal_id
 
     # Get certain columns only
@@ -78,7 +81,7 @@ async def get_many(
 async def get_one_latest(model, **kwargs):
     return (
         await model.query.where(and_(*dict_to_filter_args(model, **kwargs)))
-        .order_by(desc(model.id))
+        .order_by(desc(model.internal_id))
         .gino.first()
     )
 

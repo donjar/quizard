@@ -62,13 +62,15 @@ def validate_request(
         )
 
     @wraps(func)
-    async def inner(request, *args, req_args=None, req_body=None, **kwargs):
+    async def inner(request, *args, req_args=None, req_body=None, query_params=None, **kwargs):
         """
         After validating the request's body and args,
         pass them to the function to avoid re-parsing.
         """
         req_body = req_body or {}
         req_args = req_args or {}
+        if query_params:
+            req_args.update(query_params)
 
         # Pass if there are no schema given
         if not schema or schema not in schemas:
@@ -87,8 +89,16 @@ def validate_request(
             _schema = model_name + "_read"
             req_args = validate_against_schema(req_args, _schema)
 
+        # As `query_params` was unpacked from req_args
+        # Re-validate the key-values then unpack again
+        validated_query_params = {}
+        if query_params:
+            validated_query_params = {
+                key: req_args.pop(key) for key in list(req_args.keys()) if key in query_params
+            }
+
         return await func(
-            request, req_args=req_args, req_body=req_body, *args, **kwargs
+            request, req_args=req_args, req_body=req_body, query_params=validated_query_params, *args, **kwargs
         )
 
     return inner

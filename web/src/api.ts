@@ -1,6 +1,6 @@
 import { IQuizCreateApi } from './interfaces/quiz-create/index';
 
-const apiUrl = 'http://165.22.54.169';
+const apiUrl = 'https://165.22.54.169';
 
 export const renewTokenOnExpire = async (res: Response) => {
   if (res.status === 401) {

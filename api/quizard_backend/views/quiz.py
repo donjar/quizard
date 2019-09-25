@@ -5,6 +5,7 @@ from quizard_backend.views.urls import quiz_blueprint as blueprint
 from quizard_backend.exceptions import ExistingAnswerError
 from quizard_backend.models import Quiz, QuizQuestion, QuizAttempt, QuizAnswer
 from quizard_backend.utils.authentication import get_jwt_token_requester
+from quizard_backend.utils.links import generate_pagination_links
 from quizard_backend.utils.query import get_many, get_one
 from quizard_backend.utils.request import unpack_request
 from quizard_backend.utils.validation import (
@@ -21,8 +22,15 @@ from quizard_backend.utils.views.quiz_summary import extract_stats_from_quiz
 
 @validate_request(schema="quiz_read", skip_body=True)
 @validate_permission(model=Quiz)
-async def quiz_retrieve(req, *, req_args, req_body, many=True, **kwargs):
-    return await Quiz.get(**req_args, many=many)
+async def quiz_retrieve(
+    req, *, req_args, req_body, query_params=None, many=True, **kwargs
+):
+    query_params = query_params or {}
+    quizzes = await Quiz.get(**req_args, many=many, **query_params)
+    return {
+        "data": quizzes,
+        "links": generate_pagination_links(req.url, quizzes) if many else {},
+    }
 
 
 @validate_request(schema="quiz_write", skip_args=True)
@@ -46,8 +54,11 @@ async def quiz_create(req, *, req_args, req_body, **kwargs):
     # Update the questions' order in quiz
     # using the IDs of created questions
     if questions:
-        return await Quiz.modify({"id": result["id"]}, {"questions": questions})
-    return result
+        return {
+            "data": await Quiz.modify({"id": result["id"]}, {"questions": questions})
+        }
+
+    return {"data": result}
 
 
 @validate_request(schema="quiz_write")
@@ -70,12 +81,12 @@ async def quiz_delete(req, *, req_args, req_body, **kwargs):
 
 @blueprint.route("/", methods=["GET", "POST"])
 @unpack_request
-async def quiz_route(request, *, req_args, req_body):
+async def quiz_route(request, *, req_args, req_body, **kwargs):
     call_funcs = {"GET": quiz_retrieve, "POST": quiz_create}
-    data = await call_funcs[request.method](
-        request, req_args=req_args, req_body=req_body
+    response = await call_funcs[request.method](
+        request, req_args=req_args, req_body=req_body, **kwargs
     )
-    return json({"data": data})
+    return json(response)
 
 
 ## Single Resource
@@ -87,10 +98,10 @@ async def quiz_route_quiz_id(request, quiz_id):
 
     call_funcs = {"GET": quiz_retrieve, "DELETE": quiz_delete}
 
-    data = await call_funcs[request.method](
+    response = await call_funcs[request.method](
         request, req_args={"id": quiz_id}, req_body=None, many=False
     )
-    return json({"data": data})
+    return json(response)
 
 
 @blueprint.route("/<quiz_id>/questions/<question_id>/answers", methods=["POST"])
@@ -150,8 +161,10 @@ async def quiz_route_submit_answer(request, quiz_id, question_id):
 @blueprint.route("/<quiz_id>/questions", methods=["GET"])
 @unpack_request
 @validate_permission
-async def quiz_route_get_questions(request, quiz_id, **kwargs):
-    _, _, questions = await extract_quiz_questions_from_quiz(quiz_id)
+async def quiz_route_get_questions(request, quiz_id, query_params, **kwargs):
+    _, _, questions = await extract_quiz_questions_from_quiz(
+        quiz_id, query_params=query_params
+    )
     return json({"data": questions})
 
 
@@ -166,10 +179,18 @@ async def quiz_route_get_attempt(request, requester, quiz_id):
         quiz_id=quiz_id, user_id=requester["id"]
     )
 
-    # by checking if the user has at least 1 answer in this quiz
+    # By checking if the user has at least 1 answer in this quiz
     requester_answers = await get_many(
         QuizAnswer, attempt_id=latest_attempt["id"], user_id=requester["id"]
     )
+    answers = {
+        answer.question_id: answer.selected_option for answer in requester_answers
+    }
+
+    # Just return the attempt and score if it is already finished
+    if latest_attempt["is_finished"]:
+        score = latest_attempt["score"]
+        return {"score": score, "is_finished": True, "answers": answers}
 
     # Validate if the quiz has been fully answered
     first_unanswered_question = None
@@ -180,19 +201,17 @@ async def quiz_route_get_attempt(request, requester, quiz_id):
                 first_unanswered_question = question_id
                 break
 
+    # Update QuizAttempt according to the latest answers
     is_finished = first_unanswered_question is None
-    answers = {
-        answer.question_id: answer.selected_option for answer in requester_answers
-    }
-    if is_finished:
-        score = latest_attempt["score"]
-        if score is None:
-            score = await calculate_score(quiz_question_ids, answers)
-
+    if is_finished and is_finished != latest_attempt["is_finished"]:
+        score = await calculate_score(quiz_question_ids, answers)
+        await QuizAttempt.modify(
+            {"id": latest_attempt["id"]}, {"is_finished": is_finished, "score": score}
+        )
         return {"score": score, "is_finished": True, "answers": answers}
 
     return {
-        "is_finished": False,
+        "is_finished": is_finished,
         "continue_from": first_unanswered_question,
         "answers": answers,
     }
@@ -217,6 +236,7 @@ async def quiz_route_attempt(request, quiz_id):
 
 @blueprint.route("/<quiz_id>/summary", methods=["GET"])
 async def quiz_route_summary(request, quiz_id):
+    """For a quiz creator to get the summary of a quiz"""
     requester = await get_jwt_token_requester(request)
     questions = await extract_stats_from_quiz(quiz_id, requester)
 

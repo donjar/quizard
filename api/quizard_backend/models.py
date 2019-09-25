@@ -33,7 +33,7 @@ class BaseModel(db.Model):
     async def get(
         cls,
         many=False,
-        last_id=None,
+        after_id=None,
         limit=15,
         fields=None,
         in_column=None,
@@ -42,12 +42,12 @@ class BaseModel(db.Model):
         **kwargs
     ):
         """
-        Retrieve the row(s) of a model, using Keyset Pagination (last_id).
+        Retrieve the row(s) of a model, using Keyset Pagination (after_id).
 
         Kwargs:
-            last_id (str):
+            after_id (str):
                 The returned result will start from row
-                with id == last_id (exclusive).
+                with id == after_id (exclusive).
 
                 Ignored if many=False.
         """
@@ -55,7 +55,7 @@ class BaseModel(db.Model):
         if many:
             data = await get_many(
                 cls,
-                last_id=last_id,
+                after_id=after_id,
                 limit=limit,
                 in_column=in_column,
                 in_values=in_values,
@@ -144,7 +144,7 @@ class QuizAnswer(BaseModel):
     updated_at = db.Column(db.BigInteger, onupdate=unix_time)
 
     # Index
-    _idx_quiz_anawer_id = db.Index("idx_quiz_anawer_id", "id")
+    _idx_quiz_answer_id = db.Index("idx_quiz_answer_id", "id")
     _idx_quiz_answer_question_attempt_user = db.Index(
         "idx_quiz_answer_question_attempt_user", "question_id", "attempt_id", "user_id"
     )
@@ -203,6 +203,7 @@ class QuizAttempt(BaseModel):
     quiz_id = db.Column(db.String(length=32), db.ForeignKey("quiz.id"), nullable=False)
     user_id = db.Column(db.String(length=32), db.ForeignKey("user.id"), nullable=False)
     score = db.Column(db.BigInteger, nullable=True)
+    is_finished = db.Column(db.Boolean, nullable=False, default=False)
     created_at = db.Column(db.BigInteger, nullable=False, default=unix_time)
     updated_at = db.Column(db.BigInteger, onupdate=unix_time)
 

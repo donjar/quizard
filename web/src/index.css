@@ -1,8 +1,12 @@
 :root {
   --dark-blue: #383958;
   --beige: #fffcf3;
+  --dark-beige: #dcd9cf;
   --green: #7cd885;
   --red: #db7874;
+  --pale-grey: #efefef;
+  --light-grey: #c4c4c4;
+  --dark-grey: #868686;
 }
 
 @font-face {
@@ -69,19 +73,57 @@ body,
 div,
 button,
 input,
+textarea,
 form {
   margin: 0;
   color: var(--dark-blue);
   font-family: 'GothamRounded', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  outline: none;
+}
+
+textarea {
+  overflow: auto;
 }
 
 body {
-  font-size: calc(16px + 0.5vw);
+  font-size: 1.2rem;
+  font-weight: lighter;
+}
+
+h1 {
+  font-size: 1.8rem;
+  font-weight: normal;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+a:link {
+  text-decoration: none;
+}
+
+::-webkit-scrollbar {
+	width: 8px;
+}
+::-webkit-scrollbar-button {
+	width: 8px;
+	height:5px;
+}
+::-webkit-scrollbar-track {
+	background:#eee;
+	border: thin solid lightgray;
+	box-shadow: 0px 0px 3px #dfdfdf inset;
+	border-radius:10px;
+}
+::-webkit-scrollbar-thumb {
+	background:#999;
+	border: thin solid gray;
+	border-radius:10px;
+}
+::-webkit-scrollbar-thumb:hover {
+	background:#7d7d7d;
 }

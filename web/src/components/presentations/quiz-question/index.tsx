@@ -28,8 +28,11 @@ export interface IQuizQuestionProps {
   numQuestions: number;
   question: string;
   options: IQuestionOption[];
+  disableSelection: boolean;
+  showNext: boolean;
   onSelectOption: (idx: number) => void;
   onCloseQuiz: () => void;
+  onClickNext: () => void;
 }
 
 const QuizQuestion: React.FC<IQuizQuestionProps> = ({
@@ -37,8 +40,11 @@ const QuizQuestion: React.FC<IQuizQuestionProps> = ({
    numQuestions,
    question,
    options,
+   disableSelection,
+   showNext,
    onSelectOption,
-   onCloseQuiz
+   onCloseQuiz,
+   onClickNext
   }) => {
   return (
     <BeigeBackground>
@@ -53,7 +59,10 @@ const QuizQuestion: React.FC<IQuizQuestionProps> = ({
         <QuizQuestionContent
           question={question}
           options={options}
+          disableSelection={disableSelection}
+          showNext={showNext}
           onSelectOption={onSelectOption}
+          onClickNext={onClickNext}
         />
       </StyledQuizBody>
     </BeigeBackground>

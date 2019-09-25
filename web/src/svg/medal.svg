@@ -1,10 +1,10 @@
 <svg width="39" height="45" viewBox="0 0 39 45" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M12.3464 25.7354C11.9309 25.7354 11.5671 25.8733 11.2802 26.0976C10.8478 26.3522 10.5169 26.7944 10.4359 27.3775L8.26809 42.9794C8.0628 44.4571 9.6463 45.5129 10.908 44.7396L19.6189 39.4005L28.3298 44.7396C29.5915 45.5129 31.175 44.457 30.9697 42.9794L28.8018 27.3775C28.7194 26.7842 28.3784 26.3367 27.9348 26.0844C27.6506 25.8679 27.2931 25.7354 26.8858 25.7354H12.3464Z" fill="#DB7874"/>
-<g filter="url(#filter0_d)">
+<g filter="url(#glowing_medal_filter)">
 <ellipse cx="19.375" cy="19.54" rx="14.375" ry="14.54" fill="#FCCE44"/>
 </g>
 <defs>
-<filter id="filter0_d" x="0" y="0" width="38.75" height="39.0801" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<filter id="glowing_medal_filter" x="0" y="0" width="38.75" height="39.0801" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
 <feFlood flood-opacity="0" result="BackgroundImageFix"/>
 <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"/>
 <feOffset/>

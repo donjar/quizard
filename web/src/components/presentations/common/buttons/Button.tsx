@@ -1,11 +1,10 @@
 import styled from 'styled-components';
 
 const Button = styled.button`
-  font-size: 18px;
+  font-size: 1rem;
   border: none;
   outline: none;
-  width: 130px;
-  height: 48px;
+  padding: 10px 18px;
   cursor: pointer;
 
   :active {

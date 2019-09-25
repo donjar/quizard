@@ -3,8 +3,8 @@ import React from 'react';
 import { IQuizCreateSummaryProps } from '../../../interfaces/quiz-create-summary/index';
 import { BeigeBackground } from '../common/BeigeBackground';
 import { BodyAfterNavBarWithPadding } from '../common/BodyAfterNavBarWithPadding';
+import { NavBarWithBack } from '../common/NavBarWithBack';
 import QuestionSection from './QuestionSection';
-import { QuizCreateSummaryNavBar } from './QuizCreateSummaryNavBar';
 
 const QuizCreateSummary: React.FC<IQuizCreateSummaryProps> = ({
   name,
@@ -15,7 +15,7 @@ const QuizCreateSummary: React.FC<IQuizCreateSummaryProps> = ({
   const questionCards = (questions || []).map((qn) => QuestionSection(qn));
   return (
     <BeigeBackground>
-      <QuizCreateSummaryNavBar />
+      <NavBarWithBack />
       <BodyAfterNavBarWithPadding>
         <h2>{name}</h2>
         <p>{description}</p>

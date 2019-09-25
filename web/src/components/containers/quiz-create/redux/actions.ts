@@ -3,6 +3,7 @@ import {
   ADD_ANSWER_OPTION,
   ADD_QUESTION,
   CHANGE_ANSWER_OPTION,
+  CHANGE_DESCRIPTION,
   CHANGE_NAME,
   CHANGE_QUESTION_TEXT,
   DELETE_ANSWER_OPTION,
@@ -72,6 +73,15 @@ export const changeName = (
   return {
     payload: newName,
     type: CHANGE_NAME
+  };
+};
+
+export const changeDescription = (
+  newDesc: string
+): IQuizCreateActionTypes => {
+  return {
+    payload: newDesc,
+    type: CHANGE_DESCRIPTION
   };
 };
 

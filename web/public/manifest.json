@@ -8,16 +8,18 @@
       "type": "image/x-icon"
     },
     {
-      "src": "owl.png",
+      "src": "owl-192.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "owl.png",
+      "src": "owl-512.png",
       "type": "image/png",
       "sizes": "512x512"
     }
   ],
   "start_url": ".",
+  "background_color": "#fffcf3",
+  "theme_color": "#fffcf3",
   "display": "standalone"
 }

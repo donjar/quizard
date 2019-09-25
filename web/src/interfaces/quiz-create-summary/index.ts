@@ -5,15 +5,38 @@ export interface IQuestion {
   correctOption: number;
 }
 
-export interface IQuiz {
+export interface IAttemptedQuestion extends IQuestion {
+  selectedOption: number;
+}
+
+interface IQuizBase {
   name: string;
   description: string;
-  numAttempts: number;
   questions: IQuestion[];
 }
 
+export interface IQuiz extends IQuizBase {
+  numAttempts: number;
+}
+
+export interface IQuizCreateSummaryContainerProps extends IQuiz {
+  match: any;
+  hasLoaded: boolean;
+  setQuiz: (quiz: IQuiz) => void;
+  setLoadingComplete: (hasLoaded: boolean) => void;
+}
+
+export interface IAttemptedQuiz extends IQuizBase {
+  score: number;
+  questions: IAttemptedQuestion[];
+}
+
 export interface IQuizCreateSummaryProps extends IQuiz {}
+export interface IQuizAttemptReviewProps extends IAttemptedQuiz {}
 
 export interface IQuizCreateSummaryState extends IQuiz {}
+export interface IQuizAttemptReviewState extends IAttemptedQuiz {}
 
-export interface IQuestionSectionProps extends IQuestion {}
+export interface IQuestionSectionProps extends IQuestion {
+  selectedOption?: number;
+}

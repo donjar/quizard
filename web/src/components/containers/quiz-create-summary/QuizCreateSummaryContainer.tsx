@@ -2,23 +2,19 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { getQuestionsByQuizId, getQuizById } from '../../../api';
-import { IQuestion, IQuiz } from '../../../interfaces/quiz-create-summary';
+import { IQuiz } from '../../../interfaces/quiz-create-summary';
+import { IQuizCreateSummaryContainerProps } from '../../../interfaces/quiz-create-summary';
 import { AppState } from '../../../store/store';
 import { history } from '../../../utils/history';
-import QuizCreateSummary from '../../presentations/quiz-create-summary/index';
-import { setQuiz } from './redux/actions';
-
-interface IQuizCreateSummaryContainerProps {
-  match: any;
-  name: string;
-  description: string;
-  numAttempts: number;
-  questions: IQuestion[];
-  setQuiz: (quiz: IQuiz) => void;
-}
+import Loading from '../../presentations/common/Loading';
+import QuizCreateSummary from '../../presentations/quiz-summaries/QuizCreateSummary';
+import { setLoadingComplete } from '../loading/redux/actions';
+import { setQuizCreateSummary } from './redux/actions';
 
 class QuizCreateSummaryContainer extends React.Component<IQuizCreateSummaryContainerProps> {
   public async componentDidMount() {
+    this.props.setLoadingComplete(false);
+
     const { match: { params: { id: quizId = '' } = {} } = {} , ...props } = this.props;
     const quiz = (await getQuizById(quizId)).data;
     const questions = (await getQuestionsByQuizId(quizId)).data;
@@ -40,10 +36,17 @@ class QuizCreateSummaryContainer extends React.Component<IQuizCreateSummaryConta
         })
       });
     }
+
+    this.props.setLoadingComplete(true);
   }
 
   public render() {
     const { name, description, numAttempts, questions } = this.props;
+
+    if (!this.props.hasLoaded) {
+      return <Loading />;
+    }
+
     return (
       <QuizCreateSummary
         name={name}
@@ -60,13 +63,16 @@ const mapStateToProps = (state: AppState) => ({
   description: state.quizCreateSummary.description,
   numAttempts: state.quizCreateSummary.numAttempts,
   questions: state.quizCreateSummary.questions,
+  hasLoaded: state.loading.hasLoaded
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
     setQuiz: (quiz: IQuiz) => {
-      dispatch(setQuiz(quiz));
+      dispatch(setQuizCreateSummary(quiz));
     },
+    setLoadingComplete: (hasLoaded: boolean) =>
+      dispatch(setLoadingComplete(hasLoaded))
   };
 };
 

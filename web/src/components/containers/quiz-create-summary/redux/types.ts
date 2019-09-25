@@ -1,9 +1,9 @@
 import { IQuiz } from '../../../../interfaces/quiz-create-summary';
 
-export const SET_QUIZ = 'SET_QUIZ';
+export const SET_QUIZ_CREATE_SUMMARY = 'SET_QUIZ_CREATE_SUMMARY';
 
 export interface ISetQuizAction {
-  type: typeof SET_QUIZ;
+  type: typeof SET_QUIZ_CREATE_SUMMARY;
   payload: IQuiz;
 }
 

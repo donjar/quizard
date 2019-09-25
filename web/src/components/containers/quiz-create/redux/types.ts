@@ -7,6 +7,7 @@ export const DELETE_ANSWER_OPTION = 'DELETE_ANSWER_OPTION';
 export const CHANGE_ANSWER_OPTION = 'CHANGE_ANSWER_OPTION';
 export const SET_CORRECT_ANSWER = 'SET_CORRECT_ANSWER';
 export const CHANGE_NAME = 'CHANGE_NAME';
+export const CHANGE_DESCRIPTION = 'CHANGE_DESCRIPTION';
 export const CHANGE_QUESTION_TEXT = 'CHANGE_QUESTION_TEXT';
 export const SET_ERROR = 'SET_ERROR_QUIZ_CREATE';
 export const QUIZ_CREATED = 'QUIZ_CREATED';
@@ -66,6 +67,11 @@ export interface IChangeNameAction {
   payload: string;
 }
 
+export interface IChangeDescriptionAction {
+  type: typeof CHANGE_DESCRIPTION;
+  payload: string;
+}
+
 export interface IChangeQuestionTextAction {
   type: typeof CHANGE_QUESTION_TEXT;
   payload: IChangeQuestionText;
@@ -84,6 +90,7 @@ export type IQuizCreateActionTypes =
   | IChangeAnswerOptionAction
   | ISetCorrectAnswerAction
   | IChangeNameAction
+  | IChangeDescriptionAction
   | IChangeQuestionTextAction
   | ISetErrorAction
   | IQuizCreatedAction;

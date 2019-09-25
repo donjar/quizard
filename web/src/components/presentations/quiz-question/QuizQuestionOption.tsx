@@ -7,10 +7,10 @@ import {
   QuestionOptionState
 } from '../../../interfaces/quiz-question';
 import {
-  AnswerButton,
-  CorrectAnswerButton,
-  IncorrectAnswerButton
-} from '../common/buttons/AnswerButton';
+  CorrectQuestionOptionButton,
+  IncorrectQuestionOptionButton,
+  QuestionOptionButton
+} from '../common/buttons/QuestionOptionButton';
 
 const StyledQuestionOption = styled.div`
   width: 100%;
@@ -20,29 +20,31 @@ const StyledQuestionOption = styled.div`
 interface IQuizQuestionOptionProps {
   displayState: QuestionOptionState;
   onClick: () => void;
+  disableSelection: boolean;
 }
 
 const QuizQuestionOption: React.FC<IQuizQuestionOptionProps> = ({
   displayState,
   onClick,
+  disableSelection,
   children
 }) => {
   let OptionButton;
   switch (displayState) {
     case OPTION_CORRECT:
-      OptionButton = CorrectAnswerButton;
+      OptionButton = CorrectQuestionOptionButton;
       break;
     case OPTION_INCORRECT:
-      OptionButton = IncorrectAnswerButton;
+      OptionButton = IncorrectQuestionOptionButton;
       break;
     case OPTION_UNSELECTED:
     default:
-      OptionButton = AnswerButton;
+      OptionButton = QuestionOptionButton;
   }
 
   return (
     <StyledQuestionOption>
-      <OptionButton onClick={onClick}>{children}</OptionButton>
+      <OptionButton disabled={disableSelection} onClick={onClick}>{children}</OptionButton>
     </StyledQuestionOption>
   );
 };

@@ -87,14 +87,30 @@ async def test_get_all_users(client, users):
         for origin, created in zip(users[:10], body["data"])
     )
 
+    # Get the next 10 users
+    next_page_link = body["links"]["next"]
+    # Strip the host, as it is a testing host
+    next_page_link = "/" + "/".join(next_page_link.split("/")[3:])
+    res = await client.get(next_page_link)
+    assert res.status == 200
+
+    body = await res.json()
+    assert "data" in body
+    assert isinstance(body["data"], list)
+    assert len(body["data"]) == 10
+    assert all(
+        profile_created_from_origin(origin, created)
+        for origin, created in zip(users[10:20], body["data"])
+    )
+
     # -1 users
     res = await client.get("/users?limit=-1")
     assert res.status == 400
 
 
-async def test_get_users_with_last_id(client, users):
-    # Use last_id in query parameter.
-    res = await client.get("/users?last_id={}".format(users[2]["id"]))
+async def test_get_users_with_after_id(client, users):
+    # Use after_id in query parameter.
+    res = await client.get("/users?after_id={}".format(users[2]["id"]))
     assert res.status == 200
 
     body = await res.json()
@@ -108,11 +124,11 @@ async def test_get_users_with_last_id(client, users):
         for origin, created in zip(users[3:20], body["data"])
     )
 
-    # Invalid last_id
-    res = await client.get("/users?last_id=2")
-    assert res.status == 400
+    # Invalid after_id
+    res = await client.get("/users?after_id=2")
+    assert res.status == 404
 
-    res = await client.get("/users?last_id=")
+    res = await client.get("/users?after_id=")
     assert res.status == 400
 
 

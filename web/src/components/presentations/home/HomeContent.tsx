@@ -18,18 +18,34 @@ const StyledHomeContent = styled.div`
   }
 `;
 
-const createQuizCardList = (quizList: IQuizCard[]) => {
+const createQuizCardList = (
+  quizList: IQuizCard[],
+  quizType: string
+) => {
+  let path = '';
+  switch (quizType) {
+    case CREATED_QUIZZES_SELECTED:
+      path = '/quiz-create-summary';
+      break;
+    case ATTEMPTED_QUIZZES_SELECTED:
+      path = '/quiz-review';
+      break;
+  }
+
   return quizList.map((quiz, index) => {
     return (
-      <Link to={`/quiz-create-summary/${quiz.id}`}>
+      <Link to={`${path}/${quiz.id}`}>
         <QuizCard key={index} {...quiz} />
       </Link>
     );
   });
 };
 
-const createQuizCardRowRenderer = (quizList: IQuizCard[]) => {
-  const quizCardList = createQuizCardList(quizList);
+const createQuizCardRowRenderer = (
+  quizList: IQuizCard[],
+  quizType: string
+) => {
+  const quizCardList = createQuizCardList(quizList, quizType);
 
   return ({ key, index, style }: IRowRendererProps) => {
     return (
@@ -41,19 +57,11 @@ const createQuizCardRowRenderer = (quizList: IQuizCard[]) => {
 };
 
 const isCreatedButtonSelected = (buttonType: string) => {
-  if (buttonType === CREATED_QUIZZES_SELECTED) {
-    return true;
-  }
-
-  return false;
+  return buttonType === CREATED_QUIZZES_SELECTED;
 };
 
 const isAttemptedButtonSelected = (buttonType: string) => {
-  if (buttonType === ATTEMPTED_QUIZZES_SELECTED) {
-    return true;
-  }
-
-  return false;
+  return buttonType === ATTEMPTED_QUIZZES_SELECTED;
 };
 
 const HomeContent: React.FC<IHomeContentProps> = ({
@@ -81,7 +89,10 @@ const HomeContent: React.FC<IHomeContentProps> = ({
         listHeight={400}
         rowCount={quizList.length}
         rowHeight={200}
-        rowRenderer={createQuizCardRowRenderer(quizList)}
+        rowRenderer={createQuizCardRowRenderer(
+          quizList,
+          quizTypeSelected
+        )}
       />
     </StyledHomeContent>
   );

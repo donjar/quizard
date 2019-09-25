@@ -7,7 +7,7 @@ import { StartButton } from '../common/buttons/StartButton';
 import { CenteredDiv } from '../common/CenteredDiv';
 import { QuizStartNavBar } from './QuizStartNavBar';
 
-const QuizStart: React.FC<IQuizStartProps> = ({ quiz }) => {
+const QuizStart: React.FC<IQuizStartProps> = ({ quiz, isNewQuiz, onStartClick }) => {
   const { name, description } = quiz;
 
   return (
@@ -17,7 +17,11 @@ const QuizStart: React.FC<IQuizStartProps> = ({ quiz }) => {
         <div>{name}</div>
         <div>{description}</div>
         <CenteredDiv>
-          <StartButton />
+          {isNewQuiz ? (
+            <StartButton onClick={onStartClick}>Start</StartButton>
+          ) : (
+            <StartButton onClick={onStartClick}>Continue</StartButton>
+          )}
         </CenteredDiv>
       </BodyAfterNavBarWithPadding>
     </BeigeBackground>

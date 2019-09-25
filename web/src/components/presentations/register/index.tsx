@@ -1,43 +1,36 @@
 import React from 'react';
 import { Redirect } from 'react-router';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { IRegisterProps } from '../../../interfaces/register';
+import { ReactComponent as Owl } from '../../../svg/owl.svg';
 import { ReactComponent as Quizard } from '../../../svg/quizard.svg';
 import DarkButton from '../common/buttons/DarkButton';
 import { CenteredDiv } from '../common/CenteredDiv';
+import FullScreenModal from '../common/FullScreenModal';
 import InputField from '../common/InputField';
-import WholeScreenCard from '../common/WholeScreenCard';
 
-const StyledLogin = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--dark-blue);
-  height: 100vh;
-`;
-
-const StyledLoginCard = styled(WholeScreenCard)`
-  position: relative;
-  width: 500px;
-  height: 700px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  & > * {
-    margin: 15px 0;
-  }
-`;
-
-const LoginForm = styled.form`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+const StyledRegister = styled.div`
+  width: 100%;
 
   & > * {
     margin: 10px 0;
   }
+`;
+
+const RegisterForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+
+  & > * {
+    margin: 10px 0;
+  }
+`;
+
+const StyledOwl = styled(Owl)`
+  height: 170px;
 `;
 
 const Register: React.FC<IRegisterProps> = ({
@@ -63,17 +56,13 @@ const Register: React.FC<IRegisterProps> = ({
   };
 
   return (
-    <StyledLogin>
-      <StyledLoginCard>
+    <FullScreenModal>
+      <StyledRegister>
         <CenteredDiv>
-          <img
-            src={'./owl.png'}
-            style={{ width: '195px', height: '170px' }}
-            alt={'Quizard logo'}
-          />
+          <StyledOwl />
           <Quizard />
         </CenteredDiv>
-        <LoginForm onSubmit={onRegisterFormSubmit}>
+        <RegisterForm onSubmit={onRegisterFormSubmit}>
           <InputField
             type="text"
             placeholder="Full name"
@@ -93,10 +82,13 @@ const Register: React.FC<IRegisterProps> = ({
             onChange={(event) => onChangePassword(event.target.value)}
           />
           <DarkButton type="submit">Register</DarkButton>
-        </LoginForm>
-        {error && (<div>Error: {error}</div>)}
-      </StyledLoginCard>
-    </StyledLogin>
+          <Link to="/login" style={{ fontSize: '18px' }}>
+            Back to Login
+          </Link>
+        </RegisterForm>
+        {error && <div>Error: {error}</div>}
+      </StyledRegister>
+    </FullScreenModal>
   );
 };
 

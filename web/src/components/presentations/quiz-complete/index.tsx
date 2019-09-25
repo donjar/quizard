@@ -1,20 +1,17 @@
 import React from 'react';
-import styled from 'styled-components';
+import { IQuizCompleteProps } from '../../../interfaces/quiz-complete';
+import FullScreenModal from '../common/FullScreenModal';
 import QuizCompleteCard from './QuizCompleteCard';
 
-const StyledQuizCompletePage = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--dark-blue);
-  height: 100vh;
-`;
-
-const QuizComplete: React.FC = () => {
+const QuizComplete: React.FC<IQuizCompleteProps> = ({ score, maxScore, quizName }) => {
   return (
-    <StyledQuizCompletePage>
-      <QuizCompleteCard score={8} maxScore={10} quizName={'Quiz Name Here'} />
-    </StyledQuizCompletePage>
+    <FullScreenModal wide={true}>
+      <QuizCompleteCard
+        score={score}
+        maxScore={maxScore}
+        quizName={quizName}
+      />
+    </FullScreenModal>
   );
 };
 

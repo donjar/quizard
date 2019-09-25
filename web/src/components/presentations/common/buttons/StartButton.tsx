@@ -1,11 +1,8 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import DarkButton from './DarkButton';
 
-export const StartButton: React.FC = () => {
+export const StartButton: React.FC<any> = (props) => {
   return (
-    <Link to="/quiz">
-      <DarkButton> START </DarkButton>
-    </Link>
+    <DarkButton {...props}>{props.children}</DarkButton>
   );
 };

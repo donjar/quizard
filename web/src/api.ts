@@ -88,6 +88,14 @@ export const createQuiz = async (values: IQuizCreateApi): Promise<any> => {
   return await res.json();
 };
 
+export const redoQuiz = async (quizId: string): Promise<any> => {
+  const res = await fetchWithAuth(`${apiUrl}/quizzes/${quizId}/attempt`, {
+    method: 'POST',
+  });
+
+  return await res.json();
+};
+
 export const getAllQuizzes = async (): Promise<any> => {
   const res = await fetchWithAuth(`${apiUrl}/quizzes`);
 
@@ -100,20 +108,47 @@ export const getQuizById = async (quizId: string): Promise<any> => {
   return await res.json();
 };
 
+export const getQuizAttemptStatus = async (quizId: string): Promise<any> => {
+  const res = await fetchWithAuth(`${apiUrl}/quizzes/${quizId}/attempt`);
+
+  return await res.json();
+};
+
 export const getUserCreatedQuizzes = async (userId: string): Promise<any> => {
-  const res = await fetchWithAuth(`${apiUrl}/users/${userId}/quizzes?created=True&attempted=False`);
+  const res = await fetchWithAuth(`${apiUrl}/users/${userId}/quizzes/created`);
 
   return await res.json();
 };
 
 export const getUserAttemptedQuizzes = async (userId: string): Promise<any> => {
-  const res = await fetchWithAuth(`${apiUrl}/users/${userId}/quizzes?created=False&attempted=True`);
+  const res = await fetchWithAuth(`${apiUrl}/users/${userId}/quizzes/attempted`);
 
   return await res.json();
 };
 
 export const getQuestionsByQuizId = async (quizId: string): Promise<any> => {
   const res = await fetchWithAuth(`${apiUrl}/quizzes/${quizId}/questions`);
+
+  return await res.json();
+};
+
+export const getLatestQuizAttempt = async (quizId: string): Promise<any> => {
+  const res = await fetchWithAuth(`${apiUrl}/quizzes/${quizId}/attempt`);
+
+  return await res.json();
+};
+
+export const checkQuizQuestionAnswer = async (
+  quizId: string,
+  questionId: string,
+  optionIdx: number
+): Promise<any> => {
+  const res = await fetchWithAuth(`${apiUrl}/quizzes/${quizId}/questions/${questionId}/answers`, {
+    method: 'POST',
+    body: JSON.stringify({
+      selected_option: optionIdx
+    })
+  });
 
   return await res.json();
 };

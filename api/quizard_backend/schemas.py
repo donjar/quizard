@@ -69,6 +69,7 @@ QUIZ_ATTEMPT_READ_SCHEMA = {
     "quiz_id": is_string,
     "user_id": is_string,
     "score": is_integer,
+    "is_finished": is_boolean,
     "created_at": is_unsigned_integer,
     "updated_at": is_unsigned_integer,
 }
@@ -78,6 +79,7 @@ QUIZ_ATTEMPT_WRITE_SCHEMA = {
     "quiz_id": is_required_string,
     "user_id": is_required_string,
     "score": {"readonly": True},
+    "is_finished": {"readonly": True},
     "created_at": {"readonly": True},
     "updated_at": {"readonly": True},
 }
@@ -106,6 +108,7 @@ QUIZ_ANSWER_WRITE_SCHEMA = {
 QUIZ_READ_SCHEMA = {
     "id": is_string,
     "title": is_string,
+    "description": is_string,
     "creator_id": is_string,
     "category_id": is_unsigned_integer,
     "type_id": is_unsigned_integer,
@@ -122,6 +125,7 @@ QUIZ_READ_SCHEMA = {
 QUIZ_WRITE_SCHEMA = {
     "id": {"readonly": True},
     "title": is_required_string,
+    "description": is_string,
     "category_id": is_unsigned_integer,
     "type_id": is_unsigned_integer,
     "animation_id": is_unsigned_integer,
@@ -168,7 +172,7 @@ USER_LOGIN_SCHEMA = {
 # INJECTED SCHEMAS
 
 GLOBAL_SCHEMA = {"internal_id": {"readonly": True}}
-QUERY_PARAM_READ_SCHEMA = {"last_id": is_uuid, "limit": is_unsigned_integer_with_max}
+QUERY_PARAM_READ_SCHEMA = {"after_id": is_string, "limit": is_unsigned_integer_with_max}
 
 ## INJECT FIELDS TO SCHEMAS
 variables = locals()

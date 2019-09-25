@@ -106,6 +106,7 @@ QUIZ_ANSWER_WRITE_SCHEMA = {
 QUIZ_READ_SCHEMA = {
     "id": is_string,
     "title": is_string,
+    "description": is_string,
     "creator_id": is_string,
     "category_id": is_unsigned_integer,
     "type_id": is_unsigned_integer,
@@ -122,6 +123,7 @@ QUIZ_READ_SCHEMA = {
 QUIZ_WRITE_SCHEMA = {
     "id": {"readonly": True},
     "title": is_required_string,
+    "description": is_string,
     "category_id": is_unsigned_integer,
     "type_id": is_unsigned_integer,
     "animation_id": is_unsigned_integer,

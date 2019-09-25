@@ -69,6 +69,7 @@ QUIZ_ATTEMPT_READ_SCHEMA = {
     "quiz_id": is_string,
     "user_id": is_string,
     "score": is_integer,
+    "is_finished": is_boolean,
     "created_at": is_unsigned_integer,
     "updated_at": is_unsigned_integer,
 }
@@ -78,6 +79,7 @@ QUIZ_ATTEMPT_WRITE_SCHEMA = {
     "quiz_id": is_required_string,
     "user_id": is_required_string,
     "score": {"readonly": True},
+    "is_finished": {"readonly": True},
     "created_at": {"readonly": True},
     "updated_at": {"readonly": True},
 }

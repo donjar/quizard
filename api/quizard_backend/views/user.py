@@ -99,15 +99,17 @@ async def user_quizzes_attempted_route(
         )
         query_params["after_id"] = latest_attempt_of_after_quiz.id
 
+    # Get the quiz attempts of an user, sorted by `most recent`
     unique_quiz_attempts = await get_many(
         QuizAttempt,
         user_id=user_id,
-        columns=["quiz_id", "user_id", "created_at", "internal_id"],
+        columns=["quiz_id", "user_id", "is_finished", "created_at", "internal_id"],
         distinct=True,
         descrease=True,
         **query_params,
     )
 
+    # Get the quizzes from the attempts
     quiz_ids = [attempt.quiz_id for attempt in unique_quiz_attempts]
     unordered_attempted_quizzes = []
     if unique_quiz_attempts:
@@ -115,8 +117,20 @@ async def user_quizzes_attempted_route(
             in_column="id", in_values=quiz_ids, many=True, limit=None
         )
 
+    # Only return the quizzes
     attempted_quizzes_as_dict = {
         quiz["id"]: quiz for quiz in unordered_attempted_quizzes
     }
-    data = [attempted_quizzes_as_dict[quiz_id] for quiz_id in quiz_ids]
+    quiz_attempts_as_dict = {
+        attempt["quiz_id"]: attempt for attempt in unique_quiz_attempts
+    }
+
+    # Inject `is_finished` from the attempts to returned quizzes
+    data = [
+        {
+            **attempted_quizzes_as_dict[quiz_id],
+            "is_finished": quiz_attempts_as_dict[quiz_id]["is_finished"],
+        }
+        for quiz_id in quiz_ids
+    ]
     return json({"data": data, "links": generate_pagination_links(request.url, data)})

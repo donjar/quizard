@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { smMax } from '../../../utils/media';
 import CloseButton from './buttons/CloseButton';
 
 const ModalBackground = styled.div`
@@ -21,12 +22,16 @@ const OverlayModalCard = styled.div`
   background: var(--beige);
   box-shadow: 6px 6px 0px var(--dark-beige);
   border-radius: 20px;
-  padding: 20px;
+  padding: 1em;
 
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+
+  @media (max-width: ${smMax}) {
+    width: 75%;
+  }
 `;
 
 const CloseButtonDiv = styled.div`

@@ -35,10 +35,6 @@ const QuizCreateSummary: React.FC<IQuizCreateSummaryProps> = ({
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  useEffect(() => {
-    console.log(isModalOpen);
-  }, [isModalOpen]);
-
   const questionCards = (questions || []).map((qn) => QuestionSection(qn));
   return (
     <StyledBeigeBackground>

@@ -1,17 +1,28 @@
 import React from 'react';
 import styled from 'styled-components';
+import { lgMax } from '../../../utils/media';
 import UnselectedButton from '../common/buttons/UnselectedButton';
 import CopyTextToClipboard from '../common/CopyTextToClipboard';
 import OverlayModal from '../common/OverlayModal';
 
-const defaultPromoText = 'Check out my new quiz made with Quizard!';
+const defaultPromoText =
+  'Check out my new quiz made with Quizard!'.split(' ').join('%20');
 
 const SocialMediaRow = styled.div`
   display: flex;
-  flex-direction: row;
+  flex-flow: row wrap;
   justify-content: space-around;
 
   width: 100%;
+
+  & > * {
+    margin: 0.5em 1em;
+    min-width: 130px;
+
+    @media (max-width: ${lgMax}) {
+      width: 100%;
+    }
+  }
 `;
 
 interface IModalDivProps {
@@ -23,7 +34,8 @@ const ModalDiv = styled.div`
 `;
 
 const CopyTextToClipboardArea = styled.div`
-  margin-top: 15px;
+  margin: 15px 0 10px 0;
+  width: 100%;
 `;
 
 interface IShareQuizModalProps {
@@ -48,6 +60,13 @@ const ShareQuizModal: React.FC<IShareQuizModalProps> = ({
     window.open(url, '_blank');
   };
 
+  const shareEmail = () => {
+    const bodyText =
+      `Click on this link to access my quiz: ${sharableLink}`.split(' ').join('%20');
+    const url = `mailto:?subject=${defaultPromoText}&body=${bodyText}`;
+    window.location.href = url;
+  };
+
   return (
     <ModalDiv isVisible={isVisible}>
       <OverlayModal isVisible={isVisible} onClose={onClose}>
@@ -55,6 +74,7 @@ const ShareQuizModal: React.FC<IShareQuizModalProps> = ({
         <SocialMediaRow>
           <UnselectedButton onClick={shareTelegram}>Telegram</UnselectedButton>
           <UnselectedButton onClick={shareWhatsApp}>Whatsapp</UnselectedButton>
+          <UnselectedButton onClick={shareEmail}>Email</UnselectedButton>
         </SocialMediaRow>
         <CopyTextToClipboardArea>
           <CopyTextToClipboard defaultText={sharableLink} />

@@ -81,7 +81,9 @@ async def test_get_own_created_and_attempted_quizzes(
 
     for expected_quiz, actual_quiz in zip(attempted_quizzes[::-1], body["data"]):
         assert profile_created_from_origin(
-            expected_quiz, actual_quiz, ignore={"questions", "updated_at"}
+            {**expected_quiz, "is_finished": False},
+            actual_quiz,
+            ignore={"questions", "updated_at"},
         )
 
 
@@ -188,7 +190,9 @@ async def test_pagination_created_attempted_quizzes(
 
     for created, retrieve in zip(attempted_quizzes[:15], body["data"]):
         assert profile_created_from_origin(
-            retrieve, {**created, "num_attempts": 1}, ignore={"questions", "updated_at"}
+            retrieve,
+            {**created, "num_attempts": 1, "is_finished": False},
+            ignore={"questions", "updated_at"},
         )
 
     # Check second page
@@ -204,7 +208,9 @@ async def test_pagination_created_attempted_quizzes(
 
     for created, retrieve in zip(attempted_quizzes[15:30], body["data"]):
         assert profile_created_from_origin(
-            retrieve, {**created, "num_attempts": 1}, ignore={"questions", "updated_at"}
+            retrieve,
+            {**created, "num_attempts": 1, "is_finished": False},
+            ignore={"questions", "updated_at"},
         )
 
     # Check last page
@@ -220,5 +226,7 @@ async def test_pagination_created_attempted_quizzes(
 
     for created, retrieve in zip(attempted_quizzes[30:], body["data"]):
         assert profile_created_from_origin(
-            retrieve, {**created, "num_attempts": 1}, ignore={"questions", "updated_at"}
+            retrieve,
+            {**created, "num_attempts": 1, "is_finished": False},
+            ignore={"questions", "updated_at"},
         )

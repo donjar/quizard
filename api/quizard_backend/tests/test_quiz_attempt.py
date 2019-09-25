@@ -312,6 +312,11 @@ async def test_create_attempt(client, questions, quizzes, token_user):
         headers={"Authorization": token_user},
     )
     assert res.status == 200
+    body = await res.json()
+    assert "data" in body
+    assert isinstance(body["data"], dict)
+    assert not body["data"]["is_finished"]
+    assert body["data"]["score"] is None
 
     # Without token
     res = await client.post("/quizzes/{}/attempt".format(quizzes[2]["id"]))

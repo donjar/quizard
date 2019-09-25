@@ -179,10 +179,18 @@ async def quiz_route_get_attempt(request, requester, quiz_id):
         quiz_id=quiz_id, user_id=requester["id"]
     )
 
-    # by checking if the user has at least 1 answer in this quiz
+    # By checking if the user has at least 1 answer in this quiz
     requester_answers = await get_many(
         QuizAnswer, attempt_id=latest_attempt["id"], user_id=requester["id"]
     )
+    answers = {
+        answer.question_id: answer.selected_option for answer in requester_answers
+    }
+
+    # Just return the attempt and score if it is already finished
+    if latest_attempt["is_finished"]:
+        score = latest_attempt["score"]
+        return {"score": score, "is_finished": True, "answers": answers}
 
     # Validate if the quiz has been fully answered
     first_unanswered_question = None
@@ -193,19 +201,17 @@ async def quiz_route_get_attempt(request, requester, quiz_id):
                 first_unanswered_question = question_id
                 break
 
+    # Update QuizAttempt according to the latest answers
     is_finished = first_unanswered_question is None
-    answers = {
-        answer.question_id: answer.selected_option for answer in requester_answers
-    }
-    if is_finished:
-        score = latest_attempt["score"]
-        if score is None:
-            score = await calculate_score(quiz_question_ids, answers)
-
+    if is_finished and is_finished != latest_attempt["is_finished"]:
+        score = await calculate_score(quiz_question_ids, answers)
+        await QuizAttempt.modify(
+            {"id": latest_attempt["id"]}, {"is_finished": is_finished, "score": score}
+        )
         return {"score": score, "is_finished": True, "answers": answers}
 
     return {
-        "is_finished": False,
+        "is_finished": is_finished,
         "continue_from": first_unanswered_question,
         "answers": answers,
     }

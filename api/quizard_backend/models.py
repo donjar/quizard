@@ -203,6 +203,7 @@ class QuizAttempt(BaseModel):
     quiz_id = db.Column(db.String(length=32), db.ForeignKey("quiz.id"), nullable=False)
     user_id = db.Column(db.String(length=32), db.ForeignKey("user.id"), nullable=False)
     score = db.Column(db.BigInteger, nullable=True)
+    is_finished = db.Column(db.Boolean, nullable=False, default=False)
     created_at = db.Column(db.BigInteger, nullable=False, default=unix_time)
     updated_at = db.Column(db.BigInteger, onupdate=unix_time)
 

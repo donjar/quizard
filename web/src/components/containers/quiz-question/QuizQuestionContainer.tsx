@@ -25,7 +25,7 @@ interface IQuizQuestionContainerProps {
     questionIdx: number,
     optionIdx: number
   ) => void;
-  onClickNext: ({}) => void;
+  onClickNext: ({ questionNumber, numQuestions }: any) => void;
   getQuestions: (quizId: string) => void;
 }
 

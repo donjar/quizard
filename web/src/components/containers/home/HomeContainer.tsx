@@ -6,38 +6,59 @@ import { IHomeContainerProps } from '../../../interfaces/home';
 import { IQuiz } from '../../../interfaces/home';
 import { AppState } from '../../../store/store';
 import { getUser } from '../../../utils/auth';
+import Loading from '../../presentations/common/Loading';
 import HomeContent from '../../presentations/home/HomeContent';
 import Home from '../../presentations/home/index';
+import { setLoadingComplete } from '../loading/redux/actions';
 import { setAttemptedQuizzes, setCreatedQuizzes } from './redux/actions';
 import { CREATED_QUIZZES_SELECTED } from './redux/types';
 
 class HomeContainer extends React.Component<IHomeContainerProps> {
   public async componentDidMount() {
+    this.props.setLoadingComplete(false);
+
     const userId = getUser().id;
 
     const apiAttemptedQuizzes = await getUserAttemptedQuizzes(userId);
-    const attemptedQuizzes = apiAttemptedQuizzes.data.attempted.map((quiz: any) => ({
-      id: quiz.id,
-      title: quiz.title,
-      description: quiz.description || 'No description',
-      numAttempted: quiz.num_attempts,
-      dateCreated: quiz.created_at
-    }));
-    this.props.setAttemptedQuizzes(attemptedQuizzes);
+
+    if (apiAttemptedQuizzes.data) {
+      const attemptedQuizzes = apiAttemptedQuizzes.data.map(
+        (quiz: any) => ({
+          id: quiz.id,
+          title: quiz.title,
+          description: quiz.description || 'No description',
+          numAttempted: quiz.num_attempts,
+          dateCreated: quiz.created_at
+        })
+      );
+      this.props.setAttemptedQuizzes(attemptedQuizzes);
+    }
 
     const apiCreatedQuizzes = await getUserCreatedQuizzes(userId);
-    const createdQuizzes = apiCreatedQuizzes.data.created.map((quiz: any) => ({
-      id: quiz.id,
-      title: quiz.title,
-      description: quiz.description || 'No description',
-      numAttempted: quiz.num_attempts,
-      dateCreated: quiz.created_at
-    }));
-    this.props.setCreatedQuizzes(createdQuizzes);
+
+    if (apiCreatedQuizzes.data) {
+      const createdQuizzes = apiCreatedQuizzes.data.map(
+        (quiz: any) => ({
+          id: quiz.id,
+          title: quiz.title,
+          description: quiz.description || 'No description',
+          numAttempted: quiz.num_attempts,
+          dateCreated: quiz.created_at
+        })
+      );
+      this.props.setCreatedQuizzes(createdQuizzes);
+    }
+
+    this.props.setLoadingComplete(true);
   }
 
   public render() {
     const { createdQuizList, attemptedQuizList, quizTypeSelected } = this.props;
+
+    if (!this.props.hasLoaded) {
+      return <Loading />;
+    }
+
     return (
       <Home onLogout={onLogout}>
         <HomeContent
@@ -62,7 +83,8 @@ const onLogout = () => {
 const mapStateToProps = (state: AppState) => ({
   createdQuizList: state.home.createdQuizList,
   attemptedQuizList: state.home.attemptedQuizList,
-  quizTypeSelected: state.home.quizTypeSelected
+  quizTypeSelected: state.home.quizTypeSelected,
+  hasLoaded: state.loading.hasLoaded
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => {
@@ -72,7 +94,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
     },
     setAttemptedQuizzes: (questions: IQuiz[]) => {
       dispatch(setAttemptedQuizzes(questions));
-    }
+    },
+    setLoadingComplete: (hasLoaded: boolean) => dispatch(setLoadingComplete(hasLoaded))
   };
 };
 

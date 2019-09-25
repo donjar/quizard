@@ -1,5 +1,6 @@
 import React from 'react';
 import { Redirect } from 'react-router';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { IRegisterProps } from '../../../interfaces/register';
 import { ReactComponent as Owl } from '../../../svg/owl.svg';
@@ -81,8 +82,11 @@ const Register: React.FC<IRegisterProps> = ({
             onChange={(event) => onChangePassword(event.target.value)}
           />
           <DarkButton type="submit">Register</DarkButton>
+          <Link to="/login" style={{ fontSize: '18px' }}>
+            Back to Login
+          </Link>
         </RegisterForm>
-        {error && (<div>Error: {error}</div>)}
+        {error && <div>Error: {error}</div>}
       </StyledRegister>
     </FullScreenModal>
   );

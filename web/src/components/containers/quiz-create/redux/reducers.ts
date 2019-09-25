@@ -4,6 +4,7 @@ import {
   ADD_ANSWER_OPTION,
   ADD_QUESTION,
   CHANGE_ANSWER_OPTION,
+  CHANGE_DESCRIPTION,
   CHANGE_NAME,
   CHANGE_QUESTION_TEXT,
   DELETE_ANSWER_OPTION,
@@ -11,8 +12,7 @@ import {
   IQuizCreateActionTypes,
   QUIZ_CREATED,
   SET_CORRECT_ANSWER,
-  SET_ERROR,
-  CHANGE_DESCRIPTION
+  SET_ERROR
 } from './types';
 
 // TODO: split into smaller reducers

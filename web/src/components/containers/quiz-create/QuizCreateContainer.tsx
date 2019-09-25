@@ -10,14 +10,14 @@ import {
   addAnswerOption,
   addQuestion,
   changeAnswerOption,
+  changeDescription,
   changeName,
   changeQuestionText,
   deleteAnswerOption,
   deleteQuestion,
   quizCreated,
   setCorrectAnswer,
-  setError,
-  changeDescription
+  setError
 } from './redux/actions';
 
 interface IQuizCreateContainerProps {

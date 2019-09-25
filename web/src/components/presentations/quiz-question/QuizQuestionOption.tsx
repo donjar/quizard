@@ -7,9 +7,9 @@ import {
   QuestionOptionState
 } from '../../../interfaces/quiz-question';
 import {
-  QuestionOptionButton,
   CorrectQuestionOptionButton,
-  IncorrectQuestionOptionButton
+  IncorrectQuestionOptionButton,
+  QuestionOptionButton
 } from '../common/buttons/QuestionOptionButton';
 
 const StyledQuestionOption = styled.div`

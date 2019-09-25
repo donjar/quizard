@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 import {
-  QuestionOptionButton,
   CorrectQuestionOptionButton,
-  IncorrectQuestionOptionButton
+  IncorrectQuestionOptionButton,
+  QuestionOptionButton
 } from '../common/buttons/QuestionOptionButton';
 
 const StyledQuestionOption = styled.div`

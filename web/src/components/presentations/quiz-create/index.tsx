@@ -1,12 +1,12 @@
 import React from 'react';
 
 import { Redirect } from 'react-router';
+import styled from 'styled-components';
 import { IQuizCreateProps } from '../../../interfaces/quiz-create/index';
 import { BeigeBackground } from '../common/BeigeBackground';
 import { BodyAfterNavBarWithPadding } from '../common/BodyAfterNavBarWithPadding';
 import FloatingButton from '../common/buttons/FloatingButton';
 import { QuizCreateNavBar } from './QuizCreateNavBar';
-import styled from 'styled-components';
 
 const StyledBeigeBackground = styled(BeigeBackground)`
   padding-bottom: 15px;

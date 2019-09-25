@@ -1,10 +1,10 @@
 import React from 'react';
-import { IQuizCreateQuestionCardProps } from '../../../interfaces/quiz-create';
-import DarkButton from '../common/buttons/DarkButton';
-import Card from '../common/Card';
-import DeleteButton from '../common/buttons/DeleteButton';
 import styled from 'styled-components';
+import { IQuizCreateQuestionCardProps } from '../../../interfaces/quiz-create';
 import { AnswerButton, SelectedAnswerButton } from '../common/buttons/AnswerButton';
+import DarkButton from '../common/buttons/DarkButton';
+import DeleteButton from '../common/buttons/DeleteButton';
+import Card from '../common/Card';
 
 const StyledQuestionCard = styled(Card)`
   position:relative;

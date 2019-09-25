@@ -1,7 +1,7 @@
 import React from 'react';
 import { Trash2 as Delete } from 'react-feather';
-import IconButton from './IconButton';
 import styled from 'styled-components';
+import IconButton from './IconButton';
 
 const StyledDelete = styled(Delete)`
     color: var(--red);

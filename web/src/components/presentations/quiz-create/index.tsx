@@ -8,11 +8,15 @@ import FloatingButton from '../common/buttons/FloatingButton';
 import { QuizCreateNavBar } from './QuizCreateNavBar';
 import styled from 'styled-components';
 
+const StyledBeigeBackground = styled(BeigeBackground)`
+  padding-bottom: 15px;
+`;
+
 const NameInput = styled.input`
-  width: 100%;
   font-size: 1.8rem;
   font-weight: lighter;
   padding: 10px;
+  width: calc(100% - 20px);
   background: none;
 
   border: transparent;
@@ -20,11 +24,11 @@ const NameInput = styled.input`
 `;
 
 const DescriptionTextArea = styled.textarea`
-  min-width: 100%;
-  max-width: 100%;
+  padding: 10px;
+  min-width: calc(100% - 20px);
+  max-width: calc(100% - 20px);
   font-size: 1.2rem;
   font-weight: lighter;
-  padding: 10px;
   background: none;
 
   border: transparent;
@@ -48,7 +52,7 @@ const QuizCreate: React.FC<IQuizCreateProps> = ({
   }
 
   return (
-    <BeigeBackground>
+    <StyledBeigeBackground>
       <QuizCreateNavBar onCreateQuiz={onCreateQuiz} />
       <BodyAfterNavBarWithPadding>
         <NameInput
@@ -70,7 +74,7 @@ const QuizCreate: React.FC<IQuizCreateProps> = ({
         <FloatingButton onClick={onAddQuestion}>+ Add Question</FloatingButton>
         {children}
       </BodyAfterNavBarWithPadding>
-    </BeigeBackground>
+    </StyledBeigeBackground>
   );
 };
 

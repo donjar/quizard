@@ -135,7 +135,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
     onAddQuestion: () => {
       const newQuestion = {
         correctOption: 0,
-        options: [''],
+        options: ['', ''],
         text: ''
       };
       dispatch(addQuestion(newQuestion));

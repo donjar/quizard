@@ -30,6 +30,8 @@ interface IQuizStartContainerProps {
 
 class QuizStartContainer extends React.Component<IQuizStartContainerProps> {
   public async componentDidMount() {
+    this.props.setLoadingComplete(false);
+
     const { match: { params: { id: quizId = '' } = {} } = {} , ...props } = this.props;
     const quiz = (await getQuizById(quizId)).data;
     const attempt = (await getQuizAttemptStatus(quizId)).data;

@@ -21,7 +21,9 @@ export interface IQuiz extends IQuizBase {
 
 export interface IQuizCreateSummaryContainerProps extends IQuiz {
   match: any;
+  hasLoaded: boolean;
   setQuiz: (quiz: IQuiz) => void;
+  setLoadingComplete: (hasLoaded: boolean) => void;
 }
 
 export interface IAttemptedQuiz extends IQuizBase {

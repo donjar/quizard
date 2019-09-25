@@ -42,7 +42,7 @@ const QuizCard: React.FC<IQuizCard> = ({
           <QuizTitle>{title}</QuizTitle>
           <QuizDescription>{description}</QuizDescription>
           <MiscDetails>
-            <Users /> {numAttempted} people attended
+            <Users /> {numAttempted} people attempted
           </MiscDetails>
           {children}
         </div>

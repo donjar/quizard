@@ -11,9 +11,12 @@ import Home from '../../presentations/home/index';
 import { setLoadingComplete } from '../loading/redux/actions';
 import { setAttemptedQuizzes, setCreatedQuizzes } from './redux/actions';
 import { CREATED_QUIZZES_SELECTED } from './redux/types';
+import Loading from '../../presentations/common/Loading';
 
 class HomeContainer extends React.Component<IHomeContainerProps> {
   public async componentDidMount() {
+    this.props.setLoadingComplete(false);
+
     const userId = getUser().id;
 
     const apiAttemptedQuizzes = await getUserAttemptedQuizzes(userId);
@@ -51,6 +54,11 @@ class HomeContainer extends React.Component<IHomeContainerProps> {
 
   public render() {
     const { createdQuizList, attemptedQuizList, quizTypeSelected } = this.props;
+
+    if (!this.props.hasLoaded) {
+      return <Loading />;
+    }
+
     return (
       <Home onLogout={onLogout}>
         <HomeContent

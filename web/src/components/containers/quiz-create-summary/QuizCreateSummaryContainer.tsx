@@ -8,9 +8,13 @@ import { AppState } from '../../../store/store';
 import { history } from '../../../utils/history';
 import QuizCreateSummary from '../../presentations/quiz-summaries/QuizCreateSummary';
 import { setQuizCreateSummary } from './redux/actions';
+import { setLoadingComplete } from '../loading/redux/actions';
+import Loading from '../../presentations/common/Loading';
 
 class QuizCreateSummaryContainer extends React.Component<IQuizCreateSummaryContainerProps> {
   public async componentDidMount() {
+    this.props.setLoadingComplete(false);
+
     const { match: { params: { id: quizId = '' } = {} } = {} , ...props } = this.props;
     const quiz = (await getQuizById(quizId)).data;
     const questions = (await getQuestionsByQuizId(quizId)).data;
@@ -32,10 +36,17 @@ class QuizCreateSummaryContainer extends React.Component<IQuizCreateSummaryConta
         })
       });
     }
+
+    this.props.setLoadingComplete(true);
   }
 
   public render() {
     const { name, description, numAttempts, questions } = this.props;
+
+    if (!this.props.hasLoaded) {
+      return <Loading />;
+    }
+
     return (
       <QuizCreateSummary
         name={name}
@@ -52,6 +63,7 @@ const mapStateToProps = (state: AppState) => ({
   description: state.quizCreateSummary.description,
   numAttempts: state.quizCreateSummary.numAttempts,
   questions: state.quizCreateSummary.questions,
+  hasLoaded: state.loading.hasLoaded
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => {
@@ -59,6 +71,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
     setQuiz: (quiz: IQuiz) => {
       dispatch(setQuizCreateSummary(quiz));
     },
+    setLoadingComplete: (hasLoaded: boolean) =>
+      dispatch(setLoadingComplete(hasLoaded))
   };
 };
 

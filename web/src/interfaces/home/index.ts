@@ -21,6 +21,7 @@ export interface IHomeState {
 }
 
 export interface IHomeContainerProps extends IHomeState {
+  hasLoaded: boolean;
   setCreatedQuizzes: (questions: IQuiz[]) => void;
   setAttemptedQuizzes: (questions: IQuiz[]) => void;
   setLoadingComplete: (hasLoaded: boolean) => void;

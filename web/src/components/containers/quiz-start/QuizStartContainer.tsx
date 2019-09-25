@@ -4,7 +4,6 @@ import { Dispatch } from 'redux';
 import { getQuizAttemptStatus, getQuizById } from '../../../api';
 import { IQuiz } from '../../../interfaces/quiz-start';
 import { AppState } from '../../../store/store';
-import { history } from '../../../utils/history';
 import QuizStart from '../../presentations/quiz-start/index';
 import QuizClosedContainer from '../quiz-closed/QuizClosedContainer';
 import QuizCompleteContainer from '../quiz-complete/QuizCompleteContainer';

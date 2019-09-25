@@ -6,12 +6,12 @@ import { IHomeContainerProps } from '../../../interfaces/home';
 import { IQuiz } from '../../../interfaces/home';
 import { AppState } from '../../../store/store';
 import { getUser } from '../../../utils/auth';
+import Loading from '../../presentations/common/Loading';
 import HomeContent from '../../presentations/home/HomeContent';
 import Home from '../../presentations/home/index';
 import { setLoadingComplete } from '../loading/redux/actions';
 import { setAttemptedQuizzes, setCreatedQuizzes } from './redux/actions';
 import { CREATED_QUIZZES_SELECTED } from './redux/types';
-import Loading from '../../presentations/common/Loading';
 
 class HomeContainer extends React.Component<IHomeContainerProps> {
   public async componentDidMount() {

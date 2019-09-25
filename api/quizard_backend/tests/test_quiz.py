@@ -115,11 +115,42 @@ async def test_get_quizzes_with_after_id(client, quizzes, token_user):
     assert isinstance(body["data"], list)
     assert len(body["data"]) == 15  # Default offset for quiz is 15
 
+    # Check if all profiles match from id 3 to 18
+    assert all(
+        profile_created_from_origin(origin, created)
+        for origin, created in zip(quizzes[3:18], body["data"])
+    )
+
+    # Check that next page is valid
+    next_page_link = body["links"]["next"]
+    # Strip the host, as it is a testing host
+    next_page_link = "/" + "/".join(next_page_link.split("/")[3:])
+    res = await client.get(next_page_link, headers={"Authorization": token_user})
+    assert res.status == 200
+
+    body = await res.json()
+    assert "data" in body
+    assert isinstance(body["data"], list)
+    assert len(body["data"]) == len(quizzes[18:])  # Default offset for quiz is 15
+
     # Check if all profiles match from id 4 to 19
     assert all(
         profile_created_from_origin(origin, created)
-        for origin, created in zip(quizzes[3:20], body["data"])
+        for origin, created in zip(quizzes[18:], body["data"])
     )
+
+    # Check that next page is empty
+    # Check that next page is valid
+    next_page_link = body["links"]["next"]
+    # Strip the host, as it is a testing host
+    next_page_link = "/" + "/".join(next_page_link.split("/")[3:])
+    res = await client.get(next_page_link, headers={"Authorization": token_user})
+    assert res.status == 200
+
+    body = await res.json()
+    assert "data" in body
+    assert isinstance(body["data"], list)
+    assert not body["data"]
 
     # Invalid after_id
     res = await client.get("/quizzes?after_id=3", headers={"Authorization": token_user})
@@ -323,8 +354,7 @@ async def test_delete_quiz(client, users, quizzes, token_user):
     assert res.status == 200
 
     body = await res.json()
-    assert "data" in body
-    assert body["data"] is None
+    assert body is None
 
     all_quizzes = await Quiz.query.gino.all()
     assert len(all_quizzes) == len(quizzes)

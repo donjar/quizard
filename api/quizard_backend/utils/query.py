@@ -46,6 +46,7 @@ async def get_many(
     in_column=None,
     in_values=None,
     order_by="internal_id",
+    descrease=False,
     **kwargs,
 ):
     # Get the `internal_id` value from the starting row
@@ -67,7 +68,9 @@ async def get_many(
     query = query.where(
         and_(
             *dict_to_filter_args(model, **kwargs),
-            model.internal_id > last_internal_id,
+            model.internal_id < last_internal_id
+            if descrease and last_internal_id
+            else model.internal_id > last_internal_id,
             getattr(model, in_column).in_(in_values)
             if in_column and in_values
             else True,
@@ -76,7 +79,13 @@ async def get_many(
     if distinct:
         query = query.distinct()
 
-    return await query.order_by(getattr(model, order_by)).limit(limit).gino.all()
+    return (
+        await query.order_by(
+            desc(getattr(model, order_by)) if descrease else getattr(model, order_by)
+        )
+        .limit(limit)
+        .gino.all()
+    )
 
 
 async def get_one_latest(model, **kwargs):

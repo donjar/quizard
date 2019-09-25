@@ -21,8 +21,9 @@ const NameTextHeader = styled.h2`
   word-break: break-all;
 `;
 
-const onClickShareButton = () => {
+const onClickShareButton = (link: string) => {
   // Show share modal
+  console.log(link);
 };
 
 const QuizCreateSummary: React.FC<IQuizCreateSummaryProps> = ({
@@ -30,7 +31,7 @@ const QuizCreateSummary: React.FC<IQuizCreateSummaryProps> = ({
   description,
   numAttempts,
   questions,
-  // sharableLink,
+  sharableLink,
 }) => {
   const questionCards = (questions || []).map((qn) => QuestionSection(qn));
   return (
@@ -39,7 +40,7 @@ const QuizCreateSummary: React.FC<IQuizCreateSummaryProps> = ({
       <BodyAfterNavBarWithPadding>
         <NameDiv>
           <NameTextHeader>{name}</NameTextHeader>
-          <ShareButton onClick={onClickShareButton} />
+          <ShareButton onClick={() => onClickShareButton(sharableLink)} />
         </NameDiv>
         <p>{description}</p>
         <p><Users /> {numAttempts} people attempted</p>

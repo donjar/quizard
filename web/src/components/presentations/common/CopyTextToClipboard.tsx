@@ -1,6 +1,6 @@
-import React, { useState, createRef } from 'react';
-import styled from 'styled-components';
+import React, { createRef, useState } from 'react';
 import { Copy } from 'react-feather';
+import styled from 'styled-components';
 import DarkButton from './buttons/DarkButton';
 
 const CopyTextToClipboardArea = styled.div`

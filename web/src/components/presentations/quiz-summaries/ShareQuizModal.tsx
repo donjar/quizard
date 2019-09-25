@@ -1,10 +1,10 @@
-import styled from 'styled-components';
 import React from 'react';
-import OverlayModal from '../common/OverlayModal';
-import CopyTextToClipboard from '../common/CopyTextToClipboard';
+import styled from 'styled-components';
 import UnselectedButton from '../common/buttons/UnselectedButton';
+import CopyTextToClipboard from '../common/CopyTextToClipboard';
+import OverlayModal from '../common/OverlayModal';
 
-const defaultPromoText = "Check out my new quiz made with Quizard!";
+const defaultPromoText = 'Check out my new quiz made with Quizard!';
 
 const SocialMediaRow = styled.div`
   display: flex;

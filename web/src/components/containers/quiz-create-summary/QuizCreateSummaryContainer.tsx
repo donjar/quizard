@@ -11,6 +11,10 @@ import QuizCreateSummary from '../../presentations/quiz-summaries/QuizCreateSumm
 import { setLoadingComplete } from '../loading/redux/actions';
 import { setQuizCreateSummary } from './redux/actions';
 
+const getQuizLink = (quizId: string) => {
+  return `${window.location.origin}/quiz/${quizId}`;
+};
+
 class QuizCreateSummaryContainer extends React.Component<IQuizCreateSummaryContainerProps> {
   public async componentDidMount() {
     this.props.setLoadingComplete(false);
@@ -41,7 +45,13 @@ class QuizCreateSummaryContainer extends React.Component<IQuizCreateSummaryConta
   }
 
   public render() {
-    const { name, description, numAttempts, questions } = this.props;
+    const {
+      match: { params: { id: quizId = '' } = {} } = {},
+      name,
+      description,
+      numAttempts,
+      questions
+    } = this.props;
 
     if (!this.props.hasLoaded) {
       return <Loading />;
@@ -53,6 +63,7 @@ class QuizCreateSummaryContainer extends React.Component<IQuizCreateSummaryConta
         description={description}
         numAttempts={numAttempts}
         questions={questions}
+        sharableLink={getQuizLink(quizId)}
       />
     );
   }

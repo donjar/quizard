@@ -10,7 +10,10 @@ if __name__ == "__main__":
     if MODE == "production":
         import ssl
         context = ssl.create_default_context(purpose=ssl.Purpose.CLIENT_AUTH)
-        context.load_cert_chain("/etc/letsencrypt/live/quizard.xyz/fullchain.pem", keyfile="/etc/letsencrypt/live/quizard.xyz/privkey.pem")
+        context.load_cert_chain(
+            "/etc/letsencrypt/live/quizard.xyz/fullchain.pem",
+            keyfile="/etc/letsencrypt/live/quizard.xyz/privkey.pem",
+        )
         SANIC_RUN_CONFIG.update({"ssl": context})
 
     app.run(**SANIC_RUN_CONFIG)

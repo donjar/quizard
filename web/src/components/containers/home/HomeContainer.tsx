@@ -8,6 +8,7 @@ import { AppState } from '../../../store/store';
 import { getUser } from '../../../utils/auth';
 import HomeContent from '../../presentations/home/HomeContent';
 import Home from '../../presentations/home/index';
+import { setLoadingComplete } from '../loading/redux/actions';
 import { setAttemptedQuizzes, setCreatedQuizzes } from './redux/actions';
 import { CREATED_QUIZZES_SELECTED } from './redux/types';
 
@@ -44,6 +45,8 @@ class HomeContainer extends React.Component<IHomeContainerProps> {
       );
       this.props.setCreatedQuizzes(createdQuizzes);
     }
+
+    this.props.setLoadingComplete(true);
   }
 
   public render() {
@@ -72,7 +75,8 @@ const onLogout = () => {
 const mapStateToProps = (state: AppState) => ({
   createdQuizList: state.home.createdQuizList,
   attemptedQuizList: state.home.attemptedQuizList,
-  quizTypeSelected: state.home.quizTypeSelected
+  quizTypeSelected: state.home.quizTypeSelected,
+  hasLoaded: state.loading.hasLoaded
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => {
@@ -82,7 +86,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
     },
     setAttemptedQuizzes: (questions: IQuiz[]) => {
       dispatch(setAttemptedQuizzes(questions));
-    }
+    },
+    setLoadingComplete: (hasLoaded: boolean) => dispatch(setLoadingComplete(hasLoaded))
   };
 };
 

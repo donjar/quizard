@@ -23,6 +23,7 @@ export interface IHomeState {
 export interface IHomeContainerProps extends IHomeState {
   setCreatedQuizzes: (questions: IQuiz[]) => void;
   setAttemptedQuizzes: (questions: IQuiz[]) => void;
+  setLoadingComplete: (hasLoaded: boolean) => void;
 }
 
 export interface IRowRendererProps {

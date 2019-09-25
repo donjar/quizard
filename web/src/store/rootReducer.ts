@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux';
 import homeReducer from '../components/containers/home/redux/reducers';
+import loadingReducer from '../components/containers/loading/redux/reducers';
 import loginReducer from '../components/containers/login/redux/reducers';
 import quizAttemptReviewReducer from '../components/containers/quiz-attempt-review/redux/reducers';
 import quizCreateSummaryReducer from '../components/containers/quiz-create-summary/redux/reducers';
@@ -16,5 +17,6 @@ export default combineReducers({
   register: registerReducer,
   quizQuestion: quizQuestionReducer,
   quizCreateSummary: quizCreateSummaryReducer,
-  quizAttemptReview: quizAttemptReviewReducer
+  quizAttemptReview: quizAttemptReviewReducer,
+  loading: loadingReducer
 });

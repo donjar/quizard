@@ -4,7 +4,9 @@ import { Dispatch } from 'redux';
 import { getQuizAttemptStatus, getQuizById } from '../../../api';
 import { IQuiz } from '../../../interfaces/quiz-start';
 import { AppState } from '../../../store/store';
+import Loading from '../../presentations/common/Loading';
 import QuizStart from '../../presentations/quiz-start/index';
+import { setLoadingComplete } from '../loading/redux/actions';
 import QuizClosedContainer from '../quiz-closed/QuizClosedContainer';
 import QuizCompleteContainer from '../quiz-complete/QuizCompleteContainer';
 import QuizQuestionContainer from '../quiz-question/QuizQuestionContainer';
@@ -20,8 +22,10 @@ interface IQuizStartContainerProps {
   userQuizAnswers: {};
   currQuestionIdx: number;
   numQuestions: number;
+  hasLoaded: boolean;
   setQuiz: (quiz: IQuiz) => void;
   changeCurrQuestionIdx: (newQuestionIdx: number) => void;
+  setLoadingComplete: (hasLoaded: boolean) => void;
 }
 
 class QuizStartContainer extends React.Component<IQuizStartContainerProps> {
@@ -44,6 +48,8 @@ class QuizStartContainer extends React.Component<IQuizStartContainerProps> {
         score: attempt.score
       });
     }
+
+    this.props.setLoadingComplete(true);
   }
 
   public render() {
@@ -54,6 +60,10 @@ class QuizStartContainer extends React.Component<IQuizStartContainerProps> {
       continueFrom: -1,
       userQuizAnswers: {}
     };
+
+    if (!this.props.hasLoaded) {
+      return <Loading />;
+    }
 
     if (this.props.name === '') {
       return <QuizClosedContainer />;
@@ -84,7 +94,8 @@ const mapStateToProps = (state: AppState) => ({
   userQuizAnswers: state.quizStart.userQuizAnswers,
   currQuestionIdx: state.quizQuestion.currQuestionIdx,
   numQuestions: state.quizQuestion.questions.length,
-  score: state.quizStart.score
+  score: state.quizStart.score,
+  hasLoaded: state.loading.hasLoaded
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => {
@@ -93,7 +104,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
       dispatch(setQuiz(quiz));
     },
     changeCurrQuestionIdx: (newQuestionIdx: number) =>
-      dispatch(startQuiz(newQuestionIdx))
+      dispatch(startQuiz(newQuestionIdx)),
+    setLoadingComplete: (hasLoaded: boolean) => dispatch(setLoadingComplete(hasLoaded))
   };
 };
 

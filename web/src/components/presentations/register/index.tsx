@@ -1,5 +1,6 @@
 import React from 'react';
 import { Redirect } from 'react-router';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { IRegisterProps } from '../../../interfaces/register';
 import { ReactComponent as Owl } from '../../../svg/owl.svg';
@@ -8,7 +9,6 @@ import DarkButton from '../common/buttons/DarkButton';
 import { CenteredDiv } from '../common/CenteredDiv';
 import FullScreenModal from '../common/FullScreenModal';
 import InputField from '../common/InputField';
-import { Link } from 'react-router-dom';
 
 const StyledRegister = styled.div`
   width: 100%;

@@ -15,12 +15,13 @@ const StyledQuestionCard = styled(Card)`
 const QuestionTextArea = styled.textarea`
   font-size: 1rem;
   padding: 15px;
-  min-width: calc(100% - 30px);
-  max-width: calc(100% - 30px);
+  width: calc(100% - 30px);
   background: var(--pale-grey);
 
   border: none;
   border-radius: 15px;
+
+  resize: none;
 `;
 
 const OptionInputRow = styled.div`

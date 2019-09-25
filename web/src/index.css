@@ -80,6 +80,11 @@ form {
   font-family: 'GothamRounded', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  outline: none;
+}
+
+textarea {
+  overflow: auto;
 }
 
 body {

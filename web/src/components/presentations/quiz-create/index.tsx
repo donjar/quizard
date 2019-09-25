@@ -24,15 +24,17 @@ const NameInput = styled.input`
 `;
 
 const DescriptionTextArea = styled.textarea`
-  padding: 10px;
-  min-width: calc(100% - 20px);
-  max-width: calc(100% - 20px);
+  margin-top: 10px;
+  padding: 0 10px;
+  width: calc(100% - 20px);
   font-size: 1.2rem;
   font-weight: lighter;
   background: none;
 
   border: transparent;
   border-bottom: 1px solid var(--dark-grey);
+
+  resize: none;
 `;
 
 const QuizCreate: React.FC<IQuizCreateProps> = ({
@@ -66,6 +68,7 @@ const QuizCreate: React.FC<IQuizCreateProps> = ({
         <DescriptionTextArea
           placeholder="Quiz Description"
           value={description}
+          rows={3}
           onChange={(e) => onChangeDescription(e.target.value)}
         />
         {error && (<p>Error: {error}</p>)}

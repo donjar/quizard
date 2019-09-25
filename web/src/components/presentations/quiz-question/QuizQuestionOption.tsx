@@ -7,10 +7,10 @@ import {
   QuestionOptionState
 } from '../../../interfaces/quiz-question';
 import {
-  AnswerButton,
-  CorrectAnswerButton,
-  IncorrectAnswerButton
-} from '../common/buttons/AnswerButton';
+  CorrectQuestionOptionButton,
+  IncorrectQuestionOptionButton,
+  QuestionOptionButton
+} from '../common/buttons/QuestionOptionButton';
 
 const StyledQuestionOption = styled.div`
   width: 100%;
@@ -32,14 +32,14 @@ const QuizQuestionOption: React.FC<IQuizQuestionOptionProps> = ({
   let OptionButton;
   switch (displayState) {
     case OPTION_CORRECT:
-      OptionButton = CorrectAnswerButton;
+      OptionButton = CorrectQuestionOptionButton;
       break;
     case OPTION_INCORRECT:
-      OptionButton = IncorrectAnswerButton;
+      OptionButton = IncorrectQuestionOptionButton;
       break;
     case OPTION_UNSELECTED:
     default:
-      OptionButton = AnswerButton;
+      OptionButton = QuestionOptionButton;
   }
 
   return (

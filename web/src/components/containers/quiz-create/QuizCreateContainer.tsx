@@ -10,6 +10,7 @@ import {
   addAnswerOption,
   addQuestion,
   changeAnswerOption,
+  changeDescription,
   changeName,
   changeQuestionText,
   deleteAnswerOption,
@@ -22,6 +23,7 @@ import {
 interface IQuizCreateContainerProps {
   questions: IQuestion[];
   name: string;
+  description: string;
   createdQuizId?: string;
   error?: string;
   onAddQuestion: () => void;
@@ -35,6 +37,7 @@ interface IQuizCreateContainerProps {
   onDeleteAnswerOption: (questionIdx: number, optionIdx: number) => void;
   onSetCorrectAnswerOption: (questionIdx: number, optionIdx: number) => void;
   onChangeName: (newName: string) => void;
+  onChangeDescription: (newDesc: string) => void;
   onChangeQuestionText: (questionIdx: number, newText: string) => void;
   setError: (error: string) => void;
   quizCreated: (quizId: string) => void;
@@ -43,6 +46,7 @@ interface IQuizCreateContainerProps {
 const QuizCreateContainer: React.FC<IQuizCreateContainerProps> = ({
   questions,
   name,
+  description,
   createdQuizId,
   error,
   onAddQuestion,
@@ -52,6 +56,7 @@ const QuizCreateContainer: React.FC<IQuizCreateContainerProps> = ({
   onDeleteAnswerOption,
   onSetCorrectAnswerOption,
   onChangeName,
+  onChangeDescription,
   onChangeQuestionText,
   ...props
 }) => {
@@ -83,6 +88,7 @@ const QuizCreateContainer: React.FC<IQuizCreateContainerProps> = ({
   const onCreateQuiz = async () => {
     const resp = await createQuiz({
       title: name,
+      description,
       questions: questions.map((question) => {
         return {
           text: question.text,
@@ -103,10 +109,12 @@ const QuizCreateContainer: React.FC<IQuizCreateContainerProps> = ({
   return (
     <QuizCreate
       name={name}
+      description={description}
       error={error}
       numQuestions={questions.length}
       createdQuizId={createdQuizId}
       onChangeName={onChangeName}
+      onChangeDescription={onChangeDescription}
       onAddQuestion={onAddQuestion}
       onCreateQuiz={onCreateQuiz}
     >
@@ -117,6 +125,7 @@ const QuizCreateContainer: React.FC<IQuizCreateContainerProps> = ({
 
 const mapStateToProps = (state: AppState) => ({
   name: state.quizCreate.name,
+  description: state.quizCreate.description,
   questions: state.quizCreate.questions,
   createdQuizId: state.quizCreate.createdQuizId,
   error: state.quizCreate.error
@@ -127,7 +136,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
     onAddQuestion: () => {
       const newQuestion = {
         correctOption: 0,
-        options: [''],
+        options: ['', ''],
         text: ''
       };
       dispatch(addQuestion(newQuestion));
@@ -155,6 +164,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
       dispatch(setCorrectAnswer({ questionIdx, optionIdx })),
     onChangeName: (newName: string) =>
       dispatch(changeName(newName)),
+    onChangeDescription: (newDesc: string) =>
+      dispatch(changeDescription(newDesc)),
     onChangeQuestionText: (questionIdx: number, newText: string) =>
       dispatch(changeQuestionText({ questionIdx, newText })),
     setError: (error: string) =>

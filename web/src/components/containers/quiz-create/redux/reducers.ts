@@ -4,6 +4,7 @@ import {
   ADD_ANSWER_OPTION,
   ADD_QUESTION,
   CHANGE_ANSWER_OPTION,
+  CHANGE_DESCRIPTION,
   CHANGE_NAME,
   CHANGE_QUESTION_TEXT,
   DELETE_ANSWER_OPTION,
@@ -66,6 +67,9 @@ export default function quizCreateReducer(
 
     case CHANGE_NAME:
       return { ...state, name: action.payload };
+
+    case CHANGE_DESCRIPTION:
+        return { ...state, description: action.payload };
 
     case CHANGE_QUESTION_TEXT:
       newQuestions[action.payload.questionIdx].text =

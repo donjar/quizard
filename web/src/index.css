@@ -4,7 +4,9 @@
   --dark-beige: #dcd9cf;
   --green: #7cd885;
   --red: #db7874;
+  --pale-grey: #efefef;
   --light-grey: #c4c4c4;
+  --dark-grey: #868686;
 }
 
 @font-face {
@@ -71,12 +73,18 @@ body,
 div,
 button,
 input,
+textarea,
 form {
   margin: 0;
   color: var(--dark-blue);
   font-family: 'GothamRounded', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  outline: none;
+}
+
+textarea {
+  overflow: auto;
 }
 
 body {

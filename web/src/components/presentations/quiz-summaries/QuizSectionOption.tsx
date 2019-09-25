@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 import {
-  AnswerButton,
-  CorrectAnswerButton,
-  IncorrectAnswerButton
-} from '../common/buttons/AnswerButton';
+  CorrectQuestionOptionButton,
+  IncorrectQuestionOptionButton,
+  QuestionOptionButton
+} from '../common/buttons/QuestionOptionButton';
 
 const StyledQuestionOption = styled.div`
   width: 100%;
@@ -23,11 +23,11 @@ const QuizSectionOption: React.FC<IQuizSectionOptionProps> = ({
 }) => {
   let Option;
   if (isCorrect) {
-    Option = CorrectAnswerButton;
+    Option = CorrectQuestionOptionButton;
   } else if (isSelected) {
-    Option = IncorrectAnswerButton;
+    Option = IncorrectQuestionOptionButton;
   } else {
-    Option = AnswerButton;
+    Option = QuestionOptionButton;
   }
 
   return (

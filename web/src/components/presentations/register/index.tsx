@@ -8,6 +8,7 @@ import DarkButton from '../common/buttons/DarkButton';
 import { CenteredDiv } from '../common/CenteredDiv';
 import FullScreenModal from '../common/FullScreenModal';
 import InputField from '../common/InputField';
+import { Link } from 'react-router-dom';
 
 const StyledRegister = styled.div`
   width: 100%;
@@ -81,8 +82,11 @@ const Register: React.FC<IRegisterProps> = ({
             onChange={(event) => onChangePassword(event.target.value)}
           />
           <DarkButton type="submit">Register</DarkButton>
+          <Link to="/login" style={{ fontSize: '18px' }}>
+            Back to Login
+          </Link>
         </RegisterForm>
-        {error && (<div>Error: {error}</div>)}
+        {error && <div>Error: {error}</div>}
       </StyledRegister>
     </FullScreenModal>
   );

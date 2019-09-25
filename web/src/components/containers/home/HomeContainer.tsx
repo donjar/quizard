@@ -16,24 +16,34 @@ class HomeContainer extends React.Component<IHomeContainerProps> {
     const userId = getUser().id;
 
     const apiAttemptedQuizzes = await getUserAttemptedQuizzes(userId);
-    const attemptedQuizzes = apiAttemptedQuizzes.data.attempted.map((quiz: any) => ({
-      id: quiz.id,
-      title: quiz.title,
-      description: quiz.description || 'No description',
-      numAttempted: quiz.num_attempts,
-      dateCreated: quiz.created_at
-    }));
-    this.props.setAttemptedQuizzes(attemptedQuizzes);
+
+    if (apiAttemptedQuizzes.data) {
+      const attemptedQuizzes = apiAttemptedQuizzes.data.map(
+        (quiz: any) => ({
+          id: quiz.id,
+          title: quiz.title,
+          description: quiz.description || 'No description',
+          numAttempted: quiz.num_attempts,
+          dateCreated: quiz.created_at
+        })
+      );
+      this.props.setAttemptedQuizzes(attemptedQuizzes);
+    }
 
     const apiCreatedQuizzes = await getUserCreatedQuizzes(userId);
-    const createdQuizzes = apiCreatedQuizzes.data.created.map((quiz: any) => ({
-      id: quiz.id,
-      title: quiz.title,
-      description: quiz.description || 'No description',
-      numAttempted: quiz.num_attempts,
-      dateCreated: quiz.created_at
-    }));
-    this.props.setCreatedQuizzes(createdQuizzes);
+
+    if (apiCreatedQuizzes.data) {
+      const createdQuizzes = apiCreatedQuizzes.data.map(
+        (quiz: any) => ({
+          id: quiz.id,
+          title: quiz.title,
+          description: quiz.description || 'No description',
+          numAttempted: quiz.num_attempts,
+          dateCreated: quiz.created_at
+        })
+      );
+      this.props.setCreatedQuizzes(createdQuizzes);
+    }
   }
 
   public render() {

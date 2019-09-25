@@ -115,13 +115,13 @@ export const getQuizAttemptStatus = async (quizId: string): Promise<any> => {
 };
 
 export const getUserCreatedQuizzes = async (userId: string): Promise<any> => {
-  const res = await fetchWithAuth(`${apiUrl}/users/${userId}/quizzes?created=True&attempted=False`);
+  const res = await fetchWithAuth(`${apiUrl}/users/${userId}/quizzes/created`);
 
   return await res.json();
 };
 
 export const getUserAttemptedQuizzes = async (userId: string): Promise<any> => {
-  const res = await fetchWithAuth(`${apiUrl}/users/${userId}/quizzes?created=False&attempted=True`);
+  const res = await fetchWithAuth(`${apiUrl}/users/${userId}/quizzes/attempted`);
 
   return await res.json();
 };

@@ -1,13 +1,13 @@
 import React from 'react';
 
+import { Users } from 'react-feather';
+import styled from 'styled-components';
 import { IQuizCreateSummaryProps } from '../../../interfaces/quiz-create-summary/index';
 import { BeigeBackground } from '../common/BeigeBackground';
 import { BodyAfterNavBarWithPadding } from '../common/BodyAfterNavBarWithPadding';
+import ShareButton from '../common/buttons/ShareButton';
 import { NavBarWithBack } from '../common/NavBarWithBack';
 import QuestionSection from './QuestionSection';
-import styled from 'styled-components';
-import ShareButton from '../common/buttons/ShareButton';
-import { Users } from 'react-feather';
 
 const NameDiv = styled.div`
   width: 100%;

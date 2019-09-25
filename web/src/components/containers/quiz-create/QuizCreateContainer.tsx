@@ -88,6 +88,7 @@ const QuizCreateContainer: React.FC<IQuizCreateContainerProps> = ({
   const onCreateQuiz = async () => {
     const resp = await createQuiz({
       title: name,
+      description,
       questions: questions.map((question) => {
         return {
           text: question.text,

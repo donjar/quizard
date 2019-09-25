@@ -68,45 +68,49 @@ const QuizCreateQuestionCard: React.FC<IQuizCreateQuestionCardProps> = ({
   onEraseOption,
   onSetCorrectAnswer,
   onChangeText
-}) => (
-  <StyledQuestionCard>
-    <DeleteQuestionButtonDiv>
-      <DeleteButton onClick={onEraseQuestion} />
-    </DeleteQuestionButtonDiv>
-    <h3>Question {questionNumber}</h3>
-    <QuestionTextArea
-      placeholder="Question"
-      value={text}
-      rows={4}
-      onChange={(e) => onChangeText(e.target.value)}
-    />
+}) => {
+  const optionsArray = options.map((option, idx) => {
+    let OptionButton;
+    if (idx === correctOption) {
+      OptionButton = SelectedAnswerButton;
+    } else {
+      OptionButton = AnswerButton;
+    }
+    return (
+      <OptionInputRow key={idx}>
+        <OptionInputDiv>
+          <OptionInput
+            type="text"
+            placeholder="Answer option"
+            value={option}
+            onChange={(e) => onChangeOption(idx, e.target.value)}
+            required
+          />
+        </OptionInputDiv>
+        <OptionButton onClick={() => onSetCorrectAnswer(idx)} />
+        <DeleteButton onClick={() => onEraseOption(idx)} />
+      </OptionInputRow>
+    );
+  });
 
-    <h5>Options:</h5>
-    {options.map((option, idx) => {
-      let OptionButton;
-      if (idx === correctOption) {
-        OptionButton = SelectedAnswerButton;
-      } else {
-        OptionButton = AnswerButton;
-      }
-      return (
-        <OptionInputRow key={idx}>
-          <OptionInputDiv>
-            <OptionInput
-              type="text"
-              placeholder="Answer option"
-              value={option}
-              onChange={(e) => onChangeOption(idx, e.target.value)}
-              required
-            />
-          </OptionInputDiv>
-          <OptionButton onClick={() => onSetCorrectAnswer(idx)} />
-          <DeleteButton onClick={() => onEraseOption(idx)} />
-        </OptionInputRow>
-      );
-    })}
-    <DarkButton onClick={onNewOption}>+ Add Option</DarkButton>
-  </StyledQuestionCard>
-);
+  return (
+    <StyledQuestionCard>
+      <DeleteQuestionButtonDiv>
+        <DeleteButton onClick={onEraseQuestion} />
+      </DeleteQuestionButtonDiv>
+      <h3>Question {questionNumber}</h3>
+      <QuestionTextArea
+        placeholder="Question"
+        value={text}
+        rows={4}
+        onChange={(e) => onChangeText(e.target.value)}
+      />
+
+      <h5>Options:</h5>
+      {optionsArray}
+      <DarkButton onClick={onNewOption}>+ Add Option</DarkButton>
+    </StyledQuestionCard>
+  );
+};
 
 export default QuizCreateQuestionCard;

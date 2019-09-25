@@ -49,5 +49,6 @@ export interface IQuestionApi {
 
 export interface IQuizCreateApi {
   title: string;
+  description: string;
   questions: IQuestionApi[];
 }

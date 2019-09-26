@@ -15,6 +15,7 @@
     url('./fonts/GothamRoundedBook_21018.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
+  font-display: auto;
 }
 
 @font-face {
@@ -22,6 +23,7 @@
   src: url('./fonts/GothamRounded-BookItalic.otf') format('opentype');
   font-weight: normal;
   font-style: italic;
+  font-display: auto;
 }
 
 @font-face {
@@ -30,6 +32,7 @@
     url('./fonts/GothamRoundedLight_21020.ttf') format('truetype');
   font-weight: 300;
   font-style: normal;
+  font-display: auto;
 }
 
 @font-face {
@@ -37,6 +40,7 @@
   src: url('./fonts/GothamRounded-LightItalic.otf') format('opentype');
   font-weight: 300;
   font-style: italic;
+  font-display: auto;
 }
 
 @font-face {
@@ -45,6 +49,7 @@
     url('./fonts/GothamRoundedMedium_21022.ttf') format('truetype');
   font-weight: medium;
   font-style: normal;
+  font-display: auto;
 }
 
 @font-face {
@@ -52,6 +57,7 @@
   src: url('./fonts/GothamRounded-MediumItalic.otf') format('opentype');
   font-weight: medium;
   font-style: italic;
+  font-display: auto;
 }
 
 @font-face {
@@ -60,6 +66,7 @@
     url('./fonts/GothamRoundedBold_21016.ttf') format('truetype');
   font-weight: bold;
   font-style: normal;
+  font-display: auto;
 }
 
 @font-face {
@@ -67,6 +74,7 @@
   src: url('./fonts/GothamRounded-BoldItalic.otf') format('opentype');
   font-weight: bold;
   font-style: italic;
+  font-display: auto;
 }
 
 body {

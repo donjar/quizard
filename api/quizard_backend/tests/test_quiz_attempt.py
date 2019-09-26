@@ -307,7 +307,7 @@ async def test_get_attempt_with_fully_answered_questions(
 
     # Create a new attempt to reset the progress
     res = await client.post(
-        "/quizzes/{}/attempt".format(quizzes[2]["id"]),
+        "/quizzes/{}/attempt".format(quizzes[quiz_index]["id"]),
         headers={"Authorization": token_user},
     )
     assert res.status == 200

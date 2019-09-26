@@ -7,44 +7,51 @@ import { QuizCardContents } from './QuizCardContents';
 import { QuizDateCreatedDiv } from './QuizDateCreatedDiv';
 
 const StyledQuizCard = styled(Card)`
-  max-width: 1065px;
-  max-height: 206px;
-  padding: 20px calc(20px + 2%) 40px calc(20px + 2%);
+  margin: 0.5em 0;
+  padding: 1em;
+  width: calc(100% - 3em);
 `;
 
-const QuizTitle = styled.div`
-  font-size: 32px;
+const QuizTitle = styled.h2`
+  font-weight: normal;
+  margin: 0.8rem 0;
 `;
 
 const QuizDescription = styled.div`
-  font-weight: 300;
+  font-weight: lighter;
 `;
 
 const MiscDetails = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+
   font-weight: 300;
-  font-size: 18px;
+  font-size: 1rem;
   margin-top: 15px;
+`;
+
+const UsersIcon = styled(Users)`
+  height: 1rem;
 `;
 
 const QuizCard: React.FC<IQuizCard> = ({
   title,
   description,
   numAttempted,
-  dateCreated,
-  children
+  dateCreated
 }) => {
   const daysAgo = Math.floor((Date.now() - (dateCreated * 1000)) / (1000 * 60 * 60 * 24));
   return (
     <StyledQuizCard>
-      <QuizDateCreatedDiv> Created {daysAgo} days ago</QuizDateCreatedDiv>
+      <QuizDateCreatedDiv>Created {daysAgo} days ago</QuizDateCreatedDiv>
       <QuizCardContents>
         <div>
           <QuizTitle>{title}</QuizTitle>
           <QuizDescription>{description}</QuizDescription>
           <MiscDetails>
-            <Users /> {numAttempted} people attempted
+            <UsersIcon /> {numAttempted} people attempted
           </MiscDetails>
-          {children}
         </div>
         <div>
           <ChevronRight />

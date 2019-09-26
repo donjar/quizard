@@ -1,62 +1,52 @@
 import React from 'react';
 import styled from 'styled-components';
 import { ReactComponent as Owl } from '../../../svg/owl.svg';
-import { HideOnMedium } from '../../../utils/media';
+import { HideOnSmall } from '../../../utils/media';
 import { CreateQuizButton } from '../common/buttons/CreateQuizButton';
 
 const StyledHomeHeader = styled.div`
   display: flex;
-
-  & > * {
-    flex: 1 1 0;
-  }
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 `;
 
 const StyledHomeWriteupBox = styled.div`
+  flex: 1;
+
   & > * {
     margin: 20px 0;
   }
 `;
 
-const StyledHomeWriteupTitle = styled.div`
-  font-size: 46px;
+const StyledHomeWriteupTitle = styled.h1`
+  font-size: 42px;
 `;
 
 const StyledHomeWriteup = styled.div`
   font-weight: 300;
 `;
 
-const StyledQuizardLogo = styled.div`
-  max-width: 450px;
-  max-height: 400px;
-
-  & > img {
-    width: 100%;
-    height: 100%;
-  }
+const StyledOwl = styled(Owl)`
+  flex: 0;
+  width: 320px;
 `;
 
 const HomeHeader: React.FC = () => {
   return (
-    <>
-      <StyledHomeHeader>
-        <StyledHomeWriteupBox>
-          <StyledHomeWriteupTitle>Create Quizzes</StyledHomeWriteupTitle>
-          <StyledHomeWriteup>
-            Easily create new quizzes with Quizard and share them with your
-            students and peers!
-          </StyledHomeWriteup>
-          <div>
-            <CreateQuizButton />
-          </div>
-        </StyledHomeWriteupBox>
-        <HideOnMedium>
-          <StyledQuizardLogo>
-            <Owl />
-          </StyledQuizardLogo>
-        </HideOnMedium>
-      </StyledHomeHeader>
-    </>
+    <StyledHomeHeader>
+      <StyledHomeWriteupBox>
+        <StyledHomeWriteupTitle>Create Quizzes</StyledHomeWriteupTitle>
+        <StyledHomeWriteup>
+          Easily create new quizzes with Quizard and share them with your
+          students and peers!
+        </StyledHomeWriteup>
+        <CreateQuizButton />
+      </StyledHomeWriteupBox>
+      <HideOnSmall>
+        <StyledOwl />
+      </HideOnSmall>
+    </StyledHomeHeader>
   );
 };
 

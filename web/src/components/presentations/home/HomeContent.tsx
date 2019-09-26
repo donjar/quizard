@@ -14,7 +14,7 @@ import QuizCard from './QuizCard';
 
 const StyledHomeContent = styled.div`
   & > * {
-    margin: 5px 0;
+    margin: 0.5em 0;
   }
 `;
 
@@ -70,7 +70,7 @@ const HomeContent: React.FC<IHomeContentProps> = ({
 }) => {
   return (
     <StyledHomeContent>
-      <div>My Quizzes</div>
+      <h3>My Quizzes</h3>
       <HorizButtonToolbar>
         <QuizTypeButtonContainer
           quizTypeSelected={CREATED_QUIZZES_SELECTED}

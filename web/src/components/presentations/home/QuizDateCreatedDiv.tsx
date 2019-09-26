@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const QuizDateCreatedDiv = styled.div`
-  font-weight: 300;
-  font-size: 18px;
+  font-weight: lighter;
+  font-size: 1rem;
   text-align: right;
 `;

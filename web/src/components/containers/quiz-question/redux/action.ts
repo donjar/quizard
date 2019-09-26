@@ -17,11 +17,13 @@ import {
   ISelectCorrectOptionAction,
   ISelectIncorrectOptionAction,
   ISelectOptionAction,
+  ISetOwlEmotion,
   ISetQuestionsAction,
   IStartQuizAction,
   SELECT_CORRECT_QUESTION_OPTION,
   SELECT_INCORRECT_QUESTION_OPTION,
   SELECT_QUESTION_OPTION,
+  SET_OWL_EMOTION,
   SET_QUESTIONS,
   START_QUIZ
 } from './types';
@@ -31,7 +33,7 @@ export const checkSelectedOption: ActionCreator<
     Promise<ISelectCorrectOptionAction | ISelectIncorrectOptionAction>,
     IAnswerOptionPayload | IIncorrectAnswerOptionPayload,
     null,
-    ISelectOptionAction | ISelectCorrectOptionAction | ISelectIncorrectOptionAction
+    ISelectOptionAction | ISelectCorrectOptionAction | ISelectIncorrectOptionAction | ISetOwlEmotion
   >
 > = (
   questionId: string,
@@ -44,6 +46,10 @@ export const checkSelectedOption: ActionCreator<
     const checkAnswerData: ICheckAnswerData = (
       await checkQuizQuestionAnswer(quizId, questionId, optionIdx)
     ).data;
+
+    const isCorrect = checkAnswerData.is_correct;
+    dispatch(setOwlEmotion(isCorrect));
+
     if (checkAnswerData.is_correct) {
       return dispatch(selectCorrectOption(selectedAnswerOption));
     } else {
@@ -129,5 +135,12 @@ export const startQuiz = (newQuestionIdx: number): IStartQuizAction => {
   return {
     type: START_QUIZ,
     payload: { currentQuestionIdx: newQuestionIdx }
+  };
+};
+
+export const setOwlEmotion = (happy: boolean): ISetOwlEmotion => {
+  return {
+    type: SET_OWL_EMOTION,
+    payload: happy
   };
 };

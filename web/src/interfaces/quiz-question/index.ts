@@ -20,6 +20,7 @@ export interface IQuizState {
   disableSelection: boolean;
   showNext: boolean;
   showDone: boolean;
+  happyOwl: boolean;
 }
 
 export interface IAnswerOptionPayload {

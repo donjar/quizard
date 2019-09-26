@@ -12,6 +12,7 @@ export const GOTO_NEXT_QUESTION = 'GOTO_NEXT_QUESTION';
 export const FETCH_QUESTIONS = 'FETCH_QUESTIONS';
 export const SET_QUESTIONS = 'SET_QUESTIONS';
 export const START_QUIZ = 'START_QUIZ';
+export const SET_OWL_EMOTION = 'SET_OWL_EMOTION';
 
 export interface ISelectOptionAction {
   type: typeof SELECT_QUESTION_OPTION;
@@ -47,6 +48,11 @@ export interface IStartQuizAction {
   payload: IStartQuizPayload;
 }
 
+export interface ISetOwlEmotion {
+  type: typeof SET_OWL_EMOTION;
+  payload: boolean;
+}
+
 export type IQuizQuestionActionTypes =
   | ISelectOptionAction
   | ISelectCorrectOptionAction
@@ -54,4 +60,5 @@ export type IQuizQuestionActionTypes =
   | IGotoNextQuestionAction
   | IFetchQuestionsAction
   | ISetQuestionsAction
-  | IStartQuizAction;
+  | IStartQuizAction
+  | ISetOwlEmotion;

@@ -9,8 +9,8 @@ import {
   changeFullName,
   changePassword,
   performRegister,
-  setFullNameError,
   setEmailError,
+  setFullNameError,
   setPasswordError
 } from './redux/actions';
 

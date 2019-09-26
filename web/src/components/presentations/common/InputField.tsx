@@ -34,7 +34,7 @@ const StyledInput = styled.input`
 
 const ErrorParagraph = styled.p`
   color: var(--red);
-`
+`;
 
 const InputField: React.FC<IInputFieldProps> = ({ type, placeholder, value, onChange, error }) => {
   return (

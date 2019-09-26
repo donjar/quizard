@@ -18,6 +18,7 @@ interface IQuizQuestionContainerProps {
   numQuestions: number;
   questionNumber: number;
   disableSelection: boolean;
+  happyOwl: boolean;
   showNext: boolean;
   onSelectOption: (
     quizId: string,
@@ -30,13 +31,13 @@ interface IQuizQuestionContainerProps {
 }
 
 class QuizQuestionContainer extends React.Component<IQuizQuestionContainerProps> {
-  componentDidMount() {
+  public componentDidMount() {
     const quizId = this.props.match.params.id;
     this.props.getQuestions(quizId);
   }
 
-  render() {
-    const { match, question, numQuestions, questionNumber, disableSelection, showNext,
+  public render() {
+    const { match, question, numQuestions, questionNumber, disableSelection, happyOwl, showNext,
             onSelectOption, onClickNext } = this.props;
 
     const quizId = match.params.id;
@@ -58,6 +59,7 @@ class QuizQuestionContainer extends React.Component<IQuizQuestionContainerProps>
         question={question.text}
         options={question.options}
         disableSelection={disableSelection}
+        happyOwl={happyOwl}
         showNext={showNext}
         onSelectOption={handleSelectedOption}
         onCloseQuiz={handleLeaveQuiz}
@@ -68,13 +70,14 @@ class QuizQuestionContainer extends React.Component<IQuizQuestionContainerProps>
 }
 
 const mapStateToProps = (state: AppState) => {
-  const { questions, currQuestionIdx, disableSelection, showNext } = state.quizQuestion;
+  const { questions, happyOwl, currQuestionIdx, disableSelection, showNext } = state.quizQuestion;
   return {
     numQuestions: questions.length,
     questionNumber: currQuestionIdx + 1,
     question: questions[currQuestionIdx],
     disableSelection,
-    showNext
+    showNext,
+    happyOwl
   };
 };
 

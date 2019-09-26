@@ -5,7 +5,9 @@ import { getLatestQuizAttempt, getQuestionsByQuizId, getQuizById } from '../../.
 import { IAttemptedQuestion, IAttemptedQuiz } from '../../../interfaces/quiz-create-summary';
 import { AppState } from '../../../store/store';
 import { history } from '../../../utils/history';
+import Loading from '../../presentations/common/Loading';
 import QuizAttemptReview from '../../presentations/quiz-summaries/QuizAttemptReview';
+import { setLoadingComplete } from '../loading/redux/actions';
 import { setQuiz } from './redux/actions';
 
 interface IQuizAttemptReviewContainerProps {
@@ -14,12 +16,17 @@ interface IQuizAttemptReviewContainerProps {
   description: string;
   score: number;
   questions: IAttemptedQuestion[];
+  hasLoaded: boolean;
   setQuiz: (quiz: IAttemptedQuiz) => void;
+  setLoadingComplete: (hasLoaded: boolean) => void;
 }
 
 class QuizAttemptReviewContainer extends React.Component<IQuizAttemptReviewContainerProps> {
   public async componentDidMount() {
-    const { match: { params: { id: quizId = '' } = {} } = {} , ...props } = this.props;
+    const { match: { params: { id: quizId = '' } = {} } = {}, ...props } = this.props;
+
+    this.props.setLoadingComplete(false);
+
     const quiz = (await getQuizById(quizId)).data;
     const questions = (await getQuestionsByQuizId(quizId)).data;
     const attempt = (await getLatestQuizAttempt(quizId)).data;
@@ -42,11 +49,14 @@ class QuizAttemptReviewContainer extends React.Component<IQuizAttemptReviewConta
         })
       });
     }
+
+    this.props.setLoadingComplete(true);
   }
 
   public render() {
-    const { name, description, score, questions } = this.props;
-    return (
+    const { name, description, score, questions, hasLoaded } = this.props;
+
+    return (!hasLoaded) ? <Loading /> : (
       <QuizAttemptReview
         name={name}
         description={description}
@@ -58,7 +68,10 @@ class QuizAttemptReviewContainer extends React.Component<IQuizAttemptReviewConta
 }
 
 const mapStateToProps = (state: AppState) => {
-  return state.quizAttemptReview;
+  return {
+    ...state.quizAttemptReview,
+    hasLoaded: state.loading.hasLoaded
+  };
 };
 
 const mapDispatchToProps = (dispatch: Dispatch) => {
@@ -66,6 +79,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
     setQuiz: (quiz: IAttemptedQuiz) => {
       dispatch(setQuiz(quiz));
     },
+    setLoadingComplete: (hasLoaded: boolean) =>
+      dispatch(setLoadingComplete(hasLoaded))
   };
 };
 

@@ -7,6 +7,7 @@ import {
   SELECT_CORRECT_QUESTION_OPTION,
   SELECT_INCORRECT_QUESTION_OPTION,
   SELECT_QUESTION_OPTION,
+  SET_OWL_EMOTION,
   SET_QUESTIONS,
   START_QUIZ
 } from './types';
@@ -48,6 +49,7 @@ export default function quizQuestionReducer(
         draft.currQuestionIdx++;
         draft.disableSelection = false;
         draft.showNext = false;
+        draft.happyOwl = true;
       });
 
     case SET_QUESTIONS:
@@ -57,6 +59,9 @@ export default function quizQuestionReducer(
 
     case START_QUIZ:
       return { ...state, currQuestionIdx: action.payload.currentQuestionIdx };
+
+    case SET_OWL_EMOTION:
+      return { ...state, happyOwl: action.payload };
 
     default:
       return state;

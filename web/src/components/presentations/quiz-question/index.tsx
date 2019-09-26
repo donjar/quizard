@@ -2,6 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import { IQuestionOption } from '../../../interfaces/quiz-question';
 import { ReactComponent as Medal } from '../../../svg/medal.svg';
+import { ReactComponent as SadOwl } from '../../../svg/owl-sad.svg';
+import { ReactComponent as Owl } from '../../../svg/owl.svg';
 import { BeigeBackground } from '../common/BeigeBackground';
 import { BodyAfterNavBarWithPadding } from '../common/BodyAfterNavBarWithPadding';
 import CloseButton from '../common/buttons/CloseButton';
@@ -23,6 +25,20 @@ const StyledQuizHeader = styled.div`
   align-items: center;
 `;
 
+const BottomRightOwl = styled(Owl)`
+  position: absolute;
+  bottom: calc(-9vh - 3vw);
+  right: calc(-9vh - 3vw);
+  width: calc(30vh + 10vw);
+`;
+
+const BottomRightSadOwl = styled(SadOwl)`
+  position: absolute;
+  bottom: calc(-9vh - 3vw);
+  right: calc(-9vh - 3vw);
+  width: calc(30vh + 10vw);
+`;
+
 export interface IQuizQuestionProps {
   questionNumber: number;
   numQuestions: number;
@@ -30,22 +46,24 @@ export interface IQuizQuestionProps {
   options: IQuestionOption[];
   disableSelection: boolean;
   showNext: boolean;
+  happyOwl: boolean;
   onSelectOption: (idx: number) => void;
   onCloseQuiz: () => void;
   onClickNext: () => void;
 }
 
 const QuizQuestion: React.FC<IQuizQuestionProps> = ({
-   questionNumber,
-   numQuestions,
-   question,
-   options,
-   disableSelection,
-   showNext,
-   onSelectOption,
-   onCloseQuiz,
-   onClickNext
-  }) => {
+  questionNumber,
+  numQuestions,
+  question,
+  options,
+  disableSelection,
+  showNext,
+  happyOwl,
+  onSelectOption,
+  onCloseQuiz,
+  onClickNext
+}) => {
   return (
     <BeigeBackground>
       <QuizNavBar />
@@ -64,6 +82,7 @@ const QuizQuestion: React.FC<IQuizQuestionProps> = ({
           onSelectOption={onSelectOption}
           onClickNext={onClickNext}
         />
+        {happyOwl ? (<BottomRightOwl />) : (<BottomRightSadOwl />)}
       </StyledQuizBody>
     </BeigeBackground>
   );

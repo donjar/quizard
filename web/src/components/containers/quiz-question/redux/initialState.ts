@@ -29,6 +29,7 @@ const initialState: IQuizState = {
   disableSelection: false,
   showNext: false,
   showDone: false,
+  happyOwl: true
 };
 
 export default initialState;

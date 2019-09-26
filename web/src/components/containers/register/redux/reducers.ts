@@ -1,6 +1,15 @@
 import { IRegisterState } from '../../../../interfaces/register';
 import initialState from './initialState';
-import { CHANGE_EMAIL, CHANGE_FULL_NAME, CHANGE_PASSWORD, IRegisterActionTypes, PERFORM_REGISTER, SET_EMAIL_ERROR, SET_FULL_NAME_ERROR, SET_PASSWORD_ERROR } from './types';
+import {
+  CHANGE_EMAIL,
+  CHANGE_FULL_NAME,
+  CHANGE_PASSWORD,
+  IRegisterActionTypes,
+  PERFORM_REGISTER,
+  SET_EMAIL_ERROR,
+  SET_FULL_NAME_ERROR,
+  SET_PASSWORD_ERROR
+} from './types';
 
 export default function loginReducer(
   state = initialState,

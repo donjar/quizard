@@ -1,9 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
-import { getQuestionsByQuizId, getQuizById } from '../../../api';
-import { IQuiz } from '../../../interfaces/quiz-create-summary';
+import { getQuestionsByQuizId, getQuizById, getQuizStatisticsByQuizId } from '../../../api';
 import { IQuizCreateSummaryContainerProps } from '../../../interfaces/quiz-create-summary';
+import { IQuiz } from '../../../interfaces/quiz-create-summary';
 import { AppState } from '../../../store/store';
 import { getUser } from '../../../utils/auth';
 import { history } from '../../../utils/history';
@@ -28,16 +28,25 @@ class QuizCreateSummaryContainer extends React.Component<IQuizCreateSummaryConta
     if (quiz === undefined || quiz.creator_id !== userId) {
       history.push('/');
     } else {
+      const summary = (await getQuizStatisticsByQuizId(quizId)).data;
+
       props.setQuiz({
         name: quiz.title,
         description: quiz.description || 'No description',
         numAttempts: quiz.num_attempts,
-        questions: questions.map((qn: any, idx: any) => {
+        questions: questions.map((qn: any, idx: number) => {
+          const qnSummary = summary[idx];
+
           return {
             questionNumber: idx + 1,
             text: qn.text,
-            options: qn.options,
-            correctOption: 0
+            options: qn.options.map((opt: string, optIdx: number) => {
+              return {
+                option: opt,
+                percentage: qnSummary.stats.percentage[optIdx]
+              };
+            }),
+            correctOption: qnSummary.correct_option
           };
         })
       });

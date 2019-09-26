@@ -152,3 +152,9 @@ export const checkQuizQuestionAnswer = async (
 
   return await res.json();
 };
+
+export const getQuizStatisticsByQuizId = async (quizId: string): Promise<any> => {
+  const res = await fetchWithAuth(`${apiUrl}/quizzes/${quizId}/summary`);
+
+  return await res.json();
+};

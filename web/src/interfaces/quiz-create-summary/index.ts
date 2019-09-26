@@ -1,3 +1,8 @@
+export interface IOptionSummary {
+  option: string;
+  percentage: number;
+}
+
 export interface IQuestion {
   questionNumber: number;
   text: string;
@@ -39,6 +44,10 @@ export interface IQuizAttemptReviewProps extends IAttemptedQuiz {}
 export interface IQuizCreateSummaryState extends IQuiz {}
 export interface IQuizAttemptReviewState extends IAttemptedQuiz {}
 
-export interface IQuestionSectionProps extends IQuestion {
+export interface IQuestionSectionProps {
   selectedOption?: number;
+  questionNumber: number;
+  text: string;
+  options: Array<string | IOptionSummary>;
+  correctOption: number;
 }

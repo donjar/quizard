@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { IQuestionSectionProps } from '../../../interfaces/quiz-create-summary';
+import { IOptionSummary } from '../../../interfaces/quiz-create-summary';
 import { mdMax } from '../../../utils/media';
 import QuizSectionOption from './QuizSectionOption';
 
@@ -55,14 +56,20 @@ const QuestionSection: React.FC<IQuestionSectionProps> = ({
   correctOption,
   selectedOption
 }) => {
-  const optionsArray = options.map((op, optionIdx) => {
+  const optionsArray = options.map((op: string | IOptionSummary, optionIdx: number) => {
+    let message;
+    if (typeof op === 'string') {
+      message = op;
+    } else {
+      message = `${op.option} (${op.percentage}%)`;
+    }
     return (
       <QuizSectionOption
         isCorrect={optionIdx === correctOption}
         isSelected={optionIdx === selectedOption}
         key={optionIdx}
       >
-        {op}
+        {message}
       </QuizSectionOption>
     );
   });

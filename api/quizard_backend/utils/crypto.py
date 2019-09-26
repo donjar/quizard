@@ -2,11 +2,11 @@ from hashlib import sha512
 
 from sanic.exceptions import InvalidUsage
 
-salt = "07facbc897aab311d1e72a1cb1c131616b68868921674ed56ade6ffcef18ee6e"
+from quizard_backend.config import PASSWORD_SALT
 
 
 def hash_password(password: str) -> str:
-    salted = password + salt
+    salted = password + PASSWORD_SALT
     return sha512(salted.encode("utf8")).hexdigest()
 
 

@@ -5,12 +5,12 @@ from sanic import Blueprint, Sanic
 from sanic_jwt_extended import JWTManager
 from sanic_cors import CORS
 
-from quizard_backend.config import SANIC_CONFIG
+from quizard_backend.config import JWT_SECRET_KEY, SANIC_CONFIG
 
 app = Sanic(__name__)
 
 app.config.update(SANIC_CONFIG)
-app.config["JWT_SECRET_KEY"] = "oi123n1k231kloiqwescqklwn"  # Remove later
+app.config["JWT_SECRET_KEY"] = JWT_SECRET_KEY
 app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(minutes=15)
 app.config["CORS_AUTOMATIC_OPTIONS"] = True
 

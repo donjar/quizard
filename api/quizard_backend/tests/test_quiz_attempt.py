@@ -259,7 +259,7 @@ async def test_create_attempt_for_2_users(client, users, questions, quizzes, app
 
 
 async def test_get_attempt_with_fully_answered_questions(
-    client, questions, quizzes, token_user
+    client, users, questions, quizzes, token_user
 ):
     quiz_index = 6
     correct_answers = 7
@@ -280,7 +280,7 @@ async def test_get_attempt_with_fully_answered_questions(
         )
         assert res.status == 200
 
-    # Retrieve the attempt, and check if the score is correct and is_finish is True
+    # Retrieve the attempt, and check if the score is correct and is_finished is True
     res = await client.get(
         "/quizzes/{}/attempt".format(quizzes[quiz_index]["id"]),
         headers={"Authorization": token_user},
@@ -304,6 +304,22 @@ async def test_get_attempt_with_fully_answered_questions(
     assert res.status == 200
     body = await res.json()
     assert body["data"]["num_attempts"] == 1
+
+    # Create a new attempt to reset the progress
+    res = await client.post(
+        "/quizzes/{}/attempt".format(quizzes[quiz_index]["id"]),
+        headers={"Authorization": token_user},
+    )
+    assert res.status == 200
+
+    # Validate that the attempt quiz has been reset
+    res = await client.get("/users/{}/quizzes/attempted".format(users[0]["id"]))
+    assert res.status == 200
+    body = await res.json()
+    assert "data" in body
+    assert isinstance(body["data"], list)
+    assert len(body["data"]) == 1
+    assert not body["data"][0]["is_finished"]
 
 
 async def test_create_attempt(client, questions, quizzes, token_user):

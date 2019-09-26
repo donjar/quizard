@@ -42,7 +42,6 @@ async def get_one(model, **kwargs):
 async def get_many(
     model,
     columns=None,
-    distinct=False,
     after_id=None,
     limit=15,
     in_column=None,
@@ -78,8 +77,6 @@ async def get_many(
             else True,
         )
     )
-    if distinct:
-        query = query.distinct()
 
     return (
         await query.order_by(
@@ -88,6 +85,44 @@ async def get_many(
         .limit(limit)
         .gino.all()
     )
+
+
+async def get_latest_quiz_attempts(model, user_id, limit=15, after_id=None, **kwargs):
+    # Get the `internal_id` value from the starting row
+    # And use it to query the next page of results
+    last_internal_id = 0
+    if after_id:
+        row_of_after_id = await model.query.where(model.id == after_id).gino.first()
+        if not row_of_after_id:
+            raise_not_found_exception(model, **kwargs)
+
+        last_internal_id = row_of_after_id.internal_id
+
+    return (
+        await db.status(
+            db.text(
+                """SELECT * FROM (
+                    SELECT DISTINCT ON (quiz_attempt.quiz_id, quiz_attempt.user_id)
+                        quiz_attempt.quiz_id,
+                        quiz_attempt.user_id,
+                        quiz_attempt.is_finished,
+                        quiz_attempt.internal_id
+                    FROM quiz_attempt
+                    WHERE quiz_attempt.user_id = :user_id {}
+                    ORDER BY
+                        quiz_attempt.quiz_id,
+                        quiz_attempt.user_id,
+                        quiz_attempt.internal_id DESC
+                    ) t
+                    ORDER By t.internal_id DESC limit :limit;""".format(
+                    "and quiz_attempt.internal_id < :last_internal_id"
+                    if after_id
+                    else ""
+                )
+            ),
+            {"user_id": user_id, "limit": limit, "last_internal_id": last_internal_id},
+        )
+    )[1]
 
 
 async def get_one_latest(model, **kwargs):

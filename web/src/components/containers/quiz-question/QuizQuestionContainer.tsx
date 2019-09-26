@@ -43,7 +43,7 @@ const QuizQuestionContainer: React.FC<IQuizQuestionContainerProps> = ({
   const quizId = match.params.id;
   useEffect(() => {
     getQuestions(quizId);
-  }, []);
+  });
 
   const handleSelectedOption = async (optionIdx: number) => {
     onSelectOption(quizId, question.questionId, questionNumber - 1, optionIdx);

@@ -9,17 +9,20 @@ import {
   changeEmail,
   changePassword,
   performLogin,
-  setError
+  setEmailError,
+  setPasswordError
 } from './redux/actions';
 
 interface ILoginContainerProps {
   email: string;
   password: string;
-  error?: string;
+  emailError?: string;
+  passwordError?: string;
   loggedIn: boolean;
   onChangeEmail: (newEmail: string) => void;
   onChangePassword: (newPassword: string) => void;
-  setError: (error: string) => void;
+  setEmailError: (error: string) => void;
+  setPasswordError: (error: string) => void;
   performLogin: () => void;
 }
 
@@ -28,7 +31,14 @@ const onLogin = async (props: any, email: any, password: any) => {
   const { location: { state: { prevLocation = '/' } = {} } = {} } = props;
 
   if ('error' in data) {
-    props.setError(JSON.stringify(data.error));
+    const err = data.error;
+
+    if ('email' in err) {
+      props.setEmailError(err.email.join(';'));
+    }
+    if ('password' in err) {
+      props.setPasswordError(err.password.join(';'));
+    }
   } else {
     props.performLogin();
     localStorage.setItem('accessToken', data.access_token);
@@ -41,7 +51,8 @@ const onLogin = async (props: any, email: any, password: any) => {
 const LoginContainer: React.FC<ILoginContainerProps> = ({
   email,
   password,
-  error,
+  emailError,
+  passwordError,
   loggedIn,
   onChangeEmail,
   onChangePassword,
@@ -52,7 +63,8 @@ const LoginContainer: React.FC<ILoginContainerProps> = ({
       email={email}
       password={password}
       loggedIn={loggedIn}
-      error={error}
+      emailError={emailError}
+      passwordError={passwordError}
       onChangeEmail={onChangeEmail}
       onChangePassword={onChangePassword}
       onLogin={() => onLogin(props, email, password)}
@@ -63,7 +75,8 @@ const LoginContainer: React.FC<ILoginContainerProps> = ({
 const mapStateToProps = (state: AppState) => ({
   email: state.login.email,
   password: state.login.password,
-  error: state.login.error,
+  emailError: state.login.emailError,
+  passwordError: state.login.passwordError,
   loggedIn: state.login.loggedIn
 });
 
@@ -78,8 +91,11 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
     performLogin: () => {
       dispatch(performLogin());
     },
-    setError: (error: string) => {
-      dispatch(setError(error));
+    setEmailError: (error: string) => {
+      dispatch(setEmailError(error));
+    },
+    setPasswordError: (error: string) => {
+      dispatch(setPasswordError(error));
     }
   };
 };

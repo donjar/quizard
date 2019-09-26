@@ -2,7 +2,9 @@ export interface IRegisterState {
   fullName: string;
   email: string;
   password: string;
-  error?: string;
+  fullNameError?: string;
+  emailError?: string;
+  passwordError?: string;
   registered: boolean;
 }
 

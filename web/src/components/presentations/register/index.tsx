@@ -37,7 +37,9 @@ const Register: React.FC<IRegisterProps> = ({
   fullName,
   email,
   password,
-  error,
+  fullNameError,
+  emailError,
+  passwordError,
   registered,
   onChangeFullName,
   onChangeEmail,
@@ -68,25 +70,27 @@ const Register: React.FC<IRegisterProps> = ({
             placeholder="Full name"
             value={fullName}
             onChange={(event) => onChangeFullName(event.target.value)}
+            error={fullNameError}
           />
           <InputField
             type="text"
             placeholder="Email"
             value={email}
             onChange={(event) => onChangeEmail(event.target.value)}
+            error={emailError}
           />
           <InputField
             type="password"
             placeholder="Password"
             value={password}
             onChange={(event) => onChangePassword(event.target.value)}
+            error={passwordError}
           />
           <DarkButton type="submit">Register</DarkButton>
           <Link to="/login" style={{ fontSize: '18px' }}>
             Back to Login
           </Link>
         </RegisterForm>
-        {error && <div>Error: {error}</div>}
       </StyledRegister>
     </FullScreenModal>
   );

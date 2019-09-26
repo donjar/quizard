@@ -1,4 +1,4 @@
-import { CHANGE_EMAIL, CHANGE_FULL_NAME, CHANGE_PASSWORD, IRegisterActionTypes, PERFORM_REGISTER, SET_ERROR } from './types';
+import { CHANGE_EMAIL, CHANGE_FULL_NAME, CHANGE_PASSWORD, IRegisterActionTypes, PERFORM_REGISTER, SET_EMAIL_ERROR, SET_FULL_NAME_ERROR, SET_PASSWORD_ERROR } from './types';
 
 export const changeFullName = (newName: string): IRegisterActionTypes => {
   return {
@@ -27,9 +27,23 @@ export const performRegister = (): IRegisterActionTypes => {
   };
 };
 
-export const setError = (error: string): IRegisterActionTypes => {
+export const setEmailError = (error: string): IRegisterActionTypes => {
   return {
     payload: error,
-    type: SET_ERROR
+    type: SET_EMAIL_ERROR
+  };
+};
+
+export const setFullNameError = (error: string): IRegisterActionTypes => {
+  return {
+    payload: error,
+    type: SET_FULL_NAME_ERROR
+  };
+};
+
+export const setPasswordError = (error: string): IRegisterActionTypes => {
+  return {
+    payload: error,
+    type: SET_PASSWORD_ERROR
   };
 };

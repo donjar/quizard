@@ -36,7 +36,8 @@ const Login: React.FC<ILoginProps> = ({
   email,
   password,
   loggedIn,
-  error,
+  emailError,
+  passwordError,
   onChangeEmail,
   onChangePassword,
   onLogin
@@ -59,12 +60,14 @@ const Login: React.FC<ILoginProps> = ({
             placeholder="Email"
             value={email}
             onChange={(event) => onChangeEmail(event.target.value)}
+            error={emailError}
           />
           <InputField
             type="password"
             placeholder="Password"
             value={password}
             onChange={(event) => onChangePassword(event.target.value)}
+            error={passwordError}
           />
           <DarkButton type="submit">Login</DarkButton>
         </LoginForm>
@@ -74,7 +77,6 @@ const Login: React.FC<ILoginProps> = ({
             Sign up now!
           </Link>
         </CenteredDiv>
-        {error && (<div>Error: {error}</div>)}
       </StyledLogin>
     </FullScreenModal>
   );

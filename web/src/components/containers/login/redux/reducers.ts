@@ -1,6 +1,6 @@
 import { ILoginState } from '../../../../interfaces/login';
 import initialState from './initialState';
-import { CHANGE_EMAIL, CHANGE_PASSWORD, ILoginActionTypes, PERFORM_LOGIN, SET_ERROR } from './types';
+import { CHANGE_EMAIL, CHANGE_PASSWORD, ILoginActionTypes, PERFORM_LOGIN, SET_EMAIL_ERROR, SET_PASSWORD_ERROR } from './types';
 
 export default function loginReducer(
   state = initialState,
@@ -23,10 +23,15 @@ export default function loginReducer(
         password: state.password,
         loggedIn: true
       };
-    case SET_ERROR:
+    case SET_EMAIL_ERROR:
       return {
         ...state,
-        error: action.payload,
+        emailError: action.payload,
+      };
+    case SET_PASSWORD_ERROR:
+      return {
+        ...state,
+        passwordError: action.payload,
       };
 
     default:

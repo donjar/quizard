@@ -27,12 +27,6 @@ export interface IHomeContainerProps extends IHomeState {
   setLoadingComplete: (hasLoaded: boolean) => void;
 }
 
-export interface IRowRendererProps {
-  key: any;
-  index: number;
-  style: any;
-}
-
 export interface IHomeNavBarProps {
   onLogout: () => void;
 }

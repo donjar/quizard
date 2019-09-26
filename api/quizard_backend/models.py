@@ -170,7 +170,6 @@ class Quiz(BaseModel):
     # Index
     _idx_quiz_id = db.Index("idx_quiz_id", "id")
     _idx_quiz_creator = db.Index("idx_quiz_creator", "creator_id")
-    _idx_quiz_category_id = db.Index("idx_quiz_category_id", "category_id")
 
     @classmethod
     async def add(cls, creator_id=None, **kwargs):

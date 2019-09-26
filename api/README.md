@@ -154,7 +154,6 @@ So you don't have to worry and could use the URL directly without issues.
             "description": null,
             "title": "Popular song would century already professional picture.",
             "num_attempts": 1,
-            "category_id": null,
             "questions": [
                 "ca9c90f0441d4a2bb28d94fac3cc879a",
                 "1549cb69514b448581876047e80905d7",
@@ -168,10 +167,8 @@ So you don't have to worry and could use the URL directly without issues.
                 "1e3c157bd58b4b4cb1d3bf045d256cd6"
             ],
             "creator_id": "9539538fff894799a12bfc7bd270fe44",
-            "type_id": null,
             "id": "abc2989dea294e9aa815462aae6fe152",
-            "updated_at": 1569222798,
-            "animation_id": null
+            "updated_at": 1569222798
         },
         ...
     ],

@@ -1,12 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
 import { IQuizStartProps } from '../../../interfaces/quiz-start';
+import { ReactComponent as Owl } from '../../../svg/owl.svg';
+import { mdMax } from '../../../utils/media';
 import { BodyAfterNavBarWithPadding } from '../common/BodyAfterNavBarWithPadding';
 import BigDarkButton from '../common/buttons/BigDarkButton';
 import { CenteredDiv } from '../common/CenteredDiv';
 import { QuizStartNavBar } from './QuizStartNavBar';
-import { ReactComponent as Owl } from '../../../svg/owl.svg';
-import { mdMax } from '../../../utils/media';
 
 const StyledBody = styled(BodyAfterNavBarWithPadding)`
   * {

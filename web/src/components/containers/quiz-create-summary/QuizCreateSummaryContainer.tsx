@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
-import { IQuizCreateSummaryContainerProps } from '../../../interfaces/quiz-create-summary';
 import { getQuestionsByQuizId, getQuizById, getQuizStatisticsByQuizId } from '../../../api';
+import { IQuizCreateSummaryContainerProps } from '../../../interfaces/quiz-create-summary';
 import { IQuiz } from '../../../interfaces/quiz-create-summary';
 import { AppState } from '../../../store/store';
 import { getUser } from '../../../utils/auth';

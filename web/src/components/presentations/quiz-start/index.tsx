@@ -1,16 +1,12 @@
 import React from 'react';
-
 import styled from 'styled-components';
 import { IQuizStartProps } from '../../../interfaces/quiz-start';
-import { BeigeBackground } from '../common/BeigeBackground';
 import { BodyAfterNavBarWithPadding } from '../common/BodyAfterNavBarWithPadding';
-import { StartButton } from '../common/buttons/StartButton';
+import BigDarkButton from '../common/buttons/BigDarkButton';
 import { CenteredDiv } from '../common/CenteredDiv';
 import { QuizStartNavBar } from './QuizStartNavBar';
-
-const BoldedText = styled.span`
-  font-weight: bold;
-`;
+import { ReactComponent as Owl } from '../../../svg/owl.svg';
+import { mdMax } from '../../../utils/media';
 
 const StyledBody = styled(BodyAfterNavBarWithPadding)`
   * {
@@ -18,28 +14,40 @@ const StyledBody = styled(BodyAfterNavBarWithPadding)`
   }
 `;
 
+const BottomRightOwl = styled(Owl)`
+  position: fixed;
+  bottom: calc(-9vh - 3vw);
+  right: calc(-9vh - 3vw);
+  width: calc(30vh + 10vw);
+
+  @media (max-width: ${mdMax}) {
+    display: none;
+  }
+`;
+
 const QuizStart: React.FC<IQuizStartProps> = ({ quiz, isNewQuiz, onStartClick }) => {
   const { name, description } = quiz;
 
   return (
-    <BeigeBackground>
+    <>
       <QuizStartNavBar />
       <StyledBody>
         <h1>{name}</h1>
-        <div>{description}</div>
-        <div>
-          <BoldedText>Quiz rules:</BoldedText> MCQ format, first option you
-          select will be recorded as your answer
-        </div>
+        <p>{description}</p>
+        <p>
+          <strong>Quiz rules:</strong> Questions will be in MCQ format.
+          The first option you select will be recorded as your answer.
+        </p>
         <CenteredDiv>
           {isNewQuiz ? (
-            <StartButton onClick={onStartClick}>Start</StartButton>
+            <BigDarkButton onClick={onStartClick}>Start</BigDarkButton>
           ) : (
-            <StartButton onClick={onStartClick}>Continue</StartButton>
+            <BigDarkButton onClick={onStartClick}>Continue</BigDarkButton>
           )}
         </CenteredDiv>
       </StyledBody>
-    </BeigeBackground>
+      <BottomRightOwl />
+    </>
   );
 };
 

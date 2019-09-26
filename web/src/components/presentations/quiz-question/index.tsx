@@ -5,7 +5,6 @@ import { ReactComponent as Medal } from '../../../svg/medal.svg';
 import { ReactComponent as SadOwl } from '../../../svg/owl-sad.svg';
 import { ReactComponent as Owl } from '../../../svg/owl.svg';
 import { mdMax } from '../../../utils/media';
-import { BeigeBackground } from '../common/BeigeBackground';
 import { BodyAfterNavBarWithPadding } from '../common/BodyAfterNavBarWithPadding';
 import CloseButton from '../common/buttons/CloseButton';
 import QuizNavBar from './QuizNavBar';

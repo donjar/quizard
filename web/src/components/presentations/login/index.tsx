@@ -5,10 +5,10 @@ import { ILoginProps } from '../../../interfaces/login/index';
 import { ReactComponent as Owl } from '../../../svg/owl.svg';
 import { ReactComponent as Quizard } from '../../../svg/quizard.svg';
 import DarkButton from '../common/buttons/DarkButton';
+import NakedButton from '../common/buttons/NakedButton';
 import { CenteredDiv } from '../common/CenteredDiv';
 import FullScreenModal from '../common/FullScreenModal';
 import InputField from '../common/InputField';
-import NakedButton from '../common/buttons/NakedButton';
 
 const StyledLogin = styled.div`
   width: 100%;

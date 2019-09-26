@@ -1,7 +1,7 @@
+import React from 'react';
 import styled from 'styled-components';
 import { mdMax, mdMin } from '../../../utils/media';
 import BodyAfterNavBar from './BodyAfterNavBar';
-import React from 'react';
 
 const StyledBodyAfterNavBar = styled(BodyAfterNavBar)`
   display: flex;

@@ -32,9 +32,11 @@ def dict_to_filter_args(model, **kwargs):
 
 
 async def get_one(model, **kwargs):
-    return await model.query.where(
-        and_(*dict_to_filter_args(model, **kwargs))
-    ).gino.first()
+    return (
+        await model.query.where(and_(*dict_to_filter_args(model, **kwargs)))
+        .limit(1)
+        .gino.first()
+    )
 
 
 async def get_many(
@@ -92,6 +94,7 @@ async def get_one_latest(model, **kwargs):
     return (
         await model.query.where(and_(*dict_to_filter_args(model, **kwargs)))
         .order_by(desc(model.internal_id))
+        .limit(1)
         .gino.first()
     )
 

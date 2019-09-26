@@ -53,7 +53,7 @@ async def test_get_all_quizzes(client, quizzes, token_user):
 
     # GET request will have its body ignored.
     res = await client.get(
-        "/quizzes", json={"category_id": 3}, headers={"Authorization": token_user}
+        "/quizzes", json={"num_attempts": 0}, headers={"Authorization": token_user}
     )
     assert res.status == 200
 
@@ -206,14 +206,14 @@ async def test_create_quiz_with_invalid_args(client, quizzes, token_user):
 
     res = await client.post(
         "/quizzes",
-        json={"title": "", "category_id": 2},
+        json={"title": "", "num_attempts": 2},
         headers={"Authorization": token_user},
     )
     assert res.status == 400
 
     res = await client.post(
         "/quizzes",
-        json={"title": "Josh", "category_id": 2, "unknown_field": ""},
+        json={"title": "Josh", "num_attempts": 2, "unknown_field": ""},
         headers={"Authorization": token_user},
     )
     assert res.status == 400

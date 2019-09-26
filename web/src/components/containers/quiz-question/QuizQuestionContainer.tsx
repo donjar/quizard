@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { AnyAction } from 'redux';
 import { ThunkDispatch } from 'redux-thunk';
@@ -29,46 +29,43 @@ interface IQuizQuestionContainerProps {
   getQuestions: (quizId: string) => void;
 }
 
-const QuizQuestionContainer: React.FC<IQuizQuestionContainerProps> = ({
-  match,
-  question,
-  numQuestions,
-  questionNumber,
-  disableSelection,
-  showNext,
-  onSelectOption,
-  onClickNext,
-  getQuestions
-}) => {
-  const quizId = match.params.id;
-  useEffect(() => {
-    getQuestions(quizId);
-  });
+class QuizQuestionContainer extends React.Component<IQuizQuestionContainerProps> {
+  componentDidMount() {
+    const quizId = this.props.match.params.id;
+    this.props.getQuestions(quizId);
+  }
 
-  const handleSelectedOption = async (optionIdx: number) => {
-    onSelectOption(quizId, question.questionId, questionNumber - 1, optionIdx);
-  };
+  render() {
+    const { match, question, numQuestions, questionNumber, disableSelection, showNext,
+            onSelectOption, onClickNext } = this.props;
 
-  const handleLeaveQuiz = () => {
-    // TODO: Implement
-    // tslint:disable-next-line:no-console
-    console.log('LEAVE');
-  };
+    const quizId = match.params.id;
 
-  return (
-    <QuizQuestion
-      questionNumber={questionNumber}
-      numQuestions={numQuestions}
-      question={question.text}
-      options={question.options}
-      disableSelection={disableSelection}
-      showNext={showNext}
-      onSelectOption={handleSelectedOption}
-      onCloseQuiz={handleLeaveQuiz}
-      onClickNext={() => onClickNext({ numQuestions, questionNumber })}
-    />
-  );
-};
+    const handleSelectedOption = async (optionIdx: number) => {
+      onSelectOption(quizId, question.questionId, questionNumber - 1, optionIdx);
+    };
+
+    const handleLeaveQuiz = () => {
+      // TODO: Implement
+      // tslint:disable-next-line:no-console
+      console.log('LEAVE');
+    };
+
+    return (
+      <QuizQuestion
+        questionNumber={questionNumber}
+        numQuestions={numQuestions}
+        question={question.text}
+        options={question.options}
+        disableSelection={disableSelection}
+        showNext={showNext}
+        onSelectOption={handleSelectedOption}
+        onCloseQuiz={handleLeaveQuiz}
+        onClickNext={() => onClickNext({ numQuestions, questionNumber })}
+      />
+    );
+  }
+}
 
 const mapStateToProps = (state: AppState) => {
   const { questions, currQuestionIdx, disableSelection, showNext } = state.quizQuestion;

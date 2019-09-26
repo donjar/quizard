@@ -77,6 +77,7 @@ const QuizQuestionContent: React.FC<IQuizQuestionContentProps> = ({
 }) => {
   const optionsArray = options.map((option, idx) => (
     <QuizQuestionOption
+      key={idx}
       displayState={option.displayState}
       onClick={() => onSelectOption(idx)}
       disableSelection={disableSelection}

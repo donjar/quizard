@@ -53,6 +53,8 @@ const HidableButton = styled(GreenButton)`
   display: ${({ show }: IHiddenButtonProps) => show ? `block` : `none`};
   margin: 5px 10px;
 
+  z-index: 999;
+
   @media screen and (max-width: ${mdMax}) {
     margin: 5px 0px;
   }

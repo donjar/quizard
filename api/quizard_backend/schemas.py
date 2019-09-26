@@ -110,10 +110,6 @@ QUIZ_READ_SCHEMA = {
     "title": is_string,
     "description": is_string,
     "creator_id": is_string,
-    "category_id": is_unsigned_integer,
-    "type_id": is_unsigned_integer,
-    "animation_id": is_unsigned_integer,
-    "questions": is_string_list,
     "questions": {  # A list of dicts
         "type": "list",
         "schema": {"type": "dict", "schema": QUIZ_QUESTION_READ_SCHEMA},
@@ -126,9 +122,6 @@ QUIZ_WRITE_SCHEMA = {
     "id": {"readonly": True},
     "title": is_required_string,
     "description": is_string,
-    "category_id": is_unsigned_integer,
-    "type_id": is_unsigned_integer,
-    "animation_id": is_unsigned_integer,
     "questions": {  # A list of dicts
         "type": "list",
         "required": True,

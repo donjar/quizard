@@ -163,9 +163,6 @@ class Quiz(BaseModel):
     creator_id = db.Column(
         db.String(length=32), db.ForeignKey("user.id"), nullable=False
     )
-    category_id = db.Column(db.SmallInteger)
-    type_id = db.Column(db.SmallInteger)
-    animation_id = db.Column(db.SmallInteger)
     questions = db.Column(ARRAY(db.String), server_default="{}")
     created_at = db.Column(db.BigInteger, nullable=False, default=unix_time)
     updated_at = db.Column(db.BigInteger, onupdate=unix_time)

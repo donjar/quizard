@@ -123,7 +123,7 @@ A refresh token is a long-life token used to generate new access tokens. In this
 - `POST`: Create a resource.
 - `PUT`: Replace a resource.
 - `PATCH`: Update a resource.
-- `DELETE`: Delete a resource. (*WIP*)
+- `DELETE`: Delete a resource.
 
 
 ## Query parameters
@@ -142,7 +142,7 @@ Responses that support getting multiple rows will have a key called `links` (apa
 
 *Example*
 
-Note that the hostname of `127.0.0.1:8000` will be automatically changed to the hostname of the running server.
+Note that the hostname of `127.0.0.1:8000` in the example will be automatically changed to the hostname of the actual running server.
 
 So you don't have to worry and could use the URL directly without issues.
 
@@ -195,8 +195,6 @@ So you don't have to worry and could use the URL directly without issues.
 ## Endpoints
 
 The supported endpoints are listed here.
-
-> If there are any endpoints you are interested in and they aren't here, either it is not implemented yet, or the we just forgot to update this docs.
 
 ### 1. Users
 
@@ -302,6 +300,11 @@ GET /quizzes?limit=5&after_id=<uuid>
 ```
 
 #### Create
+
+The fields for creating a quiz include:
+- **title**: string
+- **description** (*Optional*): string
+- **questions**: a list of `QuizQuestions` objects.
 
 ```
 POST /quizzes
@@ -511,11 +514,18 @@ GET /quizzes/<quiz_id>/summary
 
 Get an user's created and attempted quizzes.
 
-Query parameters: *To be used to reduce the response's payload (Optional)*
-- *created* (`bool`): If `True`, the response includes the created quizzes of the user. Default: `True`.
-- *attempted* (`bool`): If `True`, the response includes the attemped quizzes of the user. Default: `True`.
+#### User's Created quizzes
 
+Sorted by created order.
 
 ```
-GET /users/<user_id>/quizzes
+GET /users/<user_id>/quizzes/created
+```
+
+#### User's Attempted quizzes
+
+Sorted by `Most recent`.
+
+```
+GET /users/<user_id>/quizzes/attempted
 ```

@@ -8,6 +8,7 @@ import DarkButton from '../common/buttons/DarkButton';
 import { CenteredDiv } from '../common/CenteredDiv';
 import FullScreenModal from '../common/FullScreenModal';
 import InputField from '../common/InputField';
+import NakedButton from '../common/buttons/NakedButton';
 
 const StyledLogin = styled.div`
   width: 100%;
@@ -72,9 +73,9 @@ const Login: React.FC<ILoginProps> = ({
           <DarkButton type="submit">Login</DarkButton>
         </LoginForm>
         <CenteredDiv>
-          <p style={{ fontSize: '18px' }}>Don't have an account?</p>
-          <Link to="/register" style={{ fontSize: '18px' }}>
-            Sign up now!
+          Don't have an account?
+          <Link to="/register">
+            <NakedButton>Sign up now!</NakedButton>
           </Link>
         </CenteredDiv>
       </StyledLogin>

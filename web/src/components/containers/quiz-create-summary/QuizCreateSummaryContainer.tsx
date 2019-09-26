@@ -5,6 +5,7 @@ import { getQuestionsByQuizId, getQuizById } from '../../../api';
 import { IQuiz } from '../../../interfaces/quiz-create-summary';
 import { IQuizCreateSummaryContainerProps } from '../../../interfaces/quiz-create-summary';
 import { AppState } from '../../../store/store';
+import { getUser } from '../../../utils/auth';
 import { history } from '../../../utils/history';
 import Loading from '../../presentations/common/Loading';
 import QuizCreateSummary from '../../presentations/quiz-summaries/QuizCreateSummary';
@@ -19,11 +20,12 @@ class QuizCreateSummaryContainer extends React.Component<IQuizCreateSummaryConta
   public async componentDidMount() {
     this.props.setLoadingComplete(false);
 
+    const userId = getUser().id;
     const { match: { params: { id: quizId = '' } = {} } = {} , ...props } = this.props;
     const quiz = (await getQuizById(quizId)).data;
     const questions = (await getQuestionsByQuizId(quizId)).data;
 
-    if (quiz === undefined) {
+    if (quiz === undefined || quiz.creator_id !== userId) {
       history.push('/');
     } else {
       props.setQuiz({

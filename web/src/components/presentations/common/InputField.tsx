@@ -32,13 +32,17 @@ const StyledInput = styled.input`
   line-height: 22px;
 `;
 
+const ErrorParagraph = styled.p`
+  color: var(--red);
+`
+
 const InputField: React.FC<IInputFieldProps> = ({ type, placeholder, value, onChange, error }) => {
   return (
     <>
       <StyledInputField>
         <StyledInput type={type} placeholder={placeholder} value={value} onChange={onChange} />
       </StyledInputField>
-      {error && (<p>{error}</p>)}
+      {error && (<ErrorParagraph>{error}</ErrorParagraph>)}
     </>
   );
 };

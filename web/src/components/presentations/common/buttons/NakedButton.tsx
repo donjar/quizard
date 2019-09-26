@@ -2,7 +2,9 @@ import styled from 'styled-components';
 import Button from './Button';
 
 const NakedButton = styled(Button)`
-  text-decoration: underline;
+  :active {
+    box-shadow: none;
+  }
 `;
 
 export default NakedButton;

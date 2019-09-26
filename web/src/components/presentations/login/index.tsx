@@ -5,7 +5,7 @@ import { ILoginProps } from '../../../interfaces/login/index';
 import { ReactComponent as Owl } from '../../../svg/owl.svg';
 import { ReactComponent as Quizard } from '../../../svg/quizard.svg';
 import DarkButton from '../common/buttons/DarkButton';
-import NakedButton from '../common/buttons/NakedButton';
+import UnderlineButton from '../common/buttons/UnderlineButton';
 import { CenteredDiv } from '../common/CenteredDiv';
 import FullScreenModal from '../common/FullScreenModal';
 import InputField from '../common/InputField';
@@ -75,7 +75,7 @@ const Login: React.FC<ILoginProps> = ({
         <CenteredDiv>
           Don't have an account?
           <Link to="/register">
-            <NakedButton>Sign up now!</NakedButton>
+            <UnderlineButton>Sign up now!</UnderlineButton>
           </Link>
         </CenteredDiv>
       </StyledLogin>

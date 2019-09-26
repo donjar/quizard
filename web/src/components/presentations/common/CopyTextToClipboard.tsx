@@ -63,6 +63,7 @@ const CopyTextToClipboard: React.FC<ICopyTextToClipboardProps> = ({
       <StyledInput
         ref={textAreaRef}
         value={defaultText}
+        readOnly
       />
       {
         document.queryCommandSupported('copy') &&

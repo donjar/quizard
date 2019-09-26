@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { IRowRendererProps } from '../../../interfaces/home';
 import { IHomeContentProps, IQuizCard } from '../../../interfaces/home/index';
 import QuizTypeButtonContainer from '../../containers/home/QuizTypeButtonContainer';
 import {
@@ -9,7 +8,6 @@ import {
   CREATED_QUIZZES_SELECTED
 } from '../../containers/home/redux/types';
 import { HorizButtonToolbar } from '../common/HorizButtonToolbar';
-import { VirtualizedList } from '../common/VirtualizedList';
 import QuizCard from './QuizCard';
 
 const StyledHomeContent = styled.div`
@@ -41,21 +39,6 @@ const createQuizCardList = (
   });
 };
 
-const createQuizCardRowRenderer = (
-  quizList: IQuizCard[],
-  quizType: string
-) => {
-  const quizCardList = createQuizCardList(quizList, quizType);
-
-  return ({ key, index, style }: IRowRendererProps) => {
-    return (
-      <div key={key} style={style}>
-        {quizCardList[index]}
-      </div>
-    );
-  };
-};
-
 const isCreatedButtonSelected = (buttonType: string) => {
   return buttonType === CREATED_QUIZZES_SELECTED;
 };
@@ -85,15 +68,7 @@ const HomeContent: React.FC<IHomeContentProps> = ({
           Attempted
         </QuizTypeButtonContainer>
       </HorizButtonToolbar>
-      <VirtualizedList
-        listHeight={400}
-        rowCount={quizList.length}
-        rowHeight={200}
-        rowRenderer={createQuizCardRowRenderer(
-          quizList,
-          quizTypeSelected
-        )}
-      />
+      {createQuizCardList(quizList, quizTypeSelected)}
     </StyledHomeContent>
   );
 };

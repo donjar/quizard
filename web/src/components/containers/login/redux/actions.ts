@@ -1,4 +1,4 @@
-import { CHANGE_EMAIL, CHANGE_PASSWORD, ILoginActionTypes, PERFORM_LOGIN, SET_ERROR } from './types';
+import { CHANGE_EMAIL, CHANGE_PASSWORD, ILoginActionTypes, PERFORM_LOGIN, SET_EMAIL_ERROR, SET_PASSWORD_ERROR } from './types';
 
 export const changeEmail = (newEmail: string): ILoginActionTypes => {
   return {
@@ -20,9 +20,16 @@ export const performLogin = (): ILoginActionTypes => {
   };
 };
 
-export const setError = (error: string): ILoginActionTypes => {
+export const setEmailError = (error: string): ILoginActionTypes => {
   return {
     payload: error,
-    type: SET_ERROR
+    type: SET_EMAIL_ERROR
+  };
+};
+
+export const setPasswordError = (error: string): ILoginActionTypes => {
+  return {
+    payload: error,
+    type: SET_PASSWORD_ERROR
   };
 };

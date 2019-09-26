@@ -1,10 +1,16 @@
-export const SET_ERROR = 'SET_ERROR_LOGIN';
+export const SET_EMAIL_ERROR = 'SET_EMAIL_ERROR_LOGIN';
+export const SET_PASSWORD_ERROR = 'SET_PASSWORD_ERROR_LOGIN';
 export const CHANGE_EMAIL = 'CHANGE_EMAIL';
 export const CHANGE_PASSWORD = 'CHANGE_PASSWORD';
 export const PERFORM_LOGIN = 'PERFORM_LOGIN';
 
-export interface ISetErrorAction {
-  type: typeof SET_ERROR;
+export interface ISetEmailErrorAction {
+  type: typeof SET_EMAIL_ERROR;
+  payload: string;
+}
+
+export interface ISetPasswordErrorAction {
+  type: typeof SET_PASSWORD_ERROR;
   payload: string;
 }
 
@@ -23,7 +29,8 @@ export interface IPerformLoginAction {
 }
 
 export type ILoginActionTypes =
-  | ISetErrorAction
+  | ISetEmailErrorAction
+  | ISetPasswordErrorAction
   | IChangeEmailAction
   | IChangePasswordAction
   | IPerformLoginAction;

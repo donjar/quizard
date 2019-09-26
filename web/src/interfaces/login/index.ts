@@ -1,7 +1,8 @@
 export interface ILoginProps {
   email: string;
   password: string;
-  error?: string;
+  emailError?: string;
+  passwordError?: string;
   loggedIn: boolean;
   onChangeEmail: (newEmail: string) => void;
   onChangePassword: (newPassword: string) => void;
@@ -12,5 +13,6 @@ export interface ILoginState {
   email: string;
   password: string;
   loggedIn: boolean;
-  error?: string;
+  emailError?: string;
+  passwordError?: string;
 }

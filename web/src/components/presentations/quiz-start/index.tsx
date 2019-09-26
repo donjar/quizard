@@ -1,12 +1,12 @@
 import React from 'react';
 
+import styled from 'styled-components';
 import { IQuizStartProps } from '../../../interfaces/quiz-start';
 import { BeigeBackground } from '../common/BeigeBackground';
 import { BodyAfterNavBarWithPadding } from '../common/BodyAfterNavBarWithPadding';
 import { StartButton } from '../common/buttons/StartButton';
 import { CenteredDiv } from '../common/CenteredDiv';
 import { QuizStartNavBar } from './QuizStartNavBar';
-import styled from 'styled-components';
 
 const BoldedText = styled.span`
   font-weight: bold;

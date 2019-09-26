@@ -197,7 +197,7 @@ async def test_create_quiz_with_invalid_args(client, quizzes, token_user):
     new_quiz = {**fake_quiz, "questions": []}
     new_quiz.pop("id", None)
 
-    # Create a quiz with valid args
+    # Create a quiz with empty questions
     res = await client.post(
         "/quizzes", json=new_quiz, headers={"Authorization": token_user}
     )

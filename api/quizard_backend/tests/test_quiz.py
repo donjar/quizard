@@ -191,6 +191,19 @@ async def test_create_quiz(client, users, quizzes, token_user):
 
 
 async def test_create_quiz_with_invalid_args(client, quizzes, token_user):
+    # Empty questions
+    fake_quiz = get_fake_quiz()
+    fake_quiz.pop("creator_id")
+    new_quiz = {**fake_quiz, "questions": []}
+    new_quiz.pop("id", None)
+
+    # Create a quiz with valid args
+    res = await client.post(
+        "/quizzes", json=new_quiz, headers={"Authorization": token_user}
+    )
+    assert res.status == 400
+
+    # Invalid args
     res = await client.post("/quizzes", json={}, headers={"Authorization": token_user})
     assert res.status == 400
 

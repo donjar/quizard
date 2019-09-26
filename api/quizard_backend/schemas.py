@@ -125,6 +125,7 @@ QUIZ_WRITE_SCHEMA = {
     "questions": {  # A list of dicts
         "type": "list",
         "required": True,
+        "minlength": 1,
         "maxlength": MAX_QUESTIONS_PER_QUIZ,
         "schema": {
             "type": "dict",

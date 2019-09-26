@@ -6,7 +6,7 @@ import { IRegisterProps } from '../../../interfaces/register';
 import { ReactComponent as Owl } from '../../../svg/owl.svg';
 import { ReactComponent as Quizard } from '../../../svg/quizard.svg';
 import DarkButton from '../common/buttons/DarkButton';
-import NakedButton from '../common/buttons/NakedButton';
+import UnderlineButton from '../common/buttons/UnderlineButton';
 import { CenteredDiv } from '../common/CenteredDiv';
 import FullScreenModal from '../common/FullScreenModal';
 import InputField from '../common/InputField';
@@ -89,7 +89,7 @@ const Register: React.FC<IRegisterProps> = ({
           />
           <DarkButton type="submit">Register</DarkButton>
           <Link to="/login">
-            <NakedButton>Back to Login</NakedButton>
+            <UnderlineButton>Back to Login</UnderlineButton>
           </Link>
         </RegisterForm>
       </StyledRegister>

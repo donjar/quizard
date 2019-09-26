@@ -5,7 +5,7 @@ import { IQuizCompleteCardProps } from '../../../interfaces/quiz-complete';
 import { ReactComponent as Owl } from '../../../svg/owl.svg';
 import QuizRedoButtonContainer from '../../containers/quiz-complete/QuizRedoButtonContainer';
 import BigDarkButton from '../common/buttons/BigDarkButton';
-import NakedButton from '../common/buttons/NakedButton';
+import UnderlineButton from '../common/buttons/UnderlineButton';
 
 const StyledOwl = styled(Owl)`
   height: 170px;
@@ -27,7 +27,7 @@ const QuizCompleteCard: React.FC<IQuizCompleteCardProps> = ({ score, maxScore, q
         <BigDarkButton>Review Quiz Results</BigDarkButton>
       </Link>
       <Link to="/">
-        <NakedButton>Back to Home</NakedButton>
+        <UnderlineButton>Back to Home</UnderlineButton>
       </Link>
     </>
   );

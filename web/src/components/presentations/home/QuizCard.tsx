@@ -7,9 +7,9 @@ import { QuizCardContents } from './QuizCardContents';
 import { QuizDateCreatedDiv } from './QuizDateCreatedDiv';
 
 const StyledQuizCard = styled(Card)`
-  margin: 0.5em 0;
+  margin: 0.8em 0;
   padding: 1em;
-  width: calc(100% - 3em);
+  width: calc(100% - 2em);
 `;
 
 const QuizTitle = styled.h2`

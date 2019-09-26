@@ -5,10 +5,10 @@ const mdMin = '768px';
 const mdMax = '991.98px';
 const lgMax = '1199.98px';
 
-const HideOnMedium = styled.div`
-  @media (max-width: ${mdMax}) {
+const HideOnSmall = styled.div`
+  @media (max-width: ${smMax}) {
     display: none;
   }
 `;
 
-export { smMax, mdMin, mdMax, lgMax, HideOnMedium };
+export { smMax, mdMin, mdMax, lgMax, HideOnSmall };

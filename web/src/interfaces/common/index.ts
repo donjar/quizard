@@ -5,6 +5,7 @@ export interface IToggleButtonProps {
 
 export interface INavbarProps {
   background: string;
+  fixed?: boolean;
 }
 
 export interface IInputFieldProps {

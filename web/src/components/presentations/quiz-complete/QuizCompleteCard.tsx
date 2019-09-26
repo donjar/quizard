@@ -10,7 +10,7 @@ const StyledOwl = styled(Owl)`
   height: 170px;
 `;
 
-const QuizCompleteCard: React.FC<IQuizCompleteCardProps> = ({ score, maxScore, quizName }) => {
+const QuizCompleteCard: React.FC<IQuizCompleteCardProps> = ({ score, maxScore, quizName, match }) => {
   return (
     <>
       <StyledOwl />
@@ -22,7 +22,9 @@ const QuizCompleteCard: React.FC<IQuizCompleteCardProps> = ({ score, maxScore, q
         anytime.
       </p>
       <QuizRedoButtonContainer />
-      <BigDarkButton>Review Quiz Results</BigDarkButton>
+      <Link to={`/quiz-review/${match.params.id || ''}`}>
+        <BigDarkButton>Review Quiz Results</BigDarkButton>
+      </Link>
       <Link to="/">
         <div style={{ fontSize: '18px', textDecoration: 'underline' }}>
           Back to Home

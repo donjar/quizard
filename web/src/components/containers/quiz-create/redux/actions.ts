@@ -95,7 +95,7 @@ export const changeQuestionText = (
   };
 };
 
-export const setError = (error: any): IQuizCreateActionTypes => {
+export const setError = (error?: any): IQuizCreateActionTypes => {
   return {
     payload: error,
     type: SET_ERROR

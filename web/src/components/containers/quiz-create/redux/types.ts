@@ -21,7 +21,7 @@ export interface IAnswerOption {
 
 export interface ISetErrorAction {
   type: typeof SET_ERROR;
-  payload: any;
+  payload?: any;
 }
 
 export interface IChangeAnswerOption extends IAnswerOption {

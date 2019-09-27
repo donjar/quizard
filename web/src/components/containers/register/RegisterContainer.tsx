@@ -25,9 +25,9 @@ interface IRegisterContainerProps {
   onChangeFullName: (newName: string) => void;
   onChangeEmail: (newEmail: string) => void;
   onChangePassword: (newPassword: string) => void;
-  setFullNameError: (error: string) => void;
-  setEmailError: (error: string) => void;
-  setPasswordError: (error: string) => void;
+  setFullNameError: (error?: string) => void;
+  setEmailError: (error?: string) => void;
+  setPasswordError: (error?: string) => void;
   performRegister: () => void;
 }
 
@@ -45,6 +45,10 @@ const LoginContainer: React.FC<IRegisterContainerProps> = ({
   ...props
 }) => {
   const onRegister = async () => {
+    props.setEmailError(undefined);
+    props.setPasswordError(undefined);
+    props.setFullNameError(undefined);
+
     const data = await register(fullName, email, password);
     if ('error' in data) {
       const err = data.error;
@@ -60,7 +64,7 @@ const LoginContainer: React.FC<IRegisterContainerProps> = ({
       }
     } else {
       props.performRegister();
-      alert('Register successful! Please login');
+      alert('Register successful! Please login.');
     }
   };
 
@@ -105,13 +109,13 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
     performRegister: () => {
       dispatch(performRegister());
     },
-    setFullNameError: (error: string) => {
+    setFullNameError: (error?: string) => {
       dispatch(setFullNameError(error));
     },
-    setEmailError: (error: string) => {
+    setEmailError: (error?: string) => {
       dispatch(setEmailError(error));
     },
-    setPasswordError: (error: string) => {
+    setPasswordError: (error?: string) => {
       dispatch(setPasswordError(error));
     }
   };

@@ -8,17 +8,17 @@ export const PERFORM_REGISTER = 'PERFORM_REGISTER';
 
 export interface ISetEmailErrorAction {
   type: typeof SET_EMAIL_ERROR;
-  payload: string;
+  payload?: string;
 }
 
 export interface ISetFullNameErrorAction {
   type: typeof SET_FULL_NAME_ERROR;
-  payload: string;
+  payload?: string;
 }
 
 export interface ISetPasswordErrorAction {
   type: typeof SET_PASSWORD_ERROR;
-  payload: string;
+  payload?: string;
 }
 
 export interface IChangeFullNameAction {

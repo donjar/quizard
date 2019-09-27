@@ -32,9 +32,11 @@ const createQuizCardList = (
 
   return quizList.map((quiz, index) => {
     return (
-      <Link to={`${path}/${quiz.id}`}>
-        <QuizCard key={index} {...quiz} />
-      </Link>
+      <div key={quiz.id}>
+        <Link to={`${path}/${quiz.id}`}>
+          <QuizCard key={quiz.id} {...quiz} />
+        </Link>
+      </div>
     );
   });
 };

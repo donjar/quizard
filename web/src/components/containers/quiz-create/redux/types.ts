@@ -11,6 +11,7 @@ export const CHANGE_DESCRIPTION = 'CHANGE_DESCRIPTION';
 export const CHANGE_QUESTION_TEXT = 'CHANGE_QUESTION_TEXT';
 export const SET_ERROR = 'SET_ERROR_QUIZ_CREATE';
 export const QUIZ_CREATED = 'QUIZ_CREATED';
+export const QUIZ_CREATE_RESET = 'QUIZ_CREATE_RESET';
 
 // TODO: Shift common interfaces into interfaces folder
 export interface IAnswerOption {
@@ -82,6 +83,10 @@ export interface IQuizCreatedAction {
   payload: string;
 }
 
+export interface IQuizCreateResetAction {
+  type: typeof QUIZ_CREATE_RESET;
+}
+
 export type IQuizCreateActionTypes =
   | IAddQuestionAction
   | IDeleteQuestionAction
@@ -93,4 +98,5 @@ export type IQuizCreateActionTypes =
   | IChangeDescriptionAction
   | IChangeQuestionTextAction
   | ISetErrorAction
-  | IQuizCreatedAction;
+  | IQuizCreatedAction
+  | IQuizCreateResetAction;

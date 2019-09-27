@@ -12,6 +12,7 @@ import {
   IChangeAnswerOption,
   IChangeQuestionText,
   IQuizCreateActionTypes,
+  QUIZ_CREATE_RESET,
   QUIZ_CREATED,
   SET_CORRECT_ANSWER,
   SET_ERROR
@@ -105,5 +106,11 @@ export const quizCreated = (quizId: string): IQuizCreateActionTypes => {
   return {
     payload: quizId,
     type: QUIZ_CREATED
+  };
+};
+
+export const reset = (): IQuizCreateActionTypes => {
+  return {
+    type: QUIZ_CREATE_RESET
   };
 };

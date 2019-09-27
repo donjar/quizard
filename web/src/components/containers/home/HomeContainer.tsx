@@ -10,6 +10,7 @@ import Loading from '../../presentations/common/Loading';
 import HomeContent from '../../presentations/home/HomeContent';
 import Home from '../../presentations/home/index';
 import { setLoadingComplete } from '../loading/redux/actions';
+import { reset } from '../quiz-create/redux/actions';
 import { setAttemptedQuizzes, setCreatedQuizzes } from './redux/actions';
 import { CREATED_QUIZZES_SELECTED } from './redux/types';
 
@@ -48,6 +49,8 @@ class HomeContainer extends React.Component<IHomeContainerProps> {
       );
       this.props.setCreatedQuizzes(createdQuizzes);
     }
+
+    this.props.resetQuizCreate();
 
     this.props.setLoadingComplete(true);
   }
@@ -95,7 +98,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
     setAttemptedQuizzes: (questions: IQuiz[]) => {
       dispatch(setAttemptedQuizzes(questions));
     },
-    setLoadingComplete: (hasLoaded: boolean) => dispatch(setLoadingComplete(hasLoaded))
+    setLoadingComplete: (hasLoaded: boolean) => dispatch(setLoadingComplete(hasLoaded)),
+    resetQuizCreate: () => dispatch(reset())
   };
 };
 

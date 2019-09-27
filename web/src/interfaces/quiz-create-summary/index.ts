@@ -39,7 +39,9 @@ export interface IAttemptedQuiz extends IQuizBase {
 export interface IQuizCreateSummaryProps extends IQuiz {
   sharableLink: string;
 }
-export interface IQuizAttemptReviewProps extends IAttemptedQuiz {}
+export interface IQuizAttemptReviewProps extends IAttemptedQuiz {
+  match: any;
+}
 
 export interface IQuizCreateSummaryState extends IQuiz {}
 export interface IQuizAttemptReviewState extends IAttemptedQuiz {}

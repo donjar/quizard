@@ -62,6 +62,7 @@ class QuizAttemptReviewContainer extends React.Component<IQuizAttemptReviewConta
         description={description}
         score={score}
         questions={questions}
+        {...this.props}
       />
     );
   }

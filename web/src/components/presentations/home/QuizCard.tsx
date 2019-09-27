@@ -1,7 +1,7 @@
 import React from 'react';
 import { ChevronRight, Users } from 'react-feather';
 import styled from 'styled-components';
-import { IQuizCard } from '../../../interfaces/home/index';
+import { IQuizCardProps } from '../../../interfaces/home/index';
 import Card from '../common/Card';
 import { QuizCardContents } from './QuizCardContents';
 import { QuizDateCreatedDiv } from './QuizDateCreatedDiv';
@@ -35,11 +35,12 @@ const UsersIcon = styled(Users)`
   height: 1rem;
 `;
 
-const QuizCard: React.FC<IQuizCard> = ({
+const QuizCard: React.FC<IQuizCardProps> = ({
   title,
   description,
   numAttempted,
-  dateCreated
+  dateCreated,
+  showNumAttempted
 }) => {
   const daysAgo = Math.floor((Date.now() - (dateCreated * 1000)) / (1000 * 60 * 60 * 24));
   return (
@@ -49,9 +50,11 @@ const QuizCard: React.FC<IQuizCard> = ({
         <div>
           <QuizTitle>{title}</QuizTitle>
           <QuizDescription>{description}</QuizDescription>
-          <MiscDetails>
-            <UsersIcon /> {numAttempted} people attempted
-          </MiscDetails>
+          {
+            showNumAttempted
+              ? <MiscDetails><UsersIcon /> {numAttempted} people attempted</MiscDetails>
+              : ``
+          }
         </div>
         <div>
           <ChevronRight />

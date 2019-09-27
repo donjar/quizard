@@ -20,9 +20,11 @@ const createQuizCardList = (
   quizType: string
 ) => {
   let path = '';
+  let showNumAttempted = false;
   switch (quizType) {
     case CREATED_QUIZZES_SELECTED:
       path = '/quiz-create-summary';
+      showNumAttempted = true;
       break;
     case ONGOING_QUIZZES_SELECTED:
       path = '/quiz';
@@ -36,7 +38,11 @@ const createQuizCardList = (
     return (
       <div key={quiz.id}>
         <Link to={{pathname: `${path}/${quiz.id}`, state: { cameFromHome: true }}}>
-          <QuizCard key={quiz.id} {...quiz} />
+          <QuizCard
+            showNumAttempted={showNumAttempted}
+            key={quiz.id}
+            {...quiz}
+          />
         </Link>
       </div>
     );

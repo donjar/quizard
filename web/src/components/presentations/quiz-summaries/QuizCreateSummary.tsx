@@ -26,6 +26,20 @@ const NameTextHeader = styled.h2`
   word-break: break-all;
 `;
 
+const MiscDetails = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+
+  font-weight: 300;
+  font-size: 1rem;
+  margin-top: 15px;
+`;
+
+const UsersIcon = styled(Users)`
+  height: 1.1rem;
+`;
+
 const QuizCreateSummary: React.FC<IQuizCreateSummaryProps> = ({
   name,
   description,
@@ -51,7 +65,7 @@ const QuizCreateSummary: React.FC<IQuizCreateSummaryProps> = ({
           <ShareButton onClick={() => setIsModalOpen(true)} />
         </NameDiv>
         <p>{description}</p>
-        <p><Users /> {numAttempts} people attempted</p>
+        <MiscDetails><UsersIcon /> {numAttempts} people attempted</MiscDetails>
         {questionCards}
       </BodyAfterNavBarWithPadding>
     </StyledBeigeBackground>

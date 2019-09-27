@@ -16,11 +16,11 @@ const QuizRedoButtonContainer: React.FC<IQuizRedoButtonProps> = ({ quizId }) => 
 const handleRedoQuiz = async (quizId: string) => {
   await redoQuiz(quizId);
 
-  window.location.reload();
+  window.location.replace(`${window.location.origin}/quiz/${quizId}`);
 };
 
-const mapStateToProps = (state: AppState) => ({
-  quizId: state.quizStart.quizId || ''
+const mapStateToProps = (state: AppState, ownProps: any) => ({
+  quizId: ownProps.quizId || state.quizStart.quizId
 });
 
 export default connect(mapStateToProps)(QuizRedoButtonContainer);

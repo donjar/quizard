@@ -5,6 +5,7 @@ const withError = (Comp: any) => {
   const CompWithError: React.FC<any> = ({ error, ...props }) => {
     const ErrorParagraph = styled.p`
       color: var(--red);
+      margin: 10px;
     `;
 
     return (

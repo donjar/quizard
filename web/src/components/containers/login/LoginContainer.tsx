@@ -34,10 +34,10 @@ const onLogin = async (props: any, email: any, password: any) => {
     const err = data.error;
 
     if ('email' in err) {
-      props.setEmailError(err.email.join(';'));
+      props.setEmailError(err.email.join('; '));
     }
     if ('password' in err) {
-      props.setPasswordError(err.password.join(';'));
+      props.setPasswordError(err.password.join('; '));
     }
   } else {
     props.performLogin();

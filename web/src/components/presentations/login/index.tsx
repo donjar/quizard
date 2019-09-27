@@ -60,14 +60,14 @@ const Login: React.FC<ILoginProps> = ({
             type="text"
             placeholder="Email"
             value={email}
-            onChange={(event) => onChangeEmail(event.target.value)}
+            onChange={(event: any) => onChangeEmail(event.target.value)}
             error={emailError}
           />
           <InputField
             type="password"
             placeholder="Password"
             value={password}
-            onChange={(event) => onChangePassword(event.target.value)}
+            onChange={(event: any) => onChangePassword(event.target.value)}
             error={passwordError}
           />
           <DarkButton type="submit">Login</DarkButton>

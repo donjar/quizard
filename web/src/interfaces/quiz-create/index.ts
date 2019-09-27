@@ -19,12 +19,13 @@ export interface IQuizCreateQuestionCardProps {
   onEraseOption: (idx: number) => void;
   onSetCorrectAnswer: (idx: number) => void;
   onChangeText: (newText: string) => void;
+  error?: any;
 }
 
 export interface IQuizCreateProps {
   name: string;
   description: string;
-  error?: string;
+  error?: any;
   numQuestions: number;
   createdQuizId?: string;
   onAddQuestion: () => void;
@@ -37,7 +38,7 @@ export interface IQuizCreateState {
   name: string;
   description: string;
   questions: IQuestion[];
-  error?: string;
+  error?: any;
   createdQuizId?: string;
 }
 

@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { IInputFieldProps } from '../../../interfaces/common';
 import { smMax } from '../../../utils/media';
+import withError from './WithError';
 
 const StyledInputField = styled.div`
   position: relative;
@@ -32,19 +33,16 @@ const StyledInput = styled.input`
   line-height: 22px;
 `;
 
-const ErrorParagraph = styled.p`
-  color: var(--red);
-`;
-
-const InputField: React.FC<IInputFieldProps> = ({ type, placeholder, value, onChange, error }) => {
+const InputFieldNoError: React.FC<IInputFieldProps> = ({ type, placeholder, value, onChange }) => {
   return (
     <>
       <StyledInputField>
         <StyledInput type={type} placeholder={placeholder} value={value} onChange={onChange} />
       </StyledInputField>
-      {error && (<ErrorParagraph>{error}</ErrorParagraph>)}
     </>
   );
 };
+
+const InputField = withError(InputFieldNoError);
 
 export default InputField;

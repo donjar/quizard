@@ -55,7 +55,7 @@ export const checkSelectedOption: ActionCreator<
     } else {
       return dispatch(selectIncorrectOption(
         selectedAnswerOption,
-        checkAnswerData.correct_option || -1
+        checkAnswerData.correct_option !== undefined ? checkAnswerData.correct_option : -1
       ));
     }
   };

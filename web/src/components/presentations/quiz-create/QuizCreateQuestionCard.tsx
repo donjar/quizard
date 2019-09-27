@@ -25,7 +25,7 @@ const QuestionTextArea = withError(styled.textarea`
   resize: none;
 `);
 
-const OptionInputRow = styled.div`
+const OptionInputRow = withError(styled.div`
   display: flex;
   flex-direction: row;
 
@@ -35,11 +35,11 @@ const OptionInputRow = styled.div`
 
   border: 1px solid var(--dark-blue);
   border-radius: 15px;
-`;
-
-const OptionInputDiv = withError(styled.div`
-  flex: 1;
 `);
+
+const OptionInputDiv = styled.div`
+  flex: 1;
+`;
 
 const OptionInput = styled.input`
   font-size: 1rem;
@@ -88,19 +88,22 @@ const QuizCreateQuestionCard: React.FC<IQuizCreateQuestionCardProps> = ({
     );
 
     return (
-      <OptionInputRow key={idx}>
-        <OptionInputDiv error={err}>
-          <OptionInput
-            type="text"
-            placeholder="Answer option"
-            value={option}
-            onChange={(e) => onChangeOption(idx, e.target.value)}
-            required
-          />
-        </OptionInputDiv>
-        <OptionButton onClick={() => onSetCorrectAnswer(idx)} />
-        <DeleteButton onClick={() => onEraseOption(idx)} />
-      </OptionInputRow>
+      <>
+        <OptionInputRow key={idx} error={err}>
+          <OptionInputDiv>
+            <OptionInput
+              type="text"
+              placeholder="Answer option"
+              value={option}
+              onChange={(e) => onChangeOption(idx, e.target.value)}
+              width={`calc(100% - 30px)`}
+              required
+            />
+          </OptionInputDiv>
+          <OptionButton onClick={() => onSetCorrectAnswer(idx)} />
+          <DeleteButton onClick={() => onEraseOption(idx)} />
+        </OptionInputRow>
+      </>
     );
   });
 

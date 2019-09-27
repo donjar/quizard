@@ -5,8 +5,7 @@ import UnselectedButton from '../common/buttons/UnselectedButton';
 import CopyTextToClipboard from '../common/CopyTextToClipboard';
 import OverlayModal from '../common/OverlayModal';
 
-const defaultPromoText =
-  'Check out my new quiz made with Quizard!'.split(' ').join('%20');
+const defaultPromoText = encodeURIComponent('Check out my new quiz made with Quizard!');
 
 const SocialMediaRow = styled.div`
   display: flex;
@@ -49,14 +48,16 @@ const ShareQuizModal: React.FC<IShareQuizModalProps> = ({
   sharableLink,
   onClose
 }) => {
+  const encodedLink = encodeURIComponent(sharableLink);
   const shareWhatsApp = () => {
-    const url = `https://wa.me/?text=${defaultPromoText}%20${sharableLink}`;
+    const url = `https://wa.me/?text=${defaultPromoText}%20${encodedLink}`;
+    console.log(url);
     window.open(url, '_blank');
   };
 
   const shareTelegram = () => {
     const url =
-      `https://telegram.me/share/url?url=${sharableLink}&text=${defaultPromoText}`;
+      `https://telegram.me/share/url?url=${encodedLink}&text=${defaultPromoText}`;
     window.open(url, '_blank');
   };
 

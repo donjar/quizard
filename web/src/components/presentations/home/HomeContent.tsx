@@ -11,10 +11,8 @@ import {
 import { HorizButtonToolbar } from '../common/HorizButtonToolbar';
 import QuizCard from './QuizCard';
 
-const StyledHomeContent = styled.div`
-  & > * {
-    margin: 0.5em 0;
-  }
+const ContentHeader = styled.h3`
+  margin: 2em 0 0.8em 0;
 `;
 
 const createQuizCardList = (
@@ -62,8 +60,8 @@ const HomeContent: React.FC<IHomeContentProps> = ({
   quizList
 }) => {
   return (
-    <StyledHomeContent>
-      <h3>My Quizzes</h3>
+    <>
+      <ContentHeader>My Quizzes</ContentHeader>
       <HorizButtonToolbar>
         <QuizTypeButtonContainer
           quizTypeSelected={CREATED_QUIZZES_SELECTED}
@@ -85,7 +83,7 @@ const HomeContent: React.FC<IHomeContentProps> = ({
         </QuizTypeButtonContainer>
       </HorizButtonToolbar>
       {createQuizCardList(quizList, quizTypeSelected)}
-    </StyledHomeContent>
+    </>
   );
 };
 

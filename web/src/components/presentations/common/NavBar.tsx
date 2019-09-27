@@ -10,6 +10,8 @@ const StyledNavBar = styled.nav`
   top: 0px;
   background: ${(props: INavbarProps) => (props ? props.background : ``)};
   align-items: center;
+
+  z-index: 999;
 `;
 
 const StyledNavBody = styled.div`

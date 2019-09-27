@@ -22,7 +22,7 @@ const QuizAttemptReview: React.FC<IQuizAttemptReviewProps> = ({
       <BodyAfterNavBarWithPadding>
         <h2>{name}</h2>
         <p>{description}</p>
-        <p>Score: {score}/{numQuestions}</p>
+        <p><strong>Score:</strong> {score}/{numQuestions}</p>
         <QuizRedoButtonContainer quizId={match.params.id} />
         {questionCards}
       </BodyAfterNavBarWithPadding>

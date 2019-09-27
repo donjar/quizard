@@ -4,7 +4,7 @@ const apiUrl = 'https://www.quizard.xyz';
 
 export const renewTokenOnExpire = async (res: Response) => {
   if (res.status === 401) {
-    const data = (await res.json()).error;
+    const data = (await res.clone().json()).error;
     if (data === 'Token has expired') {
       const token = (await refresh()).access_token;
       localStorage.setItem('accessToken', token);

@@ -11,7 +11,7 @@ Group Members:
 - Alistair Ong, A0156144J
 - Caryn Heng Zhi Xuan, A0159733W
 - Herbert Ilhan Tanujaya, A0144892W
-- Nguyen Thanh Son, A
+- Nguyen Thanh Son, A0161299W
 
 Contributions:
 - Alistair:

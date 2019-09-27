@@ -14,6 +14,10 @@ export interface IHomeContentProps {
 export interface IQuizCard extends IQuiz {
 }
 
+export interface IQuizCardProps extends IQuizCard {
+  showNumAttempted: boolean;
+}
+
 export interface IQuizLists {
   createdQuizList: IQuizCard[];
   attemptedQuizList: IQuizCard[];

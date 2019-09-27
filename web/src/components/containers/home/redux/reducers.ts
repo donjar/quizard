@@ -1,6 +1,12 @@
 import { IHomeState } from '../../../../interfaces/home';
 import initialState from './initialState';
-import { IHomeActionTypes, SET_ATTEMPTED_QUIZZES_TYPE, SET_CREATED_QUIZZES_TYPE, TOGGLE_QUIZ_TYPE } from './types';
+import {
+  IHomeActionTypes,
+  SET_ATTEMPTED_QUIZZES_TYPE,
+  SET_CREATED_QUIZZES_TYPE,
+  SET_ONGOING_QUIZZES_TYPE,
+  TOGGLE_QUIZ_TYPE
+} from './types';
 
 export default function reducer(
   state = initialState,
@@ -21,6 +27,11 @@ export default function reducer(
       return {
         ...state,
         createdQuizList: action.payload
+      };
+    case SET_ONGOING_QUIZZES_TYPE:
+      return {
+        ...state,
+        ongoingQuizList: action.payload
       };
     default:
       return state;

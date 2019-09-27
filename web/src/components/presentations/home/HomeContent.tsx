@@ -37,7 +37,7 @@ const createQuizCardList = (
   return quizList.map((quiz, index) => {
     return (
       <div key={quiz.id}>
-        <Link to={`${path}/${quiz.id}`}>
+        <Link to={{pathname: `${path}/${quiz.id}`, state: { cameFromHome: true }}}>
           <QuizCard key={quiz.id} {...quiz} />
         </Link>
       </div>

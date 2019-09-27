@@ -15,6 +15,7 @@ import { setQuiz } from './redux/actions';
 
 interface IQuizStartContainerProps {
   match: any;
+  location: any;
   name: string;
   description: string;
   isFinished: boolean;
@@ -79,6 +80,7 @@ class QuizStartContainer extends React.Component<IQuizStartContainerProps> {
           quiz={quiz}
           isNewQuiz={Object.keys(this.props.userQuizAnswers).length < 1}
           onStartClick={() => this.props.changeCurrQuestionIdx(this.props.continueFrom)}
+          location={this.props.location}
         />
       );
     } else {

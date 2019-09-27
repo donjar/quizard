@@ -1,7 +1,7 @@
 import React from 'react';
+import styled from 'styled-components';
 import { ReactComponent as Quizard } from '../../../svg/quizard.svg';
 import NavBar from './NavBar';
-import styled from 'styled-components';
 
 const StyledBrand = styled(Quizard)`
   margin-left: auto;

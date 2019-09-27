@@ -7,7 +7,7 @@ import { ReactComponent as Owl } from '../../../svg/owl.svg';
 import { mdMax } from '../../../utils/media';
 import { BodyAfterNavBarWithPadding } from '../common/BodyAfterNavBarWithPadding';
 import CloseButton from '../common/buttons/CloseButton';
-import QuizNavBar from './QuizNavBar';
+import { NavBarWithCenteredBrand } from '../common/NavBarWithCenteredBrand';
 import QuizProgressBar from './QuizProgressBar';
 import QuizQuestionContent from './QuizQuestionContent';
 
@@ -74,7 +74,7 @@ const QuizQuestion: React.FC<IQuizQuestionProps> = ({
 }) => {
   return (
     <>
-      <QuizNavBar />
+      <NavBarWithCenteredBrand />
       <StyledQuizBody>
         <StyledQuizHeader>
           <CloseButton onClick={onCloseQuiz} />

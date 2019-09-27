@@ -20,14 +20,14 @@ export const performLogin = (): ILoginActionTypes => {
   };
 };
 
-export const setEmailError = (error: string): ILoginActionTypes => {
+export const setEmailError = (error?: string): ILoginActionTypes => {
   return {
     payload: error,
     type: SET_EMAIL_ERROR
   };
 };
 
-export const setPasswordError = (error: string): ILoginActionTypes => {
+export const setPasswordError = (error?: string): ILoginActionTypes => {
   return {
     payload: error,
     type: SET_PASSWORD_ERROR

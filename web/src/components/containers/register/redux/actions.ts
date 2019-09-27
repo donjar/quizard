@@ -36,21 +36,21 @@ export const performRegister = (): IRegisterActionTypes => {
   };
 };
 
-export const setEmailError = (error: string): IRegisterActionTypes => {
+export const setEmailError = (error?: string): IRegisterActionTypes => {
   return {
     payload: error,
     type: SET_EMAIL_ERROR
   };
 };
 
-export const setFullNameError = (error: string): IRegisterActionTypes => {
+export const setFullNameError = (error?: string): IRegisterActionTypes => {
   return {
     payload: error,
     type: SET_FULL_NAME_ERROR
   };
 };
 
-export const setPasswordError = (error: string): IRegisterActionTypes => {
+export const setPasswordError = (error?: string): IRegisterActionTypes => {
   return {
     payload: error,
     type: SET_PASSWORD_ERROR

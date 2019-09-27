@@ -39,7 +39,7 @@ interface IQuizCreateContainerProps {
   onChangeName: (newName: string) => void;
   onChangeDescription: (newDesc: string) => void;
   onChangeQuestionText: (questionIdx: number, newText: string) => void;
-  setError: (error: any) => void;
+  setError: (error?: any) => void;
   quizCreated: (quizId: string) => void;
 }
 
@@ -108,6 +108,8 @@ const QuizCreateContainer: React.FC<IQuizCreateContainerProps> = ({
   });
 
   const onCreateQuiz = async () => {
+    props.setError(undefined);
+
     const resp = await createQuiz({
       title: name,
       description,
@@ -190,7 +192,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
       dispatch(changeDescription(newDesc)),
     onChangeQuestionText: (questionIdx: number, newText: string) =>
       dispatch(changeQuestionText({ questionIdx, newText })),
-    setError: (error: any) =>
+    setError: (error?: any) =>
       dispatch(setError(error)),
     quizCreated: (quizId: string) =>
       dispatch(quizCreated(quizId))

@@ -21,12 +21,15 @@ interface ILoginContainerProps {
   loggedIn: boolean;
   onChangeEmail: (newEmail: string) => void;
   onChangePassword: (newPassword: string) => void;
-  setEmailError: (error: string) => void;
-  setPasswordError: (error: string) => void;
+  setEmailError: (error?: string) => void;
+  setPasswordError: (error?: string) => void;
   performLogin: () => void;
 }
 
 const onLogin = async (props: any, email: any, password: any) => {
+  props.setEmailError(undefined);
+  props.setPasswordError(undefined);
+
   const data = await login(email, password);
   const { location: { state: { prevLocation = '/' } = {} } = {} } = props;
 
@@ -38,6 +41,9 @@ const onLogin = async (props: any, email: any, password: any) => {
     }
     if ('password' in err) {
       props.setPasswordError(err.password.join('; '));
+    }
+    if ('msg' in err) {
+      alert(err.msg.join('; '));
     }
   } else {
     props.performLogin();
@@ -91,10 +97,10 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
     performLogin: () => {
       dispatch(performLogin());
     },
-    setEmailError: (error: string) => {
+    setEmailError: (error?: string) => {
       dispatch(setEmailError(error));
     },
-    setPasswordError: (error: string) => {
+    setPasswordError: (error?: string) => {
       dispatch(setPasswordError(error));
     }
   };

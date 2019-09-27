@@ -6,12 +6,12 @@ export const PERFORM_LOGIN = 'PERFORM_LOGIN';
 
 export interface ISetEmailErrorAction {
   type: typeof SET_EMAIL_ERROR;
-  payload: string;
+  payload?: string;
 }
 
 export interface ISetPasswordErrorAction {
   type: typeof SET_PASSWORD_ERROR;
-  payload: string;
+  payload?: string;
 }
 
 export interface IChangeEmailAction {

@@ -6,7 +6,8 @@ import { mdMax } from '../../../utils/media';
 import { BodyAfterNavBarWithPadding } from '../common/BodyAfterNavBarWithPadding';
 import BigDarkButton from '../common/buttons/BigDarkButton';
 import { CenteredDiv } from '../common/CenteredDiv';
-import { QuizStartNavBar } from './QuizStartNavBar';
+import { NavBarWithBack } from '../common/NavBarWithBack';
+import { NavBarWithCenteredBrand } from '../common/NavBarWithCenteredBrand';
 
 const StyledBody = styled(BodyAfterNavBarWithPadding)`
   * {
@@ -25,30 +26,37 @@ const BottomRightOwl = styled(Owl)`
   }
 `;
 
-const QuizStart: React.FC<IQuizStartProps> = ({ quiz, isNewQuiz, onStartClick }) => {
-  const { name, description } = quiz;
+class QuizStart extends React.Component<IQuizStartProps> {
+  public render() {
+    const { quiz, isNewQuiz, onStartClick } = this.props;
+    const { name, description } = quiz;
 
-  return (
-    <>
-      <QuizStartNavBar />
-      <StyledBody>
-        <h1>{name}</h1>
-        <p>{description}</p>
-        <p>
-          <strong>Quiz rules:</strong> Questions will be in MCQ format.
-          The first option you select will be recorded as your answer.
-        </p>
-        <CenteredDiv>
-          {isNewQuiz ? (
-            <BigDarkButton onClick={onStartClick}>Start</BigDarkButton>
-          ) : (
-            <BigDarkButton onClick={onStartClick}>Continue</BigDarkButton>
-          )}
-        </CenteredDiv>
-      </StyledBody>
-      <BottomRightOwl />
-    </>
-  );
-};
+    return (
+      <>
+        {
+          this.props.location.state && this.props.location.state.cameFromHome
+          ? <NavBarWithBack />
+          : <NavBarWithCenteredBrand />
+        }
+        <StyledBody>
+          <h1>{name}</h1>
+          <p>{description}</p>
+          <p>
+            <strong>Quiz rules:</strong> Questions will be in MCQ format.
+            The first option you select will be recorded as your answer.
+          </p>
+          <CenteredDiv>
+            {isNewQuiz ? (
+              <BigDarkButton onClick={onStartClick}>Start</BigDarkButton>
+            ) : (
+              <BigDarkButton onClick={onStartClick}>Continue</BigDarkButton>
+            )}
+          </CenteredDiv>
+        </StyledBody>
+        <BottomRightOwl />
+      </>
+    );
+  }
+}
 
 export default QuizStart;

@@ -12,6 +12,7 @@ export interface IQuizStartProps {
   quiz: IQuiz;
   isNewQuiz: boolean;
   onStartClick: () => void;
+  location: any;
 }
 
 export interface IQuizStartState extends IQuiz {

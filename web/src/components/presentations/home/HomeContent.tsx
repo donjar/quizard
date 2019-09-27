@@ -5,7 +5,8 @@ import { IHomeContentProps, IQuizCard } from '../../../interfaces/home/index';
 import QuizTypeButtonContainer from '../../containers/home/QuizTypeButtonContainer';
 import {
   ATTEMPTED_QUIZZES_SELECTED,
-  CREATED_QUIZZES_SELECTED
+  CREATED_QUIZZES_SELECTED,
+  ONGOING_QUIZZES_SELECTED
 } from '../../containers/home/redux/types';
 import { HorizButtonToolbar } from '../common/HorizButtonToolbar';
 import QuizCard from './QuizCard';
@@ -24,6 +25,9 @@ const createQuizCardList = (
   switch (quizType) {
     case CREATED_QUIZZES_SELECTED:
       path = '/quiz-create-summary';
+      break;
+    case ONGOING_QUIZZES_SELECTED:
+      path = '/quiz';
       break;
     case ATTEMPTED_QUIZZES_SELECTED:
       path = '/quiz-review';
@@ -47,6 +51,10 @@ const isAttemptedButtonSelected = (buttonType: string) => {
   return buttonType === ATTEMPTED_QUIZZES_SELECTED;
 };
 
+const isOngoingButtonSelected = (buttonType: string) => {
+  return buttonType === ONGOING_QUIZZES_SELECTED;
+};
+
 const HomeContent: React.FC<IHomeContentProps> = ({
   quizTypeSelected,
   quizList
@@ -60,6 +68,12 @@ const HomeContent: React.FC<IHomeContentProps> = ({
           isSelected={isCreatedButtonSelected(quizTypeSelected)}
         >
           Created
+        </QuizTypeButtonContainer>
+        <QuizTypeButtonContainer
+          quizTypeSelected={ONGOING_QUIZZES_SELECTED}
+          isSelected={isOngoingButtonSelected(quizTypeSelected)}
+        >
+          Ongoing
         </QuizTypeButtonContainer>
         <QuizTypeButtonContainer
           quizTypeSelected={ATTEMPTED_QUIZZES_SELECTED}

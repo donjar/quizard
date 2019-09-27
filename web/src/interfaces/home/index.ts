@@ -14,16 +14,21 @@ export interface IHomeContentProps {
 export interface IQuizCard extends IQuiz {
 }
 
-export interface IHomeState {
-  quizTypeSelected: string;
+export interface IQuizLists {
   createdQuizList: IQuizCard[];
   attemptedQuizList: IQuizCard[];
+  ongoingQuizList: IQuizCard[];
+}
+
+export interface IHomeState extends IQuizLists {
+  quizTypeSelected: string;
 }
 
 export interface IHomeContainerProps extends IHomeState {
   hasLoaded: boolean;
   setCreatedQuizzes: (questions: IQuiz[]) => void;
   setAttemptedQuizzes: (questions: IQuiz[]) => void;
+  setOngoingQuizzes: (questions: IQuiz[]) => void;
   setLoadingComplete: (hasLoaded: boolean) => void;
   resetQuizCreate: () => void;
 }

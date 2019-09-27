@@ -4,6 +4,7 @@ import { AnyAction } from 'redux';
 import { ThunkDispatch } from 'redux-thunk';
 import { IQuestion } from '../../../interfaces/quiz-question';
 import { AppState } from '../../../store/store';
+import { history } from '../../../utils/history';
 import QuizQuestion from '../../presentations/quiz-question/index';
 import {
   checkSelectedOption,
@@ -47,9 +48,12 @@ class QuizQuestionContainer extends React.Component<IQuizQuestionContainerProps>
     };
 
     const handleLeaveQuiz = () => {
-      // TODO: Implement
-      // tslint:disable-next-line:no-console
-      console.log('LEAVE');
+      const leaveQuizText = 'Are you sure you want to leave the quiz? Don\'t worry,'
+        + ' You can come back and continue the quiz anytime you want.';
+
+      if (window.confirm(leaveQuizText)) {
+        history.push('/');
+      }
     };
 
     return (

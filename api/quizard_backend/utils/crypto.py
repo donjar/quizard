@@ -22,6 +22,10 @@ def validate_password_strength(password: str):
         return
 
     raise InvalidUsage(
-        "Your password is not strong enough. "
-        "Ensure it has at least 8 characters, and at least 1 number."
+        {
+            "password": [
+                "Your password is not strong enough. "
+                "Ensure it has at least 8 characters, and at least 1 number."
+            ]
+        }
     )

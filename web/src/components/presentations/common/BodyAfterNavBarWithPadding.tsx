@@ -10,11 +10,10 @@ const StyledBodyAfterNavBar = styled(BodyAfterNavBar)`
 `;
 
 const InnerBody = styled.div`
-  // padding: 0 20%;
   width: ${mdMin};
 
   @media (max-width: ${mdMax}) {
-    padding: 0 5%;
+    width: calc(100% - 1em);
   }
 `;
 

@@ -60,37 +60,52 @@ const QuizCreateContainer: React.FC<IQuizCreateContainerProps> = ({
   onChangeQuestionText,
   ...props
 }) => {
+  window.addEventListener('beforeunload', (e) => {
+    // Cancel the event
+    e.preventDefault();
+    // Chrome requires returnValue to be set
+    e.returnValue = '';
+  });
+
   // TODO: make map only call when questions object changes
-  const questionCards = questions.map((question, questionIdx) => (
-    <QuizCreateQuestionCard
-      key={questionIdx}
-      questionNumber={questionIdx + 1}
-      text={question.text}
-      options={question.options}
-      correctOption={question.correctOption}
-      onEraseQuestion={() => onDeleteQuestion(questionIdx)}
-      onChangeOption={(optionIdx, newOption) =>
-        onChangeAnswerOption(questionIdx, optionIdx, newOption)
+  const questionCards = questions.map((question, questionIdx) => {
+    const onEraseQuestion = () => {
+      if (window.confirm(`Are you sure you want to delete question ${questionIdx + 1}?`)) {
+        onDeleteQuestion(questionIdx);
       }
-      onNewOption={() => onAddAnswerOption(questionIdx)}
-      onEraseOption={(optionIdx) =>
-        onDeleteAnswerOption(questionIdx, optionIdx)
-      }
-      onSetCorrectAnswer={(optionIdx) =>
-        onSetCorrectAnswerOption(questionIdx, optionIdx)
-      }
-      onChangeText={(newText) =>
-        onChangeQuestionText(questionIdx, newText)
-      }
-      error={
+    };
+
+    return (
+      <QuizCreateQuestionCard
+        key={questionIdx}
+        questionNumber={questionIdx + 1}
+        text={question.text}
+        options={question.options}
+        correctOption={question.correctOption}
+        onEraseQuestion={onEraseQuestion}
+        onChangeOption={(optionIdx, newOption) =>
+          onChangeAnswerOption(questionIdx, optionIdx, newOption)
+        }
+        onNewOption={() => onAddAnswerOption(questionIdx)}
+        onEraseOption={(optionIdx) =>
+          onDeleteAnswerOption(questionIdx, optionIdx)
+        }
+        onSetCorrectAnswer={(optionIdx) =>
+          onSetCorrectAnswerOption(questionIdx, optionIdx)
+        }
+        onChangeText={(newText) =>
+          onChangeQuestionText(questionIdx, newText)
+        }
+        error={
         error &&
-        error.questions &&
-        error.questions[0] &&
-        error.questions[0][questionIdx] &&
-        error.questions[0][questionIdx][0]
-      }
-    />
-  ));
+          error.questions &&
+          error.questions[0] &&
+          error.questions[0][questionIdx] &&
+          error.questions[0][questionIdx][0]
+        }
+      />
+    );
+  });
 
   const onCreateQuiz = async () => {
     const resp = await createQuiz({

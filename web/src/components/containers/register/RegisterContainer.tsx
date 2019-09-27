@@ -50,13 +50,13 @@ const LoginContainer: React.FC<IRegisterContainerProps> = ({
       const err = data.error;
 
       if ('full_name' in err) {
-        props.setFullNameError(err.full_name.join(';'));
+        props.setFullNameError(err.full_name.join('; '));
       }
       if ('email' in err) {
-        props.setEmailError(err.email.join(';'));
+        props.setEmailError(err.email.join('; '));
       }
       if ('password' in err) {
-        props.setPasswordError(err.password.join(';'));
+        props.setPasswordError(err.password.join('; '));
       }
     } else {
       props.performRegister();

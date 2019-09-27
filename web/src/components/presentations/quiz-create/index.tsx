@@ -6,13 +6,14 @@ import { IQuizCreateProps } from '../../../interfaces/quiz-create/index';
 import { BeigeBackground } from '../common/BeigeBackground';
 import { BodyAfterNavBarWithPadding } from '../common/BodyAfterNavBarWithPadding';
 import FloatingButton from '../common/buttons/FloatingButton';
+import withError from '../common/WithError';
 import { QuizCreateNavBar } from './QuizCreateNavBar';
 
 const StyledBeigeBackground = styled(BeigeBackground)`
   padding-bottom: 15px;
 `;
 
-const NameInput = styled.input`
+const NameInput = withError(styled.input`
   font-size: 1.8rem;
   font-weight: lighter;
   padding: 10px;
@@ -21,9 +22,9 @@ const NameInput = styled.input`
 
   border: transparent;
   border-bottom: 1px solid var(--dark-grey);
-`;
+`);
 
-const DescriptionTextArea = styled.textarea`
+const DescriptionTextArea = withError(styled.textarea`
   margin-top: 10px;
   padding: 0 10px;
   width: calc(100% - 20px);
@@ -35,7 +36,7 @@ const DescriptionTextArea = styled.textarea`
   border-bottom: 1px solid var(--dark-grey);
 
   resize: none;
-`;
+`);
 
 const QuizCreate: React.FC<IQuizCreateProps> = ({
   name,
@@ -62,16 +63,17 @@ const QuizCreate: React.FC<IQuizCreateProps> = ({
           name="name"
           placeholder="Quiz Name"
           value={name}
-          onChange={(e) => onChangeName(e.target.value)}
+          onChange={(e: any) => onChangeName(e.target.value)}
+          error={error && error.title}
           required
         />
         <DescriptionTextArea
           placeholder="Quiz Description"
           value={description}
           rows={3}
-          onChange={(e) => onChangeDescription(e.target.value)}
+          error={error && error.description}
+          onChange={(e: any) => onChangeDescription(e.target.value)}
         />
-        {error && (<p>Error: {error}</p>)}
 
         <h3>Questions ({numQuestions})</h3>
         <FloatingButton onClick={onAddQuestion}>+ Add Question</FloatingButton>

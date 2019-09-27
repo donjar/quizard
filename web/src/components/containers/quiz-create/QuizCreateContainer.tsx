@@ -25,7 +25,7 @@ interface IQuizCreateContainerProps {
   name: string;
   description: string;
   createdQuizId?: string;
-  error?: string;
+  error?: any;
   onAddQuestion: () => void;
   onDeleteQuestion: (questionIdx: number) => void;
   onChangeAnswerOption: (
@@ -39,7 +39,7 @@ interface IQuizCreateContainerProps {
   onChangeName: (newName: string) => void;
   onChangeDescription: (newDesc: string) => void;
   onChangeQuestionText: (questionIdx: number, newText: string) => void;
-  setError: (error: string) => void;
+  setError: (error: any) => void;
   quizCreated: (quizId: string) => void;
 }
 
@@ -82,6 +82,13 @@ const QuizCreateContainer: React.FC<IQuizCreateContainerProps> = ({
       onChangeText={(newText) =>
         onChangeQuestionText(questionIdx, newText)
       }
+      error={
+        error &&
+        error.questions &&
+        error.questions[0] &&
+        error.questions[0][questionIdx] &&
+        error.questions[0][questionIdx][0]
+      }
     />
   ));
 
@@ -99,7 +106,7 @@ const QuizCreateContainer: React.FC<IQuizCreateContainerProps> = ({
     });
 
     if ('error' in resp) {
-      props.setError(JSON.stringify(resp.error));
+      props.setError(resp.error);
     } else {
       alert('Quiz created!');
       props.quizCreated(resp.data.id);
@@ -168,7 +175,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
       dispatch(changeDescription(newDesc)),
     onChangeQuestionText: (questionIdx: number, newText: string) =>
       dispatch(changeQuestionText({ questionIdx, newText })),
-    setError: (error: string) =>
+    setError: (error: any) =>
       dispatch(setError(error)),
     quizCreated: (quizId: string) =>
       dispatch(quizCreated(quizId))

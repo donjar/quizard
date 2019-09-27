@@ -5,6 +5,7 @@ import { AnswerButton, SelectedAnswerButton } from '../common/buttons/AnswerButt
 import DarkButton from '../common/buttons/DarkButton';
 import DeleteButton from '../common/buttons/DeleteButton';
 import Card from '../common/Card';
+import withError from '../common/WithError';
 
 const StyledQuestionCard = styled(Card)`
   position:relative;
@@ -12,7 +13,7 @@ const StyledQuestionCard = styled(Card)`
   margin: 1em 0;
 `;
 
-const QuestionTextArea = styled.textarea`
+const QuestionTextArea = withError(styled.textarea`
   font-size: 1rem;
   padding: 15px;
   width: calc(100% - 30px);
@@ -22,7 +23,7 @@ const QuestionTextArea = styled.textarea`
   border-radius: 15px;
 
   resize: none;
-`;
+`);
 
 const OptionInputRow = styled.div`
   display: flex;
@@ -36,9 +37,9 @@ const OptionInputRow = styled.div`
   border-radius: 15px;
 `;
 
-const OptionInputDiv = styled.div`
+const OptionInputDiv = withError(styled.div`
   flex: 1;
-`;
+`);
 
 const OptionInput = styled.input`
   font-size: 1rem;
@@ -67,7 +68,8 @@ const QuizCreateQuestionCard: React.FC<IQuizCreateQuestionCardProps> = ({
   onNewOption,
   onEraseOption,
   onSetCorrectAnswer,
-  onChangeText
+  onChangeText,
+  error
 }) => {
   const optionsArray = options.map((option, idx) => {
     let OptionButton;
@@ -76,9 +78,18 @@ const QuizCreateQuestionCard: React.FC<IQuizCreateQuestionCardProps> = ({
     } else {
       OptionButton = AnswerButton;
     }
+
+    const err = (
+      error &&
+      error.options &&
+      error.options[0] &&
+      error.options[0][idx] &&
+      error.options[0][idx].join('; ')
+    );
+
     return (
       <OptionInputRow key={idx}>
-        <OptionInputDiv>
+        <OptionInputDiv error={err}>
           <OptionInput
             type="text"
             placeholder="Answer option"
@@ -103,7 +114,8 @@ const QuizCreateQuestionCard: React.FC<IQuizCreateQuestionCardProps> = ({
         placeholder="Question"
         value={text}
         rows={4}
-        onChange={(e) => onChangeText(e.target.value)}
+        onChange={(e: any) => onChangeText(e.target.value)}
+        error={error && error.text && error.text.join('; ')}
       />
 
       <h5>Options:</h5>

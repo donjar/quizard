@@ -20,7 +20,7 @@ export interface IAnswerOption {
 
 export interface ISetErrorAction {
   type: typeof SET_ERROR;
-  payload: string;
+  payload: any;
 }
 
 export interface IChangeAnswerOption extends IAnswerOption {

@@ -70,21 +70,21 @@ const Register: React.FC<IRegisterProps> = ({
             type="text"
             placeholder="Full name"
             value={fullName}
-            onChange={(event) => onChangeFullName(event.target.value)}
+            onChange={(event: any) => onChangeFullName(event.target.value)}
             error={fullNameError}
           />
           <InputField
             type="text"
             placeholder="Email"
             value={email}
-            onChange={(event) => onChangeEmail(event.target.value)}
+            onChange={(event: any) => onChangeEmail(event.target.value)}
             error={emailError}
           />
           <InputField
             type="password"
             placeholder="Password"
             value={password}
-            onChange={(event) => onChangePassword(event.target.value)}
+            onChange={(event: any) => onChangePassword(event.target.value)}
             error={passwordError}
           />
           <DarkButton type="submit">Register</DarkButton>

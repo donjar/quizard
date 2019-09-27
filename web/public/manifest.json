@@ -8,14 +8,14 @@
       "type": "image/x-icon"
     },
     {
-      "src": "owl-192.png",
-      "type": "image/png",
-      "sizes": "192x192"
+      "src": "manifest-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
     },
     {
-      "src": "owl-512.png",
-      "type": "image/png",
-      "sizes": "512x512"
+      "src": "manifest-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
     }
   ],
   "start_url": ".",

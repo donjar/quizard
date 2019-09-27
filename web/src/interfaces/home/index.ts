@@ -30,6 +30,7 @@ export interface IHomeContainerProps extends IHomeState {
   setAttemptedQuizzes: (questions: IQuiz[]) => void;
   setOngoingQuizzes: (questions: IQuiz[]) => void;
   setLoadingComplete: (hasLoaded: boolean) => void;
+  resetQuizCreate: () => void;
 }
 
 export interface IHomeNavBarProps {

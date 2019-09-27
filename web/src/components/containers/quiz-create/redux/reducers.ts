@@ -10,6 +10,7 @@ import {
   DELETE_ANSWER_OPTION,
   DELETE_QUESTION,
   IQuizCreateActionTypes,
+  QUIZ_CREATE_RESET,
   QUIZ_CREATED,
   SET_CORRECT_ANSWER,
   SET_ERROR
@@ -87,6 +88,9 @@ export default function quizCreateReducer(
         ...state,
         createdQuizId: action.payload
       };
+
+    case QUIZ_CREATE_RESET:
+      return initialState;
 
     default:
       return state;

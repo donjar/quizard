@@ -1,11 +1,11 @@
 import React from 'react';
 
 import { IQuizAttemptReviewProps } from '../../../interfaces/quiz-create-summary/index';
+import QuizRedoButtonContainer from '../../containers/quiz-complete/QuizRedoButtonContainer';
 import { BeigeBackground } from '../common/BeigeBackground';
 import { BodyAfterNavBarWithPadding } from '../common/BodyAfterNavBarWithPadding';
 import { NavBarWithBack } from '../common/NavBarWithBack';
 import QuestionSection from './QuestionSection';
-import QuizRedoButtonContainer from '../../containers/quiz-complete/QuizRedoButtonContainer';
 
 const QuizAttemptReview: React.FC<IQuizAttemptReviewProps> = ({
   name,

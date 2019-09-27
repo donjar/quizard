@@ -51,7 +51,6 @@ const ShareQuizModal: React.FC<IShareQuizModalProps> = ({
   const encodedLink = encodeURIComponent(sharableLink);
   const shareWhatsApp = () => {
     const url = `https://wa.me/?text=${defaultPromoText}%20${encodedLink}`;
-    console.log(url);
     window.open(url, '_blank');
   };
 

@@ -14,6 +14,8 @@ async def sanic_error_handler(request, exception):
     if hasattr(exception, "status_code"):
         status_code = exception.status_code
 
+    if isinstance(exc_message, str):
+        exc_message = {"msg": [exc_message]}
     return json({"error": exc_message}, status=status_code)
 
 

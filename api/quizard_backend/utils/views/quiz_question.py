@@ -1,5 +1,4 @@
 from sanic.exceptions import Forbidden
-
 from quizard_backend.models import Quiz, QuizQuestion
 from quizard_backend.utils.query import get_many
 

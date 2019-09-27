@@ -187,11 +187,9 @@ So you don't have to worry and could use the URL directly without issues.
 - `403`: The request failed for an authenticated user, who does not have authorization to access the requested resource.
 - `404`: Resource is not found.
 - `405`: HTTP method is not allowed for the endpoint.
-- `422`: The token is in wrong format.
+- `422`: The token is in wrong format or with wrong signature.
 
-## Endpoints
-
-The supported endpoints are listed here.
+## API References
 
 ### 1. Users
 
@@ -452,13 +450,14 @@ body = {
 }
 ```
 
-### 6. Quiz Summary (Statistics)
+### 7. Quiz Summary (Statistics)
+> Only the creator of the quiz can access the quiz's summarys
 
 Return the questions in the quiz, along with fields `correct_option` and `stats` for each question.
 
 For questions that have no answers, the default value for `stats` is an empty object `{}`.
 
-> *stats* has 2 fields: `count` and `percentage`.
+*stats* has 2 fields: `count` and `percentage`.
 - `count` is an array showing how many chosen options for each option in the question.
 
 
@@ -507,7 +506,7 @@ GET /quizzes/<quiz_id>/summary
 ]
 ```
 
-### 7. Users' Quizzes
+### 8. Users' Quizzes
 
 Get an user's created and attempted quizzes.
 
@@ -521,7 +520,7 @@ GET /users/<user_id>/quizzes/created
 
 #### User's Attempted quizzes
 
-Sorted by `Most recent`.
+Sorted by most recent.
 
 ```
 GET /users/<user_id>/quizzes/attempted

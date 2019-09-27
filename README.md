@@ -1,4 +1,7 @@
-# ![Quizard! The Quizzing App](readme_header.png)
+<h1>
+  <img src="readme_header.png" alt="Quizard!" width="500" />
+</h1>
+
 ## Made for CS3216 Assignment 3
 
 ![Quizard!](quizard_cover.png)

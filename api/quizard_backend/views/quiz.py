@@ -2,7 +2,7 @@ from sanic.response import json
 from sanic_jwt_extended.decorators import get_jwt_data_in_request_header
 
 from quizard_backend.views.urls import quiz_blueprint as blueprint
-from quizard_backend.exceptions import ExistingAnswerError
+from quizard_backend.exceptions import ExistingAnswerError, SchemaValidationError
 from quizard_backend.models import Quiz, QuizQuestion, QuizAttempt, QuizAnswer
 from quizard_backend.utils.authentication import get_jwt_token_requester
 from quizard_backend.utils.links import generate_pagination_links
@@ -38,6 +38,19 @@ async def quiz_retrieve(
 async def quiz_create(req, *, req_args, req_body, **kwargs):
     jwt_data = await get_jwt_data_in_request_header(req.app, req)
     quiz_questions = req_body.pop("questions", [])
+
+    # Validate the `correct_option` before creating the quiz
+    for question in quiz_questions:
+        if question["correct_option"] >= len(question["options"]):
+            raise SchemaValidationError(
+                {
+                    "questions": {
+                        "correct_option": [
+                            '"correct_option" must be smaller than the length of "options".'
+                        ]
+                    }
+                }
+            )
 
     # Assign the requester to be the creator of the quiz
     req_body["creator_id"] = jwt_data["identity"]["id"]

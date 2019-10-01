@@ -15,12 +15,9 @@ sanic = "*"
 alembic = "*"
 psycopg2-binary = "*"
 cerberus = "*"
-# Wait until Sanic upgrades its Websocket's dependency (hopefully v19.6.3)
-# to use uvicorn
-# uvicorn = "==0.7.*"
 sanic-jwt-extended = "*"
-hypercorn = {extras = ["uvloop"],version = "*"}
 sanic-cors = "*"
+uvloop = "*"
 
 [requires]
 python_version = "3.7"

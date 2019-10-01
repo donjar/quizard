@@ -203,6 +203,16 @@ async def test_create_quiz_with_invalid_args(client, quizzes, token_user):
     )
     assert res.status == 400
 
+    # Invalid correct_option
+    questions = get_fake_quiz_questions(has_id=False)
+    questions[0]["correct_option"] = 5
+    new_quiz = {**fake_quiz, "questions": questions}
+
+    res = await client.post(
+        "/quizzes", json=new_quiz, headers={"Authorization": token_user}
+    )
+    assert res.status == 400
+
     # Invalid args
     res = await client.post("/quizzes", json={}, headers={"Authorization": token_user})
     assert res.status == 400

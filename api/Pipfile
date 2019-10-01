@@ -16,7 +16,6 @@ alembic = "*"
 psycopg2-binary = "*"
 cerberus = "*"
 sanic-jwt-extended = "*"
-hypercorn = {extras = ["uvloop"],version = "*"}
 sanic-cors = "*"
 uvloop = "*"
 

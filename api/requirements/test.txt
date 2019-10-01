@@ -1,5 +1,5 @@
 -i https://pypi.org/simple
-aiohttp==3.6.0
+aiohttp==3.6.1
 appdirs==1.4.3
 async-generator==1.10
 async-timeout==3.0.1
@@ -13,13 +13,13 @@ idna==2.8
 importlib-metadata==0.23 ; python_version < '3.8'
 more-itertools==7.2.0
 multidict==4.5.2
-packaging==19.1
+packaging==19.2
 pluggy==0.13.0
 py==1.8.0
 pyparsing==2.4.2
 pysnooper==0.2.8
 pytest-sanic==1.0.0
-pytest==5.1.2
+pytest==5.2.0
 python-dateutil==2.8.0
 six==1.12.0
 text-unidecode==1.3

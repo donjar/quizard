@@ -10,6 +10,7 @@ export interface IQuizCreateNavBarProps {
 
 export interface IQuizCreateQuestionCardProps {
   questionNumber: number;
+  numQuestions: number;
   text: string;
   options: string[];
   correctOption: number;

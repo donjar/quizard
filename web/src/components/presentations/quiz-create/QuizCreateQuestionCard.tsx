@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { MAX_OPTIONS_PER_QUESTION, MIN_OPTIONS_PER_QUESTION } from '../../../constants';
+import { MAX_OPTIONS_PER_QUESTION, MIN_OPTIONS_PER_QUESTION, MIN_QUESTIONS_PER_QUIZ } from '../../../constants';
 import { IQuizCreateQuestionCardProps } from '../../../interfaces/quiz-create';
 import { AnswerButton, SelectedAnswerButton } from '../common/buttons/AnswerButton';
 import DarkButton from '../common/buttons/DarkButton';
@@ -61,6 +61,7 @@ const DeleteQuestionButtonDiv = styled.div`
 
 const QuizCreateQuestionCard: React.FC<IQuizCreateQuestionCardProps> = ({
   questionNumber,
+  numQuestions,
   text,
   options,
   correctOption,
@@ -115,7 +116,11 @@ const QuizCreateQuestionCard: React.FC<IQuizCreateQuestionCardProps> = ({
   return (
     <StyledQuestionCard>
       <DeleteQuestionButtonDiv>
-        <DeleteButton onClick={onEraseQuestion} />
+        {
+          numQuestions > MIN_QUESTIONS_PER_QUIZ
+            ? <DeleteButton onClick={onEraseQuestion} />
+            : <DeleteButton onClick={onEraseQuestion} disabled />
+        }
       </DeleteQuestionButtonDiv>
       <h3>Question {questionNumber}</h3>
       <QuestionTextArea

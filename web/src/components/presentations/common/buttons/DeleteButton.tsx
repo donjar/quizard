@@ -12,7 +12,7 @@ interface IDeleteIconProps {
 
 const StyledDelete = styled(Delete)`
   color: ${({ disabled }: IDeleteIconProps) => disabled ? disabledDeleteBtnColor : defaultDeleteBtnColor};
-  cursor: ${({ disabled }: IDeleteIconProps) => disabled ? `default` : `pointer`};
+  cursor: ${({ disabled }: IDeleteIconProps) => disabled ? `not-allowed` : `pointer`};
 `;
 
 interface IDeleteButtonProps {

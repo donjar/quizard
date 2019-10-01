@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { MAX_OPTIONS_PER_QUESTION } from '../../../constants';
 import { IQuizCreateQuestionCardProps } from '../../../interfaces/quiz-create';
 import { AnswerButton, SelectedAnswerButton } from '../common/buttons/AnswerButton';
 import DarkButton from '../common/buttons/DarkButton';
@@ -123,7 +124,11 @@ const QuizCreateQuestionCard: React.FC<IQuizCreateQuestionCardProps> = ({
 
       <h5>Options:</h5>
       {optionsArray}
-      <DarkButton onClick={onNewOption}>+ Add Option</DarkButton>
+      {
+        optionsArray.length < MAX_OPTIONS_PER_QUESTION
+          ? <DarkButton onClick={onNewOption}>+ Add Option</DarkButton>
+          : <></>
+      }
     </StyledQuestionCard>
   );
 };

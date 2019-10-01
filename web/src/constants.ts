@@ -1,0 +1,2 @@
+export const MAX_QUESTIONS_PER_QUIZ = 15;
+export const MAX_OPTIONS_PER_QUESTION = 4;

@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { MAX_OPTIONS_PER_QUESTION } from '../../../constants';
+import { MAX_OPTIONS_PER_QUESTION, MIN_OPTIONS_PER_QUESTION } from '../../../constants';
 import { IQuizCreateQuestionCardProps } from '../../../interfaces/quiz-create';
 import { AnswerButton, SelectedAnswerButton } from '../common/buttons/AnswerButton';
 import DarkButton from '../common/buttons/DarkButton';
@@ -102,7 +102,11 @@ const QuizCreateQuestionCard: React.FC<IQuizCreateQuestionCardProps> = ({
             />
           </OptionInputDiv>
           <OptionButton onClick={() => onSetCorrectAnswer(idx)} />
-          <DeleteButton onClick={() => onEraseOption(idx)} />
+          {
+            options.length > MIN_OPTIONS_PER_QUESTION
+              ? <DeleteButton onClick={() => onEraseOption(idx)} />
+              : <DeleteButton onClick={() => onEraseOption(idx)} disabled />
+          }
         </OptionInputRow>
       </>
     );

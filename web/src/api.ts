@@ -1,6 +1,6 @@
 import { IQuizCreateApi } from './interfaces/quiz-create/index';
 
-const apiUrl = 'https://www.quizard.xyz';
+const apiUrl = 'https://api.quizard.xyz';
 
 export const renewTokenOnExpire = async (res: Response) => {
   if (res.status === 401) {

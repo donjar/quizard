@@ -30,6 +30,7 @@ export const addAuthHeader = (options: any, token: string) => {
       }
     };
   }
+  options.headers["Access-Control-Allow-Origin"] = "*";
 
   return options;
 };

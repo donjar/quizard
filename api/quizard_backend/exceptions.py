@@ -16,7 +16,11 @@ async def sanic_error_handler(request, exception):
 
     if isinstance(exc_message, str):
         exc_message = {"msg": [exc_message]}
-    return json({"error": exc_message}, status=status_code)
+    return json(
+        {"error": exc_message},
+        status=status_code,
+        headers={"Access-Control-Allow-Origin": "https://quizard.xyz"},
+    )
 
 
 class SchemaValidationError(SanicException):

@@ -12,8 +12,8 @@ if __name__ == "__main__":
 
         context = ssl.create_default_context(purpose=ssl.Purpose.CLIENT_AUTH)
         context.load_cert_chain(
-            "/etc/letsencrypt/live/quizard.xyz/fullchain.pem",
-            keyfile="/etc/letsencrypt/live/quizard.xyz/privkey.pem",
+            "/etc/letsencrypt/live/rest.quizard.xyz/fullchain.pem",
+            keyfile="/etc/letsencrypt/live/rest.quizard.xyz/privkey.pem",
         )
         SANIC_RUN_CONFIG.update({"ssl": context})
 

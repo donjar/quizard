@@ -1,6 +1,6 @@
 import { IQuizCreateApi } from './interfaces/quiz-create/index';
 
-const apiUrl = 'https://api.quizard.xyz';
+const apiUrl = 'https://rest.quizard.xyz';
 
 export const renewTokenOnExpire = async (res: Response) => {
   if (res.status === 401) {
@@ -30,6 +30,7 @@ export const addAuthHeader = (options: any, token: string) => {
       }
     };
   }
+  options.headers["Access-Control-Allow-Origin"] = "*";
 
   return options;
 };

@@ -19,7 +19,7 @@ async def sanic_error_handler(request, exception):
     return json(
         {"error": exc_message},
         status=status_code,
-        headers={"Access-Control-Allow-Origin": "https://quizard.xyz"},
+        headers={"Access-Control-Allow-Origin": "*"},
     )
 
 

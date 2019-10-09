@@ -5,7 +5,7 @@
 ## Made for CS3216 Assignment 3
 
 ![Quizard!](quizard_cover.png)
-Visit Quizard! live: https://cs3216-a3-quizard.web.app
+Visit Quizard! live: https://quizard.xyz
 
 ### Repo structure
 - `web`: front-end

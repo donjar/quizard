@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Redirect } from 'react-router';
 import styled from 'styled-components';
+import { MAX_QUESTIONS_PER_QUIZ } from '../../../constants';
 import { IQuizCreateProps } from '../../../interfaces/quiz-create/index';
 import { BeigeBackground } from '../common/BeigeBackground';
 import { BodyAfterNavBarWithPadding } from '../common/BodyAfterNavBarWithPadding';
@@ -76,7 +77,11 @@ const QuizCreate: React.FC<IQuizCreateProps> = ({
         />
 
         <h3>Questions ({numQuestions})</h3>
-        <FloatingButton onClick={onAddQuestion}>+ Add Question</FloatingButton>
+        {
+          numQuestions < MAX_QUESTIONS_PER_QUIZ
+            ? <FloatingButton onClick={onAddQuestion}>+ Add Question</FloatingButton>
+            : <></>
+        }
         {children}
       </BodyAfterNavBarWithPadding>
     </StyledBeigeBackground>

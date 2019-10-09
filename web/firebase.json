@@ -3,7 +3,7 @@
     "public": "build",
     "headers": [
       {
-        "source": "/**",
+        "source": "**",
         "headers": [
           {
             "key": "Cache-Control",

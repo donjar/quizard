@@ -79,6 +79,7 @@ const QuizCreateContainer: React.FC<IQuizCreateContainerProps> = ({
       <QuizCreateQuestionCard
         key={questionIdx}
         questionNumber={questionIdx + 1}
+        numQuestions={questions.length}
         text={question.text}
         options={question.options}
         correctOption={question.correctOption}

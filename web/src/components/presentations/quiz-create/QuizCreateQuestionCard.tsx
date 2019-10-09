@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { MAX_OPTIONS_PER_QUESTION, MIN_OPTIONS_PER_QUESTION, MIN_QUESTIONS_PER_QUIZ } from '../../../constants';
 import { IQuizCreateQuestionCardProps } from '../../../interfaces/quiz-create';
 import { AnswerButton, SelectedAnswerButton } from '../common/buttons/AnswerButton';
 import DarkButton from '../common/buttons/DarkButton';
@@ -25,7 +26,7 @@ const QuestionTextArea = withError(styled.textarea`
   resize: none;
 `);
 
-const OptionInputRow = styled.div`
+const OptionInputRow = withError(styled.div`
   display: flex;
   flex-direction: row;
 
@@ -35,11 +36,11 @@ const OptionInputRow = styled.div`
 
   border: 1px solid var(--dark-blue);
   border-radius: 15px;
-`;
-
-const OptionInputDiv = withError(styled.div`
-  flex: 1;
 `);
+
+const OptionInputDiv = styled.div`
+  flex: 1;
+`;
 
 const OptionInput = styled.input`
   font-size: 1rem;
@@ -60,6 +61,7 @@ const DeleteQuestionButtonDiv = styled.div`
 
 const QuizCreateQuestionCard: React.FC<IQuizCreateQuestionCardProps> = ({
   questionNumber,
+  numQuestions,
   text,
   options,
   correctOption,
@@ -88,26 +90,37 @@ const QuizCreateQuestionCard: React.FC<IQuizCreateQuestionCardProps> = ({
     );
 
     return (
-      <OptionInputRow key={idx}>
-        <OptionInputDiv error={err}>
-          <OptionInput
-            type="text"
-            placeholder="Answer option"
-            value={option}
-            onChange={(e) => onChangeOption(idx, e.target.value)}
-            required
-          />
-        </OptionInputDiv>
-        <OptionButton onClick={() => onSetCorrectAnswer(idx)} />
-        <DeleteButton onClick={() => onEraseOption(idx)} />
-      </OptionInputRow>
+      <>
+        <OptionInputRow key={idx} error={err}>
+          <OptionInputDiv>
+            <OptionInput
+              type="text"
+              placeholder="Answer option"
+              value={option}
+              onChange={(e) => onChangeOption(idx, e.target.value)}
+              width={`calc(100% - 30px)`}
+              required
+            />
+          </OptionInputDiv>
+          <OptionButton onClick={() => onSetCorrectAnswer(idx)} />
+          {
+            options.length > MIN_OPTIONS_PER_QUESTION
+              ? <DeleteButton onClick={() => onEraseOption(idx)} />
+              : <DeleteButton onClick={() => onEraseOption(idx)} disabled />
+          }
+        </OptionInputRow>
+      </>
     );
   });
 
   return (
     <StyledQuestionCard>
       <DeleteQuestionButtonDiv>
-        <DeleteButton onClick={onEraseQuestion} />
+        {
+          numQuestions > MIN_QUESTIONS_PER_QUIZ
+            ? <DeleteButton onClick={onEraseQuestion} />
+            : <DeleteButton onClick={onEraseQuestion} disabled />
+        }
       </DeleteQuestionButtonDiv>
       <h3>Question {questionNumber}</h3>
       <QuestionTextArea
@@ -120,7 +133,11 @@ const QuizCreateQuestionCard: React.FC<IQuizCreateQuestionCardProps> = ({
 
       <h5>Options:</h5>
       {optionsArray}
-      <DarkButton onClick={onNewOption}>+ Add Option</DarkButton>
+      {
+        optionsArray.length < MAX_OPTIONS_PER_QUESTION
+          ? <DarkButton onClick={onNewOption}>+ Add Option</DarkButton>
+          : <></>
+      }
     </StyledQuestionCard>
   );
 };

@@ -1,5 +1,9 @@
 import styled from 'styled-components';
 
+interface IIconButtonProps {
+  disabled?: boolean;
+}
+
 const IconButton = styled.button`
   border: none;
   outline: none;
@@ -7,7 +11,7 @@ const IconButton = styled.button`
   background: none;
 
   :active {
-    transform: translateY(4px);
+    transform: ${({ disabled }: IIconButtonProps) => disabled ? `none` : `translateY(4px)`};
   }
 `;
 

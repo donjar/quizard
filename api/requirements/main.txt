@@ -14,7 +14,7 @@ httpcore==0.3.0
 httptools==0.0.13
 hyperframe==5.2.0
 idna==2.8
-mako==1.1.0
+mako==1.2.2
 markupsafe==1.1.1
 multidict==4.5.2
 psycopg2-binary==2.8.3
